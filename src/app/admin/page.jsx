@@ -3,7 +3,8 @@
 import { useState } from "react";
 import Image from "next/image";
 import toast from "react-hot-toast";
-import { Plus, Edit, Trash2, DollarSign, BedDouble, CalendarCheck } from "lucide-react";
+import { Plus, Edit, Trash2, DollarSign, BedDouble, CalendarCheck, X } from "lucide-react";
+import api from "@/lib/api";
 
 const INITIAL_ROOMS = [
   { id: 1, title: "Standard Room", type: "Standard", price: "$59", status: "Available", image: "https://images.unsplash.com/photo-1590490359683-658d3d23f972?q=80&w=500" },
@@ -14,6 +15,19 @@ const INITIAL_ROOMS = [
 
 export default function AdminDashboard() {
   const [rooms, setRooms] = useState(INITIAL_ROOMS);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Form State
+  const [formData, setFormData] = useState({
+    title: "",
+    type: "Standard",
+    price: "",
+    capacity: "",
+    description: "",
+  });
+  const [amenities, setAmenities] = useState([]);
+  const [imageFile, setImageFile] = useState(null);
 
   const toggleStatus = (id) => {
     setRooms(rooms.map(room => {
@@ -26,21 +40,50 @@ export default function AdminDashboard() {
     }));
   };
 
-  const handleAddNewRoom = () => {
-    toast.success("Room creation form will open here", {
-      style: {
-        background: '#0f284f',
-        color: '#fff',
-      },
-      iconTheme: {
-        primary: '#fff',
-        secondary: '#0f284f',
-      },
-    });
+  const handleAmenityChange = (amenity) => {
+    setAmenities(prev => 
+      prev.includes(amenity) ? prev.filter(a => a !== amenity) : [...prev, amenity]
+    );
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    const toastId = toast.loading("Creating room...");
+
+    try {
+      const data = new FormData();
+      data.append("title", formData.title);
+      data.append("roomType", formData.type);
+      data.append("price", formData.price);
+      data.append("capacity", formData.capacity);
+      data.append("description", formData.description);
+      // Append amenities as a comma-separated string or multiple fields depending on backend
+      data.append("amenities", amenities.join(",")); 
+      
+      if (imageFile) {
+        data.append("image", imageFile);
+      }
+
+      await api.post("/rooms", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        }
+      });
+
+      toast.success("Room created successfully!", { id: toastId });
+      setIsModalOpen(false);
+      // Optional: Refetch rooms here to update the table
+    } catch (error) {
+      console.error("Room creation error:", error);
+      toast.error(error.response?.data?.message || "Failed to create room.", { id: toastId });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
-    <main className="min-h-screen bg-[#f8fafc] w-full py-12 px-4 sm:px-6 lg:px-8">
+    <main className="min-h-screen bg-[#f8fafc] w-full py-12 px-4 sm:px-6 lg:px-8 relative">
       <div className="max-w-7xl mx-auto">
         
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
@@ -48,7 +91,7 @@ export default function AdminDashboard() {
             Admin Dashboard
           </h1>
           <button 
-            onClick={handleAddNewRoom}
+            onClick={() => setIsModalOpen(true)}
             className="flex items-center space-x-2 bg-[#0f284f] text-white font-bold uppercase tracking-wider px-6 py-3 rounded-sm hover:bg-[#1a3d72] transition-colors"
           >
             <Plus className="w-5 h-5" />
@@ -158,8 +201,141 @@ export default function AdminDashboard() {
             </table>
           </div>
         </div>
-
       </div>
+
+      {/* Add New Room Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div className="sticky top-0 bg-white border-b border-gray-100 px-6 py-4 flex justify-between items-center z-10">
+              <h2 className="text-xl font-bold text-[#0f284f] uppercase tracking-wider">
+                Create New Room
+              </h2>
+              <button 
+                onClick={() => setIsModalOpen(false)}
+                className="p-2 text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+            
+            <form onSubmit={handleSubmit} className="p-6 space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <div className="space-y-1">
+                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">Room Title</label>
+                  <input
+                    type="text"
+                    required
+                    value={formData.title}
+                    onChange={(e) => setFormData({...formData, title: e.target.value})}
+                    className="w-full border border-gray-300 rounded-sm p-3 text-sm focus:outline-none focus:border-[#0f284f] transition-all"
+                    placeholder="e.g. Ocean View Suite"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">Room Type</label>
+                  <select
+                    value={formData.type}
+                    onChange={(e) => setFormData({...formData, type: e.target.value})}
+                    className="w-full border border-gray-300 rounded-sm p-3 text-sm focus:outline-none focus:border-[#0f284f] transition-all bg-white"
+                  >
+                    <option value="Single">Single</option>
+                    <option value="Double">Double</option>
+                    <option value="Suite">Suite</option>
+                    <option value="Deluxe">Deluxe</option>
+                  </select>
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">Price per Night ($)</label>
+                  <input
+                    type="number"
+                    required
+                    min="0"
+                    value={formData.price}
+                    onChange={(e) => setFormData({...formData, price: e.target.value})}
+                    className="w-full border border-gray-300 rounded-sm p-3 text-sm focus:outline-none focus:border-[#0f284f] transition-all"
+                    placeholder="250"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">Capacity</label>
+                  <input
+                    type="number"
+                    required
+                    min="1"
+                    value={formData.capacity}
+                    onChange={(e) => setFormData({...formData, capacity: e.target.value})}
+                    className="w-full border border-gray-300 rounded-sm p-3 text-sm focus:outline-none focus:border-[#0f284f] transition-all"
+                    placeholder="2"
+                  />
+                </div>
+
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">Description</label>
+                <textarea
+                  required
+                  rows="3"
+                  value={formData.description}
+                  onChange={(e) => setFormData({...formData, description: e.target.value})}
+                  className="w-full border border-gray-300 rounded-sm p-3 text-sm focus:outline-none focus:border-[#0f284f] transition-all resize-none"
+                  placeholder="Describe the room features..."
+                ></textarea>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">Amenities</label>
+                <div className="flex flex-wrap gap-4">
+                  {["WiFi", "AC", "Breakfast", "Swimming Pool", "Mini Bar", "Gym"].map((item) => (
+                    <label key={item} className="flex items-center space-x-2 cursor-pointer">
+                      <input 
+                        type="checkbox" 
+                        checked={amenities.includes(item)}
+                        onChange={() => handleAmenityChange(item)}
+                        className="rounded-sm border-gray-300 text-[#0f284f] focus:ring-[#0f284f]"
+                      />
+                      <span className="text-sm text-gray-700">{item}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">Room Image</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => setImageFile(e.target.files[0])}
+                  className="w-full border border-gray-300 rounded-sm p-2 text-sm focus:outline-none file:mr-4 file:py-2 file:px-4 file:rounded-sm file:border-0 file:text-sm file:font-semibold file:bg-[#0f284f] file:text-white hover:file:bg-[#1a3d72] transition-all cursor-pointer"
+                />
+              </div>
+
+              <div className="pt-4 flex justify-end space-x-4 border-t border-gray-100">
+                <button
+                  type="button"
+                  onClick={() => setIsModalOpen(false)}
+                  className="px-6 py-3 border border-gray-300 rounded-sm text-sm font-bold text-gray-600 uppercase tracking-wider hover:bg-gray-50 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="px-6 py-3 bg-[#0f284f] rounded-sm text-sm font-bold text-white uppercase tracking-wider hover:bg-[#1a3d72] transition-colors disabled:opacity-70"
+                >
+                  {isSubmitting ? "Creating..." : "Create Room"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
     </main>
   );
 }

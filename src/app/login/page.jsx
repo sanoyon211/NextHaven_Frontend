@@ -4,21 +4,66 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { auth } from "@/lib/firebase";
+import api from "@/lib/api";
+import { useAuth } from "@/lib/AuthContext";
 
 export default function LoginPage() {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+  const { setUser } = useAuth();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Firebase auth integration goes here
-    console.log("Submit:", { email, password, isLogin });
+  const handleAuthSync = async (user) => {
+    try {
+      const idToken = await user.getIdToken();
+      // POST to backend to sync user and receive JWT HTTP-only cookie
+      const res = await api.post("/auth/sync", { token: idToken });
+      setUser(res.data.user || res.data); // Adjust based on your backend response structure
+      toast.success("Successfully authenticated!");
+      router.push("/dashboard");
+    } catch (error) {
+      console.error("Sync error:", error);
+      toast.error("Failed to sync with server.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleGoogleSignIn = () => {
-    // Firebase Google OAuth integration goes here
-    console.log("Google Sign In");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    try {
+      let userCredential;
+      if (isLogin) {
+        userCredential = await signInWithEmailAndPassword(auth, email, password);
+      } else {
+        userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      }
+      await handleAuthSync(userCredential.user);
+    } catch (error) {
+      setIsLoading(false);
+      console.error("Auth error:", error);
+      toast.error(error.message || "Authentication failed");
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    setIsLoading(true);
+    try {
+      const provider = new GoogleAuthProvider();
+      const userCredential = await signInWithPopup(auth, provider);
+      await handleAuthSync(userCredential.user);
+    } catch (error) {
+      setIsLoading(false);
+      console.error("Google Auth error:", error);
+      toast.error(error.message || "Google Authentication failed");
+    }
   };
 
   return (
@@ -103,9 +148,10 @@ export default function LoginPage() {
 
             <button
               type="submit"
-              className="w-full bg-[#0f284f] text-white font-bold uppercase tracking-wider py-4 rounded-sm hover:bg-[#1a3d72] transition-colors"
+              disabled={isLoading}
+              className="w-full bg-[#0f284f] text-white font-bold uppercase tracking-wider py-4 rounded-sm hover:bg-[#1a3d72] transition-colors disabled:opacity-70"
             >
-              {isLogin ? "SIGN IN" : "SIGN UP"}
+              {isLoading ? "PLEASE WAIT..." : (isLogin ? "SIGN IN" : "SIGN UP")}
             </button>
           </form>
 
@@ -120,7 +166,8 @@ export default function LoginPage() {
           <button
             onClick={handleGoogleSignIn}
             type="button"
-            className="w-full flex items-center justify-center space-x-3 border border-gray-300 bg-white py-4 rounded-sm hover:bg-gray-50 transition-colors"
+            disabled={isLoading}
+            className="w-full flex items-center justify-center space-x-3 border border-gray-300 bg-white py-4 rounded-sm hover:bg-gray-50 transition-colors disabled:opacity-70"
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24">
               <path
