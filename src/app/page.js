@@ -2,12 +2,13 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Home() {
   return (
     <main>
-      <section className="min-h-[85vh] w-full bg-white flex flex-col lg:flex-row">
-      <div className="grid grid-cols-1 lg:grid-cols-2 w-full flex-1">
+      <section className="w-full bg-white">
+        <div className="grid grid-cols-1 lg:grid-cols-2 w-full min-h-[85vh]">
         {/* Left Column (Text Content) */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
@@ -38,12 +39,15 @@ export default function Home() {
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="relative w-full h-[50vh] lg:h-full min-h-[400px] lg:min-h-full"
+          className="relative w-full h-[50vh] lg:h-auto min-h-[400px]"
         >
-          <img
-            src="https://images.unsplash.com/photo-1618773928120-2c14230171bd?q=80&w=2070"
+          <Image
+            src="https://images.unsplash.com/photo-1590490359683-658d3d23f972?q=80&w=2000"
             alt="Premium Hotel Bedroom"
-            className="w-full h-full object-cover absolute inset-0"
+            fill
+            sizes="(max-width: 1024px) 100vw, 50vw"
+            className="object-cover"
+            priority
           />
         </motion.div>
       </div>
