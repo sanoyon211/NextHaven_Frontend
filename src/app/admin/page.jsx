@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import toast from "react-hot-toast";
 import { Plus, Edit, Trash2, DollarSign, BedDouble, CalendarCheck, X } from "lucide-react";
@@ -17,6 +17,28 @@ export default function AdminDashboard() {
   const [rooms, setRooms] = useState(INITIAL_ROOMS);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [analytics, setAnalytics] = useState({
+    totalRevenue: 0,
+    activeBookings: 0,
+    availableRooms: 0
+  });
+  const [loadingAnalytics, setLoadingAnalytics] = useState(true);
+
+  useEffect(() => {
+    const fetchAnalytics = async () => {
+      try {
+        const res = await api.get("/admin/analytics");
+        if (res.data?.success) {
+          setAnalytics(res.data.data);
+        }
+      } catch (error) {
+        toast.error("Failed to load analytics");
+      } finally {
+        setLoadingAnalytics(false);
+      }
+    };
+    fetchAnalytics();
+  }, []);
 
   // Form State
   const [formData, setFormData] = useState({
@@ -109,7 +131,9 @@ export default function AdminDashboard() {
             </div>
             <div>
               <p className="text-sm text-gray-500 font-bold uppercase tracking-wider mb-1">Total Revenue</p>
-              <p className="text-3xl font-black text-[#0f284f]">$15,200</p>
+              <p className="text-3xl font-black text-[#0f284f]">
+                {loadingAnalytics ? "..." : `$${analytics.totalRevenue.toLocaleString()}`}
+              </p>
             </div>
           </div>
           
@@ -119,7 +143,9 @@ export default function AdminDashboard() {
             </div>
             <div>
               <p className="text-sm text-gray-500 font-bold uppercase tracking-wider mb-1">Active Bookings</p>
-              <p className="text-3xl font-black text-[#0f284f]">12</p>
+              <p className="text-3xl font-black text-[#0f284f]">
+                {loadingAnalytics ? "..." : analytics.activeBookings}
+              </p>
             </div>
           </div>
           
@@ -129,7 +155,9 @@ export default function AdminDashboard() {
             </div>
             <div>
               <p className="text-sm text-gray-500 font-bold uppercase tracking-wider mb-1">Rooms Available</p>
-              <p className="text-3xl font-black text-[#0f284f]">8</p>
+              <p className="text-3xl font-black text-[#0f284f]">
+                {loadingAnalytics ? "..." : analytics.availableRooms}
+              </p>
             </div>
           </div>
         </div>
