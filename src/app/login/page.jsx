@@ -28,8 +28,7 @@ export default function LoginPage() {
       toast.success("Successfully authenticated!");
       router.push("/dashboard");
     } catch (error) {
-      console.error("Sync error:", error);
-      toast.error("Failed to sync with server.");
+      toast.error("Failed to sync with backend.");
     } finally {
       setIsLoading(false);
     }
@@ -48,8 +47,7 @@ export default function LoginPage() {
       await handleAuthSync(userCredential.user);
     } catch (error) {
       setIsLoading(false);
-      console.error("Auth error:", error);
-      toast.error(error.message || "Authentication failed");
+      toast.error(error.message || "Failed to authenticate.");
     }
   };
 
@@ -61,8 +59,7 @@ export default function LoginPage() {
       await handleAuthSync(userCredential.user);
     } catch (error) {
       setIsLoading(false);
-      console.error("Google Auth error:", error);
-      toast.error(error.message || "Google Authentication failed");
+      toast.error("Google sign-in failed.");
     }
   };
 

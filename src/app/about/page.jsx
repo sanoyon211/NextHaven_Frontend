@@ -200,7 +200,7 @@ export default function AboutPage() {
                   1.3 KILOMETRES FROM City Center
                 </h3>
                 <p className="text-gray-500 text-sm leading-relaxed">
-                  Located just steps away from the vibrant city center, you'll have 
+                  Located just steps away from the vibrant city center, you&apos;ll have 
                   immediate access to the best dining, entertainment, and cultural landmarks.
                 </p>
               </div>

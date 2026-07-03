@@ -29,7 +29,6 @@ export default function RoomsPage() {
       const res = await api.get(`/rooms?${params.toString()}`);
       setRooms(res.data.rooms || res.data);
     } catch (error) {
-      console.error("Fetch rooms error:", error);
       toast.error("Failed to fetch rooms.");
     } finally {
       setLoading(false);
@@ -37,6 +36,7 @@ export default function RoomsPage() {
   }, [priceRange, selectedTypes, selectedAmenities, dates]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchRooms();
   }, [fetchRooms]);
 

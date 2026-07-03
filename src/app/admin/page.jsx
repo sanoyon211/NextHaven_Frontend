@@ -78,7 +78,6 @@ export default function AdminDashboard() {
       const newRoom = res.data.room || res.data;
       setRooms([newRoom, ...rooms]);
     } catch (error) {
-      console.error("Room creation error:", error);
       toast.error(error.response?.data?.message || "Failed to create room.", { id: toastId });
     } finally {
       setIsSubmitting(false);

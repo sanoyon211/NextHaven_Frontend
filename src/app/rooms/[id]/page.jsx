@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { BellRing, Wine, Dumbbell, Umbrella, Check } from "lucide-react";
+import { BellRing, Wine, Dumbbell, Umbrella, Check, Star } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -57,7 +57,6 @@ export default function RoomPage({ params }) {
         throw new Error("No session URL returned");
       }
     } catch (error) {
-      console.error("Booking error:", error);
       toast.error("Failed to initiate booking. Please try again.", { id: toastId });
       setIsBooking(false);
     }
@@ -291,7 +290,7 @@ export default function RoomPage({ params }) {
                   How do I make a reservation?
                 </AccordionTrigger>
                 <AccordionContent className="text-gray-600 leading-relaxed text-base">
-                  You can securely book your stay through our website by clicking the "Book Now" button, or by contacting our reservations team directly via phone or email. We require a valid credit card to guarantee your room.
+                  You can securely book your stay through our website by clicking the &quot;Book Now&quot; button, or by contacting our reservations team directly via phone or email. We require a valid credit card to guarantee your room.
                 </AccordionContent>
               </AccordionItem>
               
@@ -333,6 +332,102 @@ export default function RoomPage({ params }) {
             </Accordion>
           </motion.div>
         </div>
+      </section>
+
+      {/* 6. Guest Reviews & Ratings Section */}
+      <section className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8 border-t border-gray-100">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={fadeUp}
+        >
+          <div className="text-center mb-16">
+            <h2 className="text-[#0f284f] text-3xl font-bold uppercase tracking-wider mb-4">
+              Guest Reviews & Ratings
+            </h2>
+            <p className="text-gray-500 max-w-2xl mx-auto">
+              Discover what our guests have to say about their unforgettable stays.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Review 1 */}
+            <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+              <div className="flex text-yellow-400 mb-4">
+                <Star className="w-5 h-5 fill-current" />
+                <Star className="w-5 h-5 fill-current" />
+                <Star className="w-5 h-5 fill-current" />
+                <Star className="w-5 h-5 fill-current" />
+                <Star className="w-5 h-5 fill-current" />
+              </div>
+              <p className="text-gray-600 mb-6 italic leading-relaxed">
+                &quot;An absolutely breathtaking experience. The room was pristine, the views were unmatched, and the service was impeccable from start to finish.&quot;
+              </p>
+              <div className="flex items-center">
+                <img 
+                  src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=faces" 
+                  alt="Sarah Jenkins" 
+                  className="w-12 h-12 rounded-full mr-4 object-cover"
+                />
+                <div>
+                  <h4 className="text-[#0f284f] font-bold">Sarah Jenkins</h4>
+                  <span className="text-sm text-gray-500">Stayed in June</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Review 2 */}
+            <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+              <div className="flex text-yellow-400 mb-4">
+                <Star className="w-5 h-5 fill-current" />
+                <Star className="w-5 h-5 fill-current" />
+                <Star className="w-5 h-5 fill-current" />
+                <Star className="w-5 h-5 fill-current" />
+                <Star className="w-5 h-5 fill-current" />
+              </div>
+              <p className="text-gray-600 mb-6 italic leading-relaxed">
+                &quot;NextHaven exceeded all my expectations. The amenities were top-tier, and the staff went out of their way to ensure our anniversary was perfect.&quot;
+              </p>
+              <div className="flex items-center">
+                <img 
+                  src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=100&h=100&fit=crop&crop=faces" 
+                  alt="Michael Chen" 
+                  className="w-12 h-12 rounded-full mr-4 object-cover"
+                />
+                <div>
+                  <h4 className="text-[#0f284f] font-bold">Michael Chen</h4>
+                  <span className="text-sm text-gray-500">Stayed in August</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Review 3 */}
+            <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow md:col-span-2 lg:col-span-1">
+              <div className="flex text-yellow-400 mb-4">
+                <Star className="w-5 h-5 fill-current" />
+                <Star className="w-5 h-5 fill-current" />
+                <Star className="w-5 h-5 fill-current" />
+                <Star className="w-5 h-5 fill-current" />
+                <Star className="w-5 h-5 fill-current" />
+              </div>
+              <p className="text-gray-600 mb-6 italic leading-relaxed">
+                &quot;The attention to detail in the room design is stunning. I felt completely relaxed. Highly recommend booking the suite with the ocean view!&quot;
+              </p>
+              <div className="flex items-center">
+                <img 
+                  src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=faces" 
+                  alt="Emma Roberts" 
+                  className="w-12 h-12 rounded-full mr-4 object-cover"
+                />
+                <div>
+                  <h4 className="text-[#0f284f] font-bold">Emma Roberts</h4>
+                  <span className="text-sm text-gray-500">Stayed in September</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
       </section>
     </main>
   );

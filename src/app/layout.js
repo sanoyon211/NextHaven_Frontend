@@ -12,7 +12,29 @@ const montserrat = Montserrat({
 
 export const metadata = {
   title: "NextHaven | Premium Hotel Suites",
-  description: "Experience luxury at NextHaven",
+  description: "Experience luxury and comfort at NextHaven Hotel Suites. Discover premium accommodations, world-class amenities, and breathtaking views for your perfect getaway.",
+  keywords: ["Luxury Hotel", "Premium Suites", "NextHaven", "Vacation", "Boutique Hotel"],
+  openGraph: {
+    title: "NextHaven | Premium Hotel Suites",
+    description: "Experience luxury and comfort at NextHaven Hotel Suites. Discover premium accommodations, world-class amenities, and breathtaking views for your perfect getaway.",
+    url: "https://nexthaven.com",
+    siteName: "NextHaven",
+    images: [
+      {
+        url: "https://images.unsplash.com/photo-1542314831-c6a4d14b4a1b?q=80&w=1200",
+        width: 1200,
+        height: 630,
+        alt: "NextHaven Premium Hotel Exterior",
+      }
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "NextHaven | Premium Hotel Suites",
+    description: "Experience luxury and comfort at NextHaven Hotel Suites.",
+  }
 };
 
 export default function RootLayout({ children }) {
