@@ -8,7 +8,11 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { use } from "react";
+import { use, useState } from "react";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import { useAuth } from "@/lib/AuthContext";
+import api from "@/lib/api";
 
 // Helper animation variant for scroll reveals
 const fadeUp = {
@@ -20,6 +24,44 @@ export default function RoomPage({ params }) {
   const resolvedParams = use(params);
   const rawId = resolvedParams?.id || "deluxe-room";
   const title = decodeURIComponent(rawId).replace(/-/g, " ").toUpperCase();
+  
+  const router = useRouter();
+  const { user } = useAuth();
+  const [isBooking, setIsBooking] = useState(false);
+
+  const handleBooking = async () => {
+    if (!user) {
+      toast.error("Please login to book a room");
+      router.push("/login");
+      return;
+    }
+
+    setIsBooking(true);
+    const toastId = toast.loading("Redirecting to secure payment...");
+
+    try {
+      // Use dummy dates for now
+      const checkInDate = new Date();
+      const checkOutDate = new Date();
+      checkOutDate.setDate(checkOutDate.getDate() + 2); // 2 days from now
+
+      const response = await api.post("/bookings/checkout", {
+        roomId: rawId,
+        checkInDate,
+        checkOutDate,
+      });
+
+      if (response.data?.sessionUrl) {
+        window.location.href = response.data.sessionUrl;
+      } else {
+        throw new Error("No session URL returned");
+      }
+    } catch (error) {
+      console.error("Booking error:", error);
+      toast.error("Failed to initiate booking. Please try again.", { id: toastId });
+      setIsBooking(false);
+    }
+  };
 
   return (
     <main className="bg-white w-full overflow-hidden">
@@ -52,8 +94,12 @@ export default function RoomPage({ params }) {
             </ul>
 
             <div>
-              <button className="bg-[#0f284f] text-white font-bold uppercase tracking-wider px-8 py-4 rounded hover:bg-[#1a3d72] transition-colors">
-                BOOK YOUR STAY NOW
+              <button 
+                onClick={handleBooking}
+                disabled={isBooking}
+                className="bg-[#0f284f] text-white font-bold uppercase tracking-wider px-8 py-4 rounded hover:bg-[#1a3d72] transition-colors disabled:opacity-70"
+              >
+                {isBooking ? "PROCESSING..." : "BOOK YOUR STAY NOW"}
               </button>
             </div>
           </motion.div>
