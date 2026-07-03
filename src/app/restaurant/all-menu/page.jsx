@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { Search } from "lucide-react";
+import { Search, Leaf, WheatOff } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -22,7 +22,7 @@ const MENU_ITEMS = [
     price: "$32",
     description: "Finely chopped, highest-grade wagyu beef mixed with capers, shallots, and a touch of Dijon, topped with a quail egg and shaved black truffle.",
     ingredients: "Wagyu Beef, Capers, Quail Egg, Black Truffle, Dijon Mustard, Toasted Brioche",
-    imageUrl: "https://images.unsplash.com/photo-1546833998-877b37c2e5c4?q=80&w=1500"
+    imageUrl: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1500"
   },
   {
     id: 2,
@@ -67,7 +67,7 @@ const MENU_ITEMS = [
     price: "$22",
     description: "A decadent, airy soufflé made with 70% dark Valrhona chocolate, served warm with Madagascar vanilla bean ice cream.",
     ingredients: "Dark Chocolate, Eggs, Sugar, Madagascar Vanilla, Cream",
-    imageUrl: "https://images.unsplash.com/photo-1563805042-7684c8e9e1cb?q=80&w=1500"
+    imageUrl: "https://images.unsplash.com/photo-1624353365286-3f8d62daad51?q=80&w=1500"
   },
   {
     id: 7,
@@ -85,7 +85,7 @@ const MENU_ITEMS = [
     price: "$36",
     description: "A chef-selected assortment of fine international cheeses, served with honeycomb, fresh figs, candied walnuts, and house-made crackers.",
     ingredients: "Assorted Cheeses, Honeycomb, Figs, Walnuts, Artisanal Crackers",
-    imageUrl: "https://images.unsplash.com/photo-1631379577930-947211bfdbf7?q=80&w=1500"
+    imageUrl: "https://images.unsplash.com/photo-1608897013039-887f21d8c804?q=80&w=1500"
   }
 ];
 
@@ -116,6 +116,33 @@ export default function AllMenuPage() {
     <main className="bg-[#f8fafc] w-full min-h-screen py-20 px-4 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         
+        {/* Categories Banner */}
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={staggerContainer}
+          className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16"
+        >
+          {[
+            { name: "Starters", img: "https://images.unsplash.com/photo-1541529086526-db283c563270?q=80&w=800" },
+            { name: "Signature Mains", img: "https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=800" },
+            { name: "Desserts", img: "https://images.unsplash.com/photo-1551024601-bec78aea704b?q=80&w=800" },
+            { name: "Cocktails", img: "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=800" }
+          ].map((cat, idx) => (
+            <motion.div
+              key={idx}
+              variants={fadeUp}
+              className="relative h-32 rounded-lg overflow-hidden group cursor-pointer shadow-sm"
+            >
+              <Image src={cat.img} alt={cat.name} fill sizes="(max-width: 768px) 50vw, 25vw" className="object-cover transition-transform duration-700 group-hover:scale-110" />
+              <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors" />
+              <div className="absolute inset-0 flex items-center justify-center text-center px-2">
+                <h3 className="text-white font-bold uppercase tracking-widest text-sm md:text-base drop-shadow-md">{cat.name}</h3>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+
         {/* Header & Search */}
         <div className="text-center mb-16">
           <motion.div
@@ -166,6 +193,7 @@ export default function AllMenuPage() {
                         src={item.imageUrl}
                         alt={item.name}
                         fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                         className="object-cover transition-transform duration-700 group-hover:scale-110"
                       />
                       <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-sm">
@@ -195,6 +223,7 @@ export default function AllMenuPage() {
                         src={item.imageUrl}
                         alt={item.name}
                         fill
+                        sizes="(max-width: 768px) 100vw, 50vw"
                         className="object-cover"
                       />
                     </div>
@@ -240,6 +269,56 @@ export default function AllMenuPage() {
             <p className="text-gray-500 text-lg">No menu items found matching "{searchQuery}".</p>
           </div>
         )}
+
+        {/* Dietary Info Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="mt-24 grid grid-cols-1 md:grid-cols-2 gap-12 bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden"
+        >
+          <div className="relative h-[400px] md:h-auto">
+            <Image
+              src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?q=80&w=1500"
+              alt="Fresh vegetables and ingredients"
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-cover"
+            />
+          </div>
+          <div className="p-10 md:p-12 flex flex-col justify-center">
+            <h2 className="text-[#0f284f] text-2xl md:text-3xl font-bold uppercase tracking-wider mb-6">
+              Dietary Preferences & Allergies
+            </h2>
+            <p className="text-gray-500 leading-relaxed mb-8">
+              Our culinary team is dedicated to providing an exceptional dining experience for all our guests. We are more than happy to accommodate a variety of dietary requirements and food allergies without compromising on flavor or presentation.
+            </p>
+            <div className="space-y-6">
+              <div className="flex items-center">
+                <div className="bg-[#eef2f6] p-3 rounded-full mr-4">
+                  <Leaf className="w-6 h-6 text-[#0f284f]" />
+                </div>
+                <div>
+                  <h4 className="text-gray-900 font-bold uppercase tracking-wide text-sm">Vegan & Vegetarian</h4>
+                  <p className="text-gray-500 text-sm">Plant-based menus available upon request.</p>
+                </div>
+              </div>
+              <div className="flex items-center">
+                <div className="bg-[#eef2f6] p-3 rounded-full mr-4">
+                  <WheatOff className="w-6 h-6 text-[#0f284f]" />
+                </div>
+                <div>
+                  <h4 className="text-gray-900 font-bold uppercase tracking-wide text-sm">Gluten & Nut-Free</h4>
+                  <p className="text-gray-500 text-sm">Strict cross-contamination protocols in place.</p>
+                </div>
+              </div>
+            </div>
+            <p className="mt-8 text-sm text-gray-400 italic">
+              Please inform your server of any allergies prior to ordering.
+            </p>
+          </div>
+        </motion.div>
 
       </div>
     </main>

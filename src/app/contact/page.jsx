@@ -34,9 +34,10 @@ export default function ContactPage() {
       {/* Hero Section */}
       <section className="relative w-full h-[50vh] min-h-[400px] flex items-center justify-center">
         <Image
-          src="https://images.unsplash.com/photo-1542314831-c6a4d14b4a1b?q=80&w=2000"
+          src="https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2000"
           alt="Luxury Hotel Reception"
           fill
+          sizes="100vw"
           priority
           className="object-cover"
         />

@@ -284,49 +284,49 @@ export default function RoomPage({ params }) {
               Practical Information
             </h2>
             
-            <Accordion type="single" className="w-full">
-              <AccordionItem value="item-1">
-                <AccordionTrigger className="text-left font-bold text-gray-900 uppercase">
+            <Accordion type="single" className="w-full space-y-4">
+              <AccordionItem value="item-1" className="bg-white border border-gray-100 rounded-lg px-6 py-2 shadow-sm hover:shadow-md transition-all">
+                <AccordionTrigger className="text-left font-bold text-[#0f284f] uppercase tracking-wide hover:no-underline hover:text-[#ffbca8] transition-colors">
                   How do I make a reservation?
                 </AccordionTrigger>
-                <AccordionContent className="text-gray-600 leading-relaxed text-base">
+                <AccordionContent className="text-gray-500 leading-relaxed text-base pt-2 pb-4">
                   You can securely book your stay through our website by clicking the &quot;Book Now&quot; button, or by contacting our reservations team directly via phone or email. We require a valid credit card to guarantee your room.
                 </AccordionContent>
               </AccordionItem>
               
-              <AccordionItem value="item-2">
-                <AccordionTrigger className="text-left font-bold text-gray-900 uppercase">
+              <AccordionItem value="item-2" className="bg-white border border-gray-100 rounded-lg px-6 py-2 shadow-sm hover:shadow-md transition-all">
+                <AccordionTrigger className="text-left font-bold text-[#0f284f] uppercase tracking-wide hover:no-underline hover:text-[#ffbca8] transition-colors">
                   What is the check-in/check-out policy?
                 </AccordionTrigger>
-                <AccordionContent className="text-gray-600 leading-relaxed text-base">
+                <AccordionContent className="text-gray-500 leading-relaxed text-base pt-2 pb-4">
                   Standard check-in time is from 3:00 PM, and check-out is until 11:00 AM. Early check-in or late check-out can be arranged subject to availability and may incur an additional fee.
                 </AccordionContent>
               </AccordionItem>
               
-              <AccordionItem value="item-3">
-                <AccordionTrigger className="text-left font-bold text-gray-900 uppercase">
+              <AccordionItem value="item-3" className="bg-white border border-gray-100 rounded-lg px-6 py-2 shadow-sm hover:shadow-md transition-all">
+                <AccordionTrigger className="text-left font-bold text-[#0f284f] uppercase tracking-wide hover:no-underline hover:text-[#ffbca8] transition-colors">
                   Do you offer airport shuttle service?
                 </AccordionTrigger>
-                <AccordionContent className="text-gray-600 leading-relaxed text-base">
+                <AccordionContent className="text-gray-500 leading-relaxed text-base pt-2 pb-4">
                   Yes, we provide complimentary luxury airport transfers for guests staying in Executive Suites and above. For other room types, transfers can be arranged for an additional charge.
                 </AccordionContent>
               </AccordionItem>
               
-              <AccordionItem value="item-4">
-                <AccordionTrigger className="text-left font-bold text-gray-900 uppercase">
+              <AccordionItem value="item-4" className="bg-white border border-gray-100 rounded-lg px-6 py-2 shadow-sm hover:shadow-md transition-all">
+                <AccordionTrigger className="text-left font-bold text-[#0f284f] uppercase tracking-wide hover:no-underline hover:text-[#ffbca8] transition-colors">
                   Is breakfast included in the room rate?
                 </AccordionTrigger>
-                <AccordionContent className="text-gray-600 leading-relaxed text-base">
+                <AccordionContent className="text-gray-500 leading-relaxed text-base pt-2 pb-4">
                   Our standard rates are room-only, but you can easily add our award-winning buffet breakfast during the booking process or upon arrival at the hotel.
                 </AccordionContent>
               </AccordionItem>
               
-              <AccordionItem value="item-5">
-                <AccordionTrigger className="text-left font-bold text-gray-900 uppercase">
+              <AccordionItem value="item-5" className="bg-white border border-gray-100 rounded-lg px-6 py-2 shadow-sm hover:shadow-md transition-all">
+                <AccordionTrigger className="text-left font-bold text-[#0f284f] uppercase tracking-wide hover:no-underline hover:text-[#ffbca8] transition-colors">
                   Are pets allowed in the hotel?
                 </AccordionTrigger>
-                <AccordionContent className="text-gray-600 leading-relaxed text-base">
-                  We welcome small dogs (up to 15kg) in selected room categories. A pet fee applies, and we request that you notify us at the time of booking so we can prepare specialized pet amenities.
+                <AccordionContent className="text-gray-500 leading-relaxed text-base pt-2 pb-4">
+                  We welcome small pets up to 15lbs in our designated pet-friendly rooms for a non-refundable cleaning fee. Please notify us in advance if you plan to bring your furry friend.
                 </AccordionContent>
               </AccordionItem>
             </Accordion>

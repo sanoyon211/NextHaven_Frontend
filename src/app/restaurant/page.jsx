@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import { Clock, CalendarCheck, Phone } from "lucide-react";
 
 // Shared animation variants
 const fadeUp = {
@@ -29,6 +30,7 @@ export default function RestaurantPage() {
           src="https://images.unsplash.com/photo-1514933651103-005eec06c04b?q=80&w=2000"
           alt="Luxury Fine Dining Restaurant"
           fill
+          sizes="100vw"
           priority
           className="object-cover"
         />
@@ -54,6 +56,53 @@ export default function RestaurantPage() {
             Reserve A Table
           </button>
         </motion.div>
+      </section>
+
+      {/* 1.5 The Dining Experience */}
+      <section className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="relative h-[600px] w-full"
+          >
+            <Image
+              src="https://images.unsplash.com/photo-1525610553991-2bede1a236e2?q=80&w=1500"
+              alt="People dining"
+              fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="object-cover rounded-sm shadow-xl"
+            />
+            <div className="absolute -bottom-10 -right-10 w-2/3 h-2/3 border-8 border-white rounded-sm shadow-xl overflow-hidden hidden md:block">
+              <Image
+                src="https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=1000"
+                alt="Pouring wine"
+                fill
+                sizes="33vw"
+                className="object-cover"
+              />
+            </div>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="flex flex-col justify-center space-y-6 md:pl-10"
+          >
+            <h2 className="text-[#0f284f] text-4xl font-bold uppercase tracking-wider mb-4">
+              A Symphony of Flavors
+            </h2>
+            <p className="text-gray-500 leading-relaxed text-lg">
+              Step into a realm of culinary artistry where every dish tells a story. Our Executive Chefs blend traditional techniques with modern innovation, creating a menu that is as visually stunning as it is delectable. 
+            </p>
+            <p className="text-gray-500 leading-relaxed text-lg">
+              Sourced from the finest local purveyors and international artisans, our ingredients are the stars of the show. Pair your meal with a selection from our award-winning wine cellar, curated by our head sommelier to perfectly complement the symphony of flavors on your plate.
+            </p>
+          </motion.div>
+        </div>
       </section>
 
       {/* 2. Signature Menu Section */}
@@ -88,6 +137,7 @@ export default function RestaurantPage() {
                 src="https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1500"
                 alt="Wagyu Ribeye Steak"
                 fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
               />
             </div>
@@ -113,6 +163,7 @@ export default function RestaurantPage() {
                 src="https://images.unsplash.com/photo-1600891964092-4316c288032e?q=80&w=1500"
                 alt="Pan-Seared Scallops"
                 fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
               />
             </div>
@@ -135,9 +186,10 @@ export default function RestaurantPage() {
           >
             <div className="relative h-64 w-full overflow-hidden">
               <Image
-                src="https://images.unsplash.com/photo-1563805042-7684c8e9e1cb?q=80&w=1500"
+                src="https://images.unsplash.com/photo-1624353365286-3f8d62daad51?q=80&w=1500"
                 alt="Valrhona Chocolate Soufflé"
                 fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
               />
             </div>
@@ -164,6 +216,95 @@ export default function RestaurantPage() {
             </button>
           </Link>
         </motion.div>
+      </section>
+
+      {/* 3. Ambiance Gallery */}
+      <section className="w-full">
+        <div className="grid grid-cols-1 md:grid-cols-3 w-full">
+          {[
+            "https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?q=80&w=1500",
+            "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1500",
+            "https://images.unsplash.com/photo-1544148103-0773bf10d330?q=80&w=1500"
+          ].map((src, index) => (
+            <motion.div 
+              key={index}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: index * 0.2 }}
+              className="relative h-80 md:h-[400px] w-full overflow-hidden group"
+            >
+              <Image
+                src={src}
+                alt={`Ambiance ${index + 1}`}
+                fill
+                sizes="(max-width: 768px) 100vw, 33vw"
+                className="object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* 4. Hours & Reservations */}
+      <section className="bg-[#f8fafc] py-24 px-4 sm:px-6 lg:px-8 w-full">
+        <div className="mx-auto max-w-7xl">
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-12"
+          >
+            {/* Hours */}
+            <motion.div variants={fadeUp} className="flex flex-col items-center text-center p-8 bg-white rounded-lg shadow-sm border border-gray-100">
+              <Clock className="w-10 h-10 text-[#ffbca8] mb-6" />
+              <h3 className="text-[#0f284f] text-xl font-bold uppercase tracking-wider mb-6">Opening Hours</h3>
+              <div className="space-y-4 text-gray-500">
+                <div>
+                  <p className="font-bold text-gray-900 uppercase text-xs tracking-wider mb-1">Breakfast</p>
+                  <p>7:00 AM - 10:30 AM</p>
+                </div>
+                <div>
+                  <p className="font-bold text-gray-900 uppercase text-xs tracking-wider mb-1">Lunch</p>
+                  <p>12:00 PM - 3:00 PM</p>
+                </div>
+                <div>
+                  <p className="font-bold text-gray-900 uppercase text-xs tracking-wider mb-1">Dinner</p>
+                  <p>6:00 PM - 11:00 PM</p>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Reservations */}
+            <motion.div variants={fadeUp} className="flex flex-col items-center text-center p-8 bg-white rounded-lg shadow-sm border border-gray-100">
+              <CalendarCheck className="w-10 h-10 text-[#ffbca8] mb-6" />
+              <h3 className="text-[#0f284f] text-xl font-bold uppercase tracking-wider mb-6">Reservations</h3>
+              <p className="text-gray-500 leading-relaxed mb-6">
+                We strongly recommend booking your table in advance, especially for dinner and weekend brunches. Walk-ins are accommodated subject to availability.
+              </p>
+              <button 
+                onClick={() => window.alert('Reservation system coming soon!')}
+                className="mt-auto border-2 border-[#0f284f] text-[#0f284f] font-bold uppercase tracking-widest px-6 py-3 hover:bg-[#0f284f] hover:text-white transition-colors"
+              >
+                Book a Table
+              </button>
+            </motion.div>
+
+            {/* Contact */}
+            <motion.div variants={fadeUp} className="flex flex-col items-center text-center p-8 bg-white rounded-lg shadow-sm border border-gray-100">
+              <Phone className="w-10 h-10 text-[#ffbca8] mb-6" />
+              <h3 className="text-[#0f284f] text-xl font-bold uppercase tracking-wider mb-6">Contact Us</h3>
+              <p className="text-gray-500 leading-relaxed mb-6">
+                For private dining, large groups, or special dietary requirements, please speak with our restaurant manager.
+              </p>
+              <div className="mt-auto space-y-2">
+                <p className="text-[#0f284f] font-bold">+45 35634 3444</p>
+                <p className="text-[#0f284f] font-bold">dining@thehotel.com</p>
+              </div>
+            </motion.div>
+          </motion.div>
+        </div>
       </section>
     </main>
   );
