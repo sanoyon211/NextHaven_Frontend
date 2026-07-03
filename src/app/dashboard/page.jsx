@@ -5,12 +5,38 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { User, Calendar, LogOut } from "lucide-react";
+import { User, Calendar, LogOut, FileText, XCircle } from "lucide-react";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+import toast from "react-hot-toast";
+import api from "@/lib/api";
 
 export default function DashboardPage() {
   const { user, loading, logout } = useAuth();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("bookings");
+  const [localBookings, setLocalBookings] = useState([
+    {
+      _id: "BK-8472",
+      id: "BK-8472",
+      roomName: "Deluxe Room",
+      checkIn: "Oct 12, 2026",
+      checkOut: "Oct 15, 2026",
+      total: "$387",
+      status: "Paid",
+      image: "https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=800"
+    },
+    {
+      _id: "BK-9912",
+      id: "BK-9912",
+      roomName: "Executive Suite",
+      checkIn: "Nov 01, 2026",
+      checkOut: "Nov 05, 2026",
+      total: "$1,250",
+      status: "Upcoming",
+      image: "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?q=80&w=800"
+    }
+  ]);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -28,26 +54,65 @@ export default function DashboardPage() {
 
   if (!user) return null;
 
-  const mockBookings = [
-    {
-      id: "BK-8472",
-      roomName: "Deluxe Room",
-      checkIn: "Oct 12, 2026",
-      checkOut: "Oct 15, 2026",
-      total: "$387",
-      status: "Paid",
-      image: "https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=800"
-    },
-    {
-      id: "BK-9912",
-      roomName: "Executive Suite",
-      checkIn: "Nov 01, 2026",
-      checkOut: "Nov 05, 2026",
-      total: "$1,250",
-      status: "Confirmed",
-      image: "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?q=80&w=800"
+  const generatePDF = (booking) => {
+    const doc = new jsPDF();
+    
+    // Header
+    doc.setFontSize(22);
+    doc.setTextColor(15, 40, 79); // #0f284f
+    doc.text("HOTEL SUITES", 14, 20);
+    
+    doc.setFontSize(12);
+    doc.setTextColor(100);
+    doc.text("Invoice / Receipt", 14, 30);
+    
+    // Booking Details
+    doc.setFontSize(10);
+    doc.setTextColor(50);
+    doc.text(`Booking ID: ${booking.id}`, 14, 45);
+    doc.text(`Guest Name: ${user?.name || 'Guest'}`, 14, 52);
+    doc.text(`Date: ${new Date().toLocaleDateString()}`, 14, 59);
+
+    // Table
+    doc.autoTable({
+      startY: 70,
+      head: [['Description', 'Check-in', 'Check-out', 'Total']],
+      body: [
+        [booking.roomName, booking.checkIn, booking.checkOut, booking.total]
+      ],
+      headStyles: { fillColor: [15, 40, 79] },
+      alternateRowStyles: { fillColor: [248, 250, 252] },
+    });
+
+    // Footer
+    const finalY = doc.lastAutoTable.finalY || 90;
+    doc.setFontSize(12);
+    doc.setTextColor(15, 40, 79);
+    doc.text(`Total Paid: ${booking.total}`, 14, finalY + 15);
+    
+    doc.setFontSize(10);
+    doc.setTextColor(150);
+    doc.text("Thank you for choosing Hotel Suites!", 14, finalY + 30);
+    
+    doc.save(`Invoice_${booking.id}.pdf`);
+  };
+
+  const handleCancelBooking = async (booking) => {
+    if (window.confirm("Are you sure you want to cancel this booking?")) {
+      const toastId = toast.loading("Cancelling booking...");
+      try {
+        await api.put(`/bookings/${booking._id}/cancel`);
+        toast.success("Booking cancelled successfully", { id: toastId });
+        
+        // Update local state to reflect cancellation
+        setLocalBookings(prev => 
+          prev.map(b => b._id === booking._id ? { ...b, status: "Cancelled" } : b)
+        );
+      } catch (error) {
+        toast.error("Failed to cancel booking", { id: toastId });
+      }
     }
-  ];
+  };
 
   return (
     <main className="min-h-screen bg-[#f8fafc] py-16 px-4 sm:px-6 lg:px-8">
@@ -112,9 +177,9 @@ export default function DashboardPage() {
                   Personal Booking History
                 </h1>
 
-                {mockBookings.length > 0 ? (
+                {localBookings.length > 0 ? (
                   <div className="space-y-6">
-                    {mockBookings.map((booking) => (
+                    {localBookings.map((booking) => (
                       <div key={booking.id} className="flex flex-col md:flex-row items-center border border-gray-100 rounded-sm p-4 hover:shadow-md transition-shadow group">
                         <div className="relative w-full md:w-48 h-32 rounded-sm overflow-hidden flex-shrink-0 mb-4 md:mb-0 md:mr-6">
                           <Image src={booking.image} alt={booking.roomName} fill sizes="(max-width: 768px) 100vw, 200px" className="object-cover transition-transform duration-500 group-hover:scale-105" />
@@ -127,11 +192,37 @@ export default function DashboardPage() {
                               <p className="text-gray-500 text-sm mb-1"><span className="font-semibold text-gray-700">Check-in:</span> {booking.checkIn}</p>
                               <p className="text-gray-500 text-sm mb-4 md:mb-0"><span className="font-semibold text-gray-700">Check-out:</span> {booking.checkOut}</p>
                             </div>
-                            <div className="text-left md:text-right flex flex-col justify-between">
-                              <span className="inline-block px-3 py-1 bg-[#eef2f6] text-[#0f284f] text-xs font-bold uppercase tracking-wide rounded-sm self-start md:self-end mb-4">
+                            <div className="text-left md:text-right flex flex-col justify-between items-start md:items-end">
+                              <span className={`inline-block px-3 py-1 text-xs font-bold uppercase tracking-wide rounded-sm mb-4 ${
+                                booking.status === 'Paid' ? 'bg-[#eef2f6] text-[#0f284f]' :
+                                booking.status === 'Cancelled' ? 'bg-red-50 text-red-600' :
+                                'bg-blue-50 text-blue-600'
+                              }`}>
                                 {booking.status}
                               </span>
-                              <p className="text-2xl font-black text-[#0f284f]">{booking.total}</p>
+                              <p className="text-2xl font-black text-[#0f284f] mb-4">{booking.total}</p>
+                              
+                              {/* Actions Area */}
+                              <div className="flex flex-wrap gap-2 justify-start md:justify-end">
+                                {booking.status === 'Paid' && (
+                                  <button 
+                                    onClick={() => generatePDF(booking)}
+                                    className="flex items-center space-x-2 text-sm font-bold text-[#0f284f] bg-[#eef2f6] hover:bg-[#e2e8f0] px-4 py-2 rounded-sm transition-colors uppercase tracking-wider"
+                                  >
+                                    <FileText className="w-4 h-4" />
+                                    <span>Invoice</span>
+                                  </button>
+                                )}
+                                {booking.status === 'Upcoming' && (
+                                  <button 
+                                    onClick={() => handleCancelBooking(booking)}
+                                    className="flex items-center space-x-2 text-sm font-bold text-red-600 bg-red-50 hover:bg-red-100 px-4 py-2 rounded-sm transition-colors uppercase tracking-wider"
+                                  >
+                                    <XCircle className="w-4 h-4" />
+                                    <span>Cancel</span>
+                                  </button>
+                                )}
+                              </div>
                             </div>
                           </div>
                         </div>
