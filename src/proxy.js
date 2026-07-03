@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
 
-export function middleware(request) {
-  // Check if the user has a "token" cookie
-  const token = request.cookies.get('token')?.value;
+export function proxy(request) {
+  // Check if the user has a "jwt" cookie
+  const token = request.cookies.get('jwt')?.value;
 
   const url = request.nextUrl.clone();
   

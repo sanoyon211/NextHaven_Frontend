@@ -1,106 +1,164 @@
 "use client";
 
-import { User, Calendar, CreditCard, Settings, LogOut } from "lucide-react";
+import { useAuth } from "@/lib/AuthContext";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import Image from "next/image";
+import { User, Calendar, LogOut } from "lucide-react";
 
-const MOCK_BOOKINGS = [
-  { id: "BKG-9921", room: "Deluxe Room", checkIn: "2023-10-15", checkOut: "2023-10-20", amount: "$645", status: "Paid" },
-  { id: "BKG-7743", room: "Superior Room", checkIn: "2023-08-01", checkOut: "2023-08-05", amount: "$316", status: "Completed" },
-  { id: "BKG-4412", room: "Executive Suite", checkIn: "2023-12-24", checkOut: "2023-12-28", amount: "$796", status: "Upcoming" },
-];
+export default function DashboardPage() {
+  const { user, loading, logout } = useAuth();
+  const router = useRouter();
+  const [activeTab, setActiveTab] = useState("bookings");
 
-export default function GuestDashboard() {
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push("/login");
+    }
+  }, [user, loading, router]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#f8fafc]">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#0f284f]"></div>
+      </div>
+    );
+  }
+
+  if (!user) return null;
+
+  const mockBookings = [
+    {
+      id: "BK-8472",
+      roomName: "Deluxe Room",
+      checkIn: "Oct 12, 2026",
+      checkOut: "Oct 15, 2026",
+      total: "$387",
+      status: "Paid",
+      image: "https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=800"
+    },
+    {
+      id: "BK-9912",
+      roomName: "Executive Suite",
+      checkIn: "Nov 01, 2026",
+      checkOut: "Nov 05, 2026",
+      total: "$1,250",
+      status: "Confirmed",
+      image: "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?q=80&w=800"
+    }
+  ];
+
   return (
-    <main className="min-h-screen bg-[#f8fafc] w-full py-12 px-4 sm:px-6 lg:px-8">
+    <main className="min-h-screen bg-[#f8fafc] py-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-3xl font-extrabold text-[#0f284f] uppercase tracking-wider mb-8">
-          My Account
-        </h1>
-
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          
-          {/* Sidebar */}
-          <aside className="lg:col-span-1">
-            <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
-              <div className="p-6 bg-[#0f284f] text-white flex items-center space-x-4">
-                <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
-                  <User className="w-6 h-6 text-white" />
+        
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="grid grid-cols-1 lg:grid-cols-4 gap-8"
+        >
+          {/* Left Sidebar */}
+          <div className="lg:col-span-1">
+            <div className="bg-white rounded-sm shadow-sm border border-gray-100 p-6 sticky top-28">
+              <div className="flex flex-col items-center text-center mb-8 pb-8 border-b border-gray-100">
+                <div className="h-24 w-24 rounded-full bg-gray-200 overflow-hidden mb-4 relative">
+                  {user.avatar ? (
+                    <Image src={user.avatar} alt="Avatar" fill className="object-cover" />
+                  ) : (
+                    <div className="h-full w-full flex items-center justify-center bg-[#0f284f] text-white text-3xl font-bold">
+                      {user.name?.charAt(0) || user.email?.charAt(0)}
+                    </div>
+                  )}
                 </div>
-                <div>
-                  <h3 className="font-bold">John Doe</h3>
-                  <p className="text-xs text-gray-300">Guest</p>
-                </div>
+                <h2 className="text-xl font-bold text-[#0f284f] uppercase tracking-wide">
+                  {user.name || 'Guest'}
+                </h2>
+                <p className="text-gray-500 text-sm mt-1">{user.email}</p>
               </div>
-              
-              <nav className="p-4 space-y-2">
-                <a href="#" className="flex items-center space-x-3 px-4 py-3 bg-gray-50 text-[#0f284f] font-semibold rounded-sm">
-                  <Calendar className="w-5 h-5" />
+
+              <nav className="space-y-2">
+                <button 
+                  onClick={() => setActiveTab("profile")}
+                  className={`w-full flex items-center space-x-3 px-4 py-3 rounded-sm transition-colors text-sm font-semibold tracking-wide uppercase ${activeTab === "profile" ? "bg-[#0f284f] text-white" : "text-gray-600 hover:bg-gray-100 hover:text-[#0f284f]"}`}
+                >
+                  <User className="w-4 h-4" />
+                  <span>My Profile</span>
+                </button>
+                <button 
+                  onClick={() => setActiveTab("bookings")}
+                  className={`w-full flex items-center space-x-3 px-4 py-3 rounded-sm transition-colors text-sm font-semibold tracking-wide uppercase ${activeTab === "bookings" ? "bg-[#0f284f] text-white" : "text-gray-600 hover:bg-gray-100 hover:text-[#0f284f]"}`}
+                >
+                  <Calendar className="w-4 h-4" />
                   <span>My Bookings</span>
-                </a>
-                <a href="#" className="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-[#0f284f] font-medium transition-colors rounded-sm">
-                  <User className="w-5 h-5" />
-                  <span>Profile Settings</span>
-                </a>
-                <a href="#" className="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-[#0f284f] font-medium transition-colors rounded-sm">
-                  <CreditCard className="w-5 h-5" />
-                  <span>Payment Methods</span>
-                </a>
-                <a href="#" className="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-[#0f284f] font-medium transition-colors rounded-sm">
-                  <Settings className="w-5 h-5" />
-                  <span>Preferences</span>
-                </a>
-                <hr className="my-2" />
-                <button className="w-full flex items-center space-x-3 px-4 py-3 text-red-500 hover:bg-red-50 font-medium transition-colors rounded-sm">
-                  <LogOut className="w-5 h-5" />
+                </button>
+                <button 
+                  onClick={() => logout()}
+                  className="w-full flex items-center space-x-3 px-4 py-3 rounded-sm transition-colors text-sm font-semibold tracking-wide uppercase text-red-600 hover:bg-red-50 mt-4"
+                >
+                  <LogOut className="w-4 h-4" />
                   <span>Logout</span>
                 </button>
               </nav>
             </div>
-          </aside>
+          </div>
 
-          {/* Main Content */}
-          <section className="lg:col-span-3">
-            <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-6 lg:p-8">
-              <h2 className="text-[#0f284f] text-xl font-bold uppercase tracking-wider mb-6">
-                Personal Booking History
-              </h2>
-              
-              <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse">
-                  <thead>
-                    <tr className="bg-gray-50 text-[#0f284f] border-b border-gray-200 uppercase text-xs tracking-wider">
-                      <th className="p-4 font-bold rounded-tl-sm">Booking ID</th>
-                      <th className="p-4 font-bold">Room Name</th>
-                      <th className="p-4 font-bold">Check-in</th>
-                      <th className="p-4 font-bold">Check-out</th>
-                      <th className="p-4 font-bold">Total Amount</th>
-                      <th className="p-4 font-bold rounded-tr-sm">Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {MOCK_BOOKINGS.map((booking, idx) => (
-                      <tr key={idx} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                        <td className="p-4 text-sm font-semibold text-[#0f284f]">{booking.id}</td>
-                        <td className="p-4 text-sm text-gray-700">{booking.room}</td>
-                        <td className="p-4 text-sm text-gray-500">{booking.checkIn}</td>
-                        <td className="p-4 text-sm text-gray-500">{booking.checkOut}</td>
-                        <td className="p-4 text-sm font-bold text-gray-900">{booking.amount}</td>
-                        <td className="p-4">
-                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                            booking.status === "Paid" ? "bg-green-100 text-green-800" :
-                            booking.status === "Upcoming" ? "bg-blue-100 text-blue-800" :
-                            "bg-gray-100 text-gray-800"
-                          }`}>
-                            {booking.status}
-                          </span>
-                        </td>
-                      </tr>
+          {/* Right Main Content */}
+          <div className="lg:col-span-3">
+            {activeTab === "bookings" && (
+              <div className="bg-white rounded-sm shadow-sm border border-gray-100 p-8 md:p-12">
+                <h1 className="text-3xl font-bold text-[#0f284f] uppercase tracking-wide mb-8 border-b border-gray-100 pb-4">
+                  Personal Booking History
+                </h1>
+
+                {mockBookings.length > 0 ? (
+                  <div className="space-y-6">
+                    {mockBookings.map((booking) => (
+                      <div key={booking.id} className="flex flex-col md:flex-row items-center border border-gray-100 rounded-sm p-4 hover:shadow-md transition-shadow group">
+                        <div className="relative w-full md:w-48 h-32 rounded-sm overflow-hidden flex-shrink-0 mb-4 md:mb-0 md:mr-6">
+                          <Image src={booking.image} alt={booking.roomName} fill sizes="(max-width: 768px) 100vw, 200px" className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                        </div>
+                        <div className="flex-1 w-full">
+                          <div className="flex flex-col md:flex-row md:items-start justify-between">
+                            <div>
+                              <span className="text-xs font-bold text-gray-400 uppercase tracking-widest block mb-1">Booking #{booking.id}</span>
+                              <h3 className="text-xl font-bold text-[#0f284f] uppercase tracking-wide mb-2">{booking.roomName}</h3>
+                              <p className="text-gray-500 text-sm mb-1"><span className="font-semibold text-gray-700">Check-in:</span> {booking.checkIn}</p>
+                              <p className="text-gray-500 text-sm mb-4 md:mb-0"><span className="font-semibold text-gray-700">Check-out:</span> {booking.checkOut}</p>
+                            </div>
+                            <div className="text-left md:text-right flex flex-col justify-between">
+                              <span className="inline-block px-3 py-1 bg-[#eef2f6] text-[#0f284f] text-xs font-bold uppercase tracking-wide rounded-sm self-start md:self-end mb-4">
+                                {booking.status}
+                              </span>
+                              <p className="text-2xl font-black text-[#0f284f]">{booking.total}</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     ))}
-                  </tbody>
-                </table>
+                  </div>
+                ) : (
+                  <div className="text-center py-12">
+                    <p className="text-gray-500 mb-4">You have no booking history yet.</p>
+                    <button className="bg-[#ffbca8] px-6 py-3 text-sm font-semibold tracking-wide text-gray-900 transition-colors hover:bg-[#ffbca8]/80 rounded-sm uppercase">
+                      Book a Room
+                    </button>
+                  </div>
+                )}
               </div>
-            </div>
-          </section>
-        </div>
+            )}
+
+            {activeTab === "profile" && (
+              <div className="bg-white rounded-sm shadow-sm border border-gray-100 p-8 md:p-12">
+                <h1 className="text-3xl font-bold text-[#0f284f] uppercase tracking-wide mb-8 border-b border-gray-100 pb-4">
+                  My Profile
+                </h1>
+                <p className="text-gray-500">Profile settings form will go here.</p>
+              </div>
+            )}
+          </div>
+        </motion.div>
       </div>
     </main>
   );

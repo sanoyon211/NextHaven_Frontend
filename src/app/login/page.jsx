@@ -23,7 +23,7 @@ export default function LoginPage() {
     try {
       const idToken = await user.getIdToken();
       // POST to backend to sync user and receive JWT HTTP-only cookie
-      const res = await api.post("/auth/sync", { token: idToken });
+      const res = await api.post("/auth/sync", { firebaseToken: idToken });
       setUser(res.data.user || res.data); // Adjust based on your backend response structure
       toast.success("Successfully authenticated!");
       router.push("/dashboard");

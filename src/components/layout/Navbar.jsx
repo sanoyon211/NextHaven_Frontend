@@ -3,9 +3,11 @@
 import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import { useAuth } from "@/lib/AuthContext";
 
 export default function Navbar() {
   const [isRoomsHovered, setIsRoomsHovered] = useState(false);
+  const { user } = useAuth();
 
   const roomTypes = [
     "STANDARD",
@@ -90,9 +92,15 @@ export default function Navbar() {
           <Link href="/contact" className="hover:text-[#ffbca8] transition-colors">
             CONTACT US
           </Link>
-          <Link href="/login" className="hover:text-[#ffbca8] transition-colors">
-            LOGIN
-          </Link>
+          {user ? (
+            <Link href="/dashboard" className="hover:text-[#ffbca8] transition-colors">
+              DASHBOARD
+            </Link>
+          ) : (
+            <Link href="/login" className="hover:text-[#ffbca8] transition-colors">
+              LOGIN
+            </Link>
+          )}
           <Link
             href="/rooms"
             className="bg-[#ffbca8] px-6 py-3 text-gray-900 transition-colors hover:bg-[#ffbca8]/80 rounded-sm"
