@@ -26,7 +26,7 @@ export default function Home() {
           </p>
           <div>
             <Link
-              href="/book"
+              href="/rooms"
               className="inline-flex items-center justify-center bg-[#0f284f] text-white font-bold uppercase tracking-wider px-8 py-4 rounded-sm hover:bg-[#1a3d72] transition-colors"
             >
               BOOK YOUR STAY NOW

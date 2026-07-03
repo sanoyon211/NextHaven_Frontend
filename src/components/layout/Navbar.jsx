@@ -94,7 +94,7 @@ export default function Navbar() {
             LOGIN
           </Link>
           <Link
-            href="/book"
+            href="/rooms"
             className="bg-[#ffbca8] px-6 py-3 text-gray-900 transition-colors hover:bg-[#ffbca8]/80 rounded-sm"
           >
             BOOK NOW

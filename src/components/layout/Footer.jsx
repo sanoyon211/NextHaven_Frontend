@@ -40,7 +40,7 @@ export default function Footer() {
               and every moment is a seaside dream come true.
             </p>
             <Link
-              href="/book"
+              href="/rooms"
               className="bg-[#ffbca8] px-6 py-3 text-sm font-semibold tracking-wide text-gray-900 transition-colors hover:bg-[#ffbca8]/80 rounded-sm"
             >
               BOOK NOW
