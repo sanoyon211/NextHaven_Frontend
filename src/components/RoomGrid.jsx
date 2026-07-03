@@ -55,7 +55,7 @@ export default function RoomGrid({ rooms, loading }) {
                     From
                   </p>
                   <p className="text-2xl font-black text-[#0f284f]">
-                    ${room.price}
+                    ${room.pricePerNight}
                   </p>
                 </div>
               </div>

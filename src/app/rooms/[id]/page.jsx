@@ -8,7 +8,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { use, useState } from "react";
+import { use, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { useAuth } from "@/lib/AuthContext";
@@ -22,12 +22,48 @@ const fadeUp = {
 
 export default function RoomPage({ params }) {
   const resolvedParams = use(params);
-  const rawId = resolvedParams?.id || "deluxe-room";
-  const title = decodeURIComponent(rawId).replace(/-/g, " ").toUpperCase();
+  const rawId = resolvedParams?.id;
   
   const router = useRouter();
   const { user } = useAuth();
   const [isBooking, setIsBooking] = useState(false);
+  const [room, setRoom] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchRoom = async () => {
+      try {
+        const res = await api.get(`/rooms/${rawId}`);
+        setRoom(res.data.room || res.data);
+      } catch (error) {
+        toast.error("Failed to load room details.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    if (rawId) {
+      fetchRoom();
+    }
+  }, [rawId]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#0f284f]"></div>
+      </div>
+    );
+  }
+
+  if (!room) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white flex-col">
+        <h1 className="text-3xl font-bold text-[#0f284f] uppercase tracking-wide mb-4">Room Not Found</h1>
+        <button onClick={() => router.push("/rooms")} className="bg-[#0f284f] text-white px-6 py-2 rounded">
+          Back to Rooms
+        </button>
+      </div>
+    );
+  }
 
   const handleBooking = async () => {
     if (!user) {
@@ -75,16 +111,17 @@ export default function RoomPage({ params }) {
             className="flex flex-col justify-center"
           >
             <h1 className="text-[#0f284f] text-4xl sm:text-5xl lg:text-6xl font-extrabold uppercase leading-tight mb-6">
-              {title}
+              {room.title}
             </h1>
-            <p className="text-gray-600 text-lg leading-relaxed mb-8">
-              Experience the pinnacle of luxury in our meticulously designed space.
-              This room offers breathtaking views, premium furnishings, and a serene
-              atmosphere perfect for relaxation after a long day of exploring or business.
+            <p className="text-gray-600 text-lg leading-relaxed mb-4">
+              {room.description}
+            </p>
+            <p className="text-[#0f284f] text-2xl font-black mb-8">
+              ${room.pricePerNight} <span className="text-sm text-gray-500 font-medium uppercase tracking-widest">/ Night</span>
             </p>
             
             <ul className="space-y-4 mb-10">
-              {["Master Bedroom with King-Size Bed", "Fully Equipped Kitchenette", "Modern En-suite Bathroom", "Spacious Private Balcony"].map((feature, idx) => (
+              {(room.amenities && room.amenities.length > 0 ? room.amenities.slice(0, 4) : ["Master Bedroom with King-Size Bed", "Fully Equipped Kitchenette", "Modern En-suite Bathroom", "Spacious Private Balcony"]).map((feature, idx) => (
                 <li key={idx} className="flex items-center text-gray-700 font-medium">
                   <Check className="h-5 w-5 text-[#0f284f] mr-3" />
                   {feature}
@@ -111,8 +148,8 @@ export default function RoomPage({ params }) {
             className="h-[60vh] lg:h-[80vh] w-full"
           >
             <img
-              src="https://images.unsplash.com/photo-1578683010236-d716f9a3f461?q=80&w=2000"
-              alt="Premium Bedroom"
+              src={room.images?.[0] || "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?q=80&w=2000"}
+              alt={room.title}
               className="w-full h-full object-cover rounded-sm shadow-xl"
             />
           </motion.div>
