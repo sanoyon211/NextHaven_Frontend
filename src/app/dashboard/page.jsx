@@ -148,7 +148,7 @@ export default function DashboardPage() {
     return { currentTier, nextTier, progress, pointsNeeded };
   };
 
-  const userPoints = user?.points || 750;
+  const userPoints = user?.points ?? 0;
   const userTierFromBackend = user?.tier || null;
   const loyalty = calculateLoyalty(userPoints);
   const displayTier = userTierFromBackend || loyalty.currentTier;

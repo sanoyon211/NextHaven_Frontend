@@ -1,20 +1,26 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/lib/AuthContext";
 
 export default function Navbar() {
   const [isRoomsHovered, setIsRoomsHovered] = useState(false);
   const { user } = useAuth();
+  const pathname = usePathname();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const roomTypes = [
-    "STANDARD",
-    "SUPERIOR",
+    "SINGLE",
+    "DOUBLE",
     "DELUXE",
-    "EXECUTIVE",
-    "PENTHOUSE",
+    "SUITE",
   ];
 
   return (
@@ -28,7 +34,7 @@ export default function Navbar() {
             onMouseEnter={() => setIsRoomsHovered(true)}
             onMouseLeave={() => setIsRoomsHovered(false)}
           >
-            <button className="flex items-center space-x-1 hover:text-[#ffbca8] transition-colors py-2">
+            <button className={`flex items-center space-x-1 transition-colors py-2 ${pathname.startsWith("/rooms") ? "text-[#ffbca8]" : "hover:text-[#ffbca8]"}`}>
               <span>OUR ROOMS</span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -72,10 +78,10 @@ export default function Navbar() {
             </AnimatePresence>
           </div>
 
-          <Link href="/restaurant" className="hover:text-[#ffbca8] transition-colors">
+          <Link href="/restaurant" className={`transition-colors ${pathname === "/restaurant" ? "text-[#ffbca8]" : "hover:text-[#ffbca8]"}`}>
             RESTAURANT
           </Link>
-          <Link href="/about" className="hover:text-[#ffbca8] transition-colors">
+          <Link href="/about" className={`transition-colors ${pathname === "/about" ? "text-[#ffbca8]" : "hover:text-[#ffbca8]"}`}>
             ABOUT US
           </Link>
         </nav>
@@ -89,17 +95,21 @@ export default function Navbar() {
 
         {/* Right Side: Contact & Button */}
         <div className="flex flex-1 items-center justify-end space-x-8 text-sm font-semibold tracking-wide">
-          <Link href="/contact" className="hover:text-[#ffbca8] transition-colors">
+          <Link href="/contact" className={`transition-colors ${pathname === "/contact" ? "text-[#ffbca8]" : "hover:text-[#ffbca8]"}`}>
             CONTACT US
           </Link>
-          {user ? (
-            <Link href="/dashboard" className="hover:text-[#ffbca8] transition-colors">
-              DASHBOARD
-            </Link>
+          {mounted ? (
+            user ? (
+              <Link href="/dashboard" className={`transition-colors ${pathname === "/dashboard" ? "text-[#ffbca8]" : "hover:text-[#ffbca8]"}`}>
+                DASHBOARD
+              </Link>
+            ) : (
+              <Link href="/login" className={`transition-colors ${pathname === "/login" ? "text-[#ffbca8]" : "hover:text-[#ffbca8]"}`}>
+                LOGIN
+              </Link>
+            )
           ) : (
-            <Link href="/login" className="hover:text-[#ffbca8] transition-colors">
-              LOGIN
-            </Link>
+            <div className="w-[45px]"></div>
           )}
           <Link
             href="/rooms"

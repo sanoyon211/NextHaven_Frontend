@@ -4,6 +4,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { Toaster } from "react-hot-toast";
 import { AuthProvider } from "@/lib/AuthContext";
+import AIChatbot from "@/components/AIChatbot";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -50,6 +51,7 @@ export default function RootLayout({ children }) {
             {children}
           </main>
           <Footer />
+          <AIChatbot />
           <Toaster position="bottom-right" />
         </AuthProvider>
       </body>
