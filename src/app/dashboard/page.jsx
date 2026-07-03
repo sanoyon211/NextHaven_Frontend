@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { User, Calendar, LogOut, FileText, XCircle } from "lucide-react";
+import { User, Calendar, LogOut, FileText, XCircle, Crown } from "lucide-react";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import toast from "react-hot-toast";
@@ -114,6 +114,45 @@ export default function DashboardPage() {
     }
   };
 
+  const calculateLoyalty = (points) => {
+    let currentTier = "Silver";
+    let nextTier = "Gold";
+    let progress = 0;
+    let pointsNeeded = 0;
+    let nextTierPoints = 500;
+    let currentTierPoints = 0;
+
+    if (points >= 1000) {
+      currentTier = "Platinum";
+      nextTier = "Max Tier";
+      progress = 100;
+      pointsNeeded = 0;
+      nextTierPoints = 1000;
+      currentTierPoints = 1000;
+    } else if (points >= 500) {
+      currentTier = "Gold";
+      nextTier = "Platinum";
+      nextTierPoints = 1000;
+      currentTierPoints = 500;
+      pointsNeeded = nextTierPoints - points;
+      progress = ((points - currentTierPoints) / (nextTierPoints - currentTierPoints)) * 100;
+    } else {
+      currentTier = "Silver";
+      nextTier = "Gold";
+      nextTierPoints = 500;
+      currentTierPoints = 0;
+      pointsNeeded = nextTierPoints - points;
+      progress = (points / nextTierPoints) * 100;
+    }
+
+    return { currentTier, nextTier, progress, pointsNeeded };
+  };
+
+  const userPoints = user?.points || 750;
+  const userTierFromBackend = user?.tier || null;
+  const loyalty = calculateLoyalty(userPoints);
+  const displayTier = userTierFromBackend || loyalty.currentTier;
+
   return (
     <main className="min-h-screen bg-[#f8fafc] py-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
@@ -171,6 +210,48 @@ export default function DashboardPage() {
 
           {/* Right Main Content */}
           <div className="lg:col-span-3">
+            
+            {/* Loyalty Status Card */}
+            <div className="bg-[#0f284f] text-white rounded-sm shadow-lg border border-gray-100 p-8 mb-8 relative overflow-hidden">
+              <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
+                <Crown className="w-48 h-48" />
+              </div>
+              <div className="relative z-10 flex flex-col md:flex-row md:items-end justify-between">
+                <div>
+                  <div className="flex items-center space-x-3 mb-2">
+                    <Crown className="w-8 h-8 text-[#ffbca8]" />
+                    <h2 className="text-3xl font-extrabold uppercase tracking-widest text-[#ffbca8]">
+                      {displayTier} Member
+                    </h2>
+                  </div>
+                  <p className="text-gray-300 font-medium tracking-wide mb-6">
+                    Elite Guest Loyalty Program
+                  </p>
+                  <p className="text-4xl font-black mb-1">{userPoints.toLocaleString()} <span className="text-lg font-medium text-gray-300">PTS</span></p>
+                </div>
+                
+                {displayTier !== "Platinum" && (
+                  <div className="w-full md:w-1/2 mt-6 md:mt-0">
+                    <div className="flex justify-between text-sm font-bold uppercase tracking-wider mb-2 text-gray-300">
+                      <span>{displayTier}</span>
+                      <span>{loyalty.nextTier}</span>
+                    </div>
+                    <div className="h-2 w-full bg-white/20 rounded-full overflow-hidden mb-3">
+                      <motion.div 
+                        initial={{ width: 0 }}
+                        animate={{ width: `${loyalty.progress}%` }}
+                        transition={{ duration: 1.5, ease: "easeOut" }}
+                        className="h-full bg-[#ffbca8]"
+                      />
+                    </div>
+                    <p className="text-sm text-right font-medium text-gray-300">
+                      Earn <span className="text-[#ffbca8] font-bold">{loyalty.pointsNeeded}</span> more points for {loyalty.nextTier}!
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+
             {activeTab === "bookings" && (
               <div className="bg-white rounded-sm shadow-sm border border-gray-100 p-8 md:p-12">
                 <h1 className="text-3xl font-bold text-[#0f284f] uppercase tracking-wide mb-8 border-b border-gray-100 pb-4">

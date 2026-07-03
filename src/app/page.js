@@ -124,7 +124,7 @@ export default function Home() {
                 image: "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?q=80&w=2000"
               }
             ].map((room, idx) => (
-              <Link key={idx} href={`/rooms/${room.title.toLowerCase().replace(/ /g, '-')}`}>
+              <Link key={idx} href="/rooms">
                 <motion.div
                   whileHover={{ scale: 1.03 }}
                   transition={{ type: "spring", stiffness: 300 }}
