@@ -74,109 +74,96 @@ export default function RestaurantPage() {
           </motion.div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          {/* Left Side: Gourmet Image */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+          {/* Card 1 */}
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="relative h-[600px] w-full"
+            transition={{ duration: 0.6 }}
+            className="bg-white rounded-lg shadow-sm hover:shadow-xl border border-gray-100 overflow-hidden group transition-all"
           >
-            <Image
-              src="https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1500"
-              alt="Gourmet Dish"
-              fill
-              className="object-cover rounded-sm shadow-2xl"
-            />
+            <div className="relative h-64 w-full overflow-hidden">
+              <Image
+                src="https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1500"
+                alt="Wagyu Ribeye Steak"
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+            </div>
+            <div className="p-6 text-center">
+              <h3 className="text-[#0f284f] text-xl font-bold uppercase tracking-wide mb-2">
+                Wagyu Ribeye Steak
+              </h3>
+              <p className="text-gray-500 text-sm mb-4">Potato gratin, wild mushrooms, bordelaise sauce</p>
+              <p className="text-2xl font-black text-[#0f284f]">$85</p>
+            </div>
           </motion.div>
 
-          {/* Right Side: Menu Items */}
+          {/* Card 2 */}
           <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="space-y-12"
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="bg-white rounded-lg shadow-sm hover:shadow-xl border border-gray-100 overflow-hidden group transition-all"
           >
-            {/* Appetizers */}
-            <motion.div variants={fadeUp}>
-              <h3 className="text-[#0f284f] text-2xl font-bold uppercase tracking-wide border-b border-gray-200 pb-2 mb-6">
-                Appetizers
+            <div className="relative h-64 w-full overflow-hidden">
+              <Image
+                src="https://images.unsplash.com/photo-1600891964092-4316c288032e?q=80&w=1500"
+                alt="Pan-Seared Scallops"
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+            </div>
+            <div className="p-6 text-center">
+              <h3 className="text-[#0f284f] text-xl font-bold uppercase tracking-wide mb-2">
+                Pan-Seared Scallops
               </h3>
-              <div className="space-y-6">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h4 className="text-gray-900 font-bold text-lg">Truffle Beef Tartare</h4>
-                    <p className="text-gray-500 text-sm mt-1">Quail egg, capers, toasted brioche</p>
-                  </div>
-                  <span className="text-[#0f284f] font-bold">$32</span>
-                </div>
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h4 className="text-gray-900 font-bold text-lg">Pan-Seared Scallops</h4>
-                    <p className="text-gray-500 text-sm mt-1">Cauliflower purée, crispy pancetta, sage</p>
-                  </div>
-                  <span className="text-[#0f284f] font-bold">$28</span>
-                </div>
-              </div>
-            </motion.div>
+              <p className="text-gray-500 text-sm mb-4">Cauliflower purée, crispy pancetta, sage</p>
+              <p className="text-2xl font-black text-[#0f284f]">$28</p>
+            </div>
+          </motion.div>
 
-            {/* Main Courses */}
-            <motion.div variants={fadeUp}>
-              <h3 className="text-[#0f284f] text-2xl font-bold uppercase tracking-wide border-b border-gray-200 pb-2 mb-6">
-                Main Courses
+          {/* Card 3 */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="bg-white rounded-lg shadow-sm hover:shadow-xl border border-gray-100 overflow-hidden group transition-all"
+          >
+            <div className="relative h-64 w-full overflow-hidden">
+              <Image
+                src="https://images.unsplash.com/photo-1563805042-7684c8e9e1cb?q=80&w=1500"
+                alt="Valrhona Chocolate Soufflé"
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+            </div>
+            <div className="p-6 text-center">
+              <h3 className="text-[#0f284f] text-xl font-bold uppercase tracking-wide mb-2">
+                Chocolate Soufflé
               </h3>
-              <div className="space-y-6">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h4 className="text-gray-900 font-bold text-lg">Wagyu Ribeye Steak</h4>
-                    <p className="text-gray-500 text-sm mt-1">Potato gratin, wild mushrooms, bordelaise sauce</p>
-                  </div>
-                  <span className="text-[#0f284f] font-bold">$85</span>
-                </div>
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h4 className="text-gray-900 font-bold text-lg">Miso Glazed Black Cod</h4>
-                    <p className="text-gray-500 text-sm mt-1">Bok choy, ginger dashi broth, sesame</p>
-                  </div>
-                  <span className="text-[#0f284f] font-bold">$54</span>
-                </div>
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h4 className="text-gray-900 font-bold text-lg">Wild Mushroom Risotto</h4>
-                    <p className="text-gray-500 text-sm mt-1">Arborio rice, aged parmesan, truffle oil</p>
-                  </div>
-                  <span className="text-[#0f284f] font-bold">$42</span>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Desserts */}
-            <motion.div variants={fadeUp}>
-              <h3 className="text-[#0f284f] text-2xl font-bold uppercase tracking-wide border-b border-gray-200 pb-2 mb-6">
-                Desserts
-              </h3>
-              <div className="space-y-6">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h4 className="text-gray-900 font-bold text-lg">Valrhona Chocolate Soufflé</h4>
-                    <p className="text-gray-500 text-sm mt-1">Madagascar vanilla bean ice cream</p>
-                  </div>
-                  <span className="text-[#0f284f] font-bold">$22</span>
-                </div>
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h4 className="text-gray-900 font-bold text-lg">Lemon Tart</h4>
-                    <p className="text-gray-500 text-sm mt-1">Torched meringue, raspberry coulis</p>
-                  </div>
-                  <span className="text-[#0f284f] font-bold">$18</span>
-                </div>
-              </div>
-            </motion.div>
-            
+              <p className="text-gray-500 text-sm mb-4">Madagascar vanilla bean ice cream</p>
+              <p className="text-2xl font-black text-[#0f284f]">$22</p>
+            </div>
           </motion.div>
         </div>
+
+        <motion.div 
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.6 }}
+          className="text-center"
+        >
+          <Link href="/restaurant/all-menu">
+            <button className="bg-[#0f284f] text-white font-extrabold uppercase tracking-widest px-10 py-4 rounded-sm hover:bg-[#1a3d72] transition-colors">
+              View Full Menu
+            </button>
+          </Link>
+        </motion.div>
       </section>
     </main>
   );
