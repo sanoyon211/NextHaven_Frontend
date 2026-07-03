@@ -124,32 +124,33 @@ export default function Home() {
                 image: "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?q=80&w=2000"
               }
             ].map((room, idx) => (
-              <motion.div
-                key={idx}
-                whileHover={{ scale: 1.03 }}
-                transition={{ type: "spring", stiffness: 300 }}
-                className="bg-white shadow-md rounded-lg overflow-hidden group cursor-pointer"
-              >
-                <div className="h-64 overflow-hidden relative">
-                  <img
-                    src={room.image}
-                    alt={room.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                </div>
-                <div className="p-6">
-                  <h3 className="text-[#0f284f] font-bold uppercase text-lg mb-2">
-                    {room.title}
-                  </h3>
-                  <div className="flex justify-between items-end mt-6">
-                    <p className="text-gray-500 text-xs w-1/2 leading-relaxed">{room.details}</p>
-                    <div className="text-right">
-                      <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mb-1">From</p>
-                      <p className="text-2xl font-extrabold text-[#0f284f]">{room.price}</p>
+              <Link key={idx} href={`/rooms/${room.title.toLowerCase().replace(/ /g, '-')}`}>
+                <motion.div
+                  whileHover={{ scale: 1.03 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                  className="bg-white shadow-md rounded-lg overflow-hidden group cursor-pointer"
+                >
+                  <div className="h-64 overflow-hidden relative">
+                    <img
+                      src={room.image}
+                      alt={room.title}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                  </div>
+                  <div className="p-6">
+                    <h3 className="text-[#0f284f] font-bold uppercase text-lg mb-2">
+                      {room.title}
+                    </h3>
+                    <div className="flex justify-between items-end mt-6">
+                      <p className="text-gray-500 text-xs w-1/2 leading-relaxed">{room.details}</p>
+                      <div className="text-right">
+                        <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mb-1">From</p>
+                        <p className="text-2xl font-extrabold text-[#0f284f]">{room.price}</p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </motion.div>
+                </motion.div>
+              </Link>
             ))}
           </div>
         </div>

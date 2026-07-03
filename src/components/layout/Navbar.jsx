@@ -90,6 +90,9 @@ export default function Navbar() {
           <Link href="/contact" className="hover:text-[#ffbca8] transition-colors">
             CONTACT US
           </Link>
+          <Link href="/login" className="hover:text-[#ffbca8] transition-colors">
+            LOGIN
+          </Link>
           <Link
             href="/book"
             className="bg-[#ffbca8] px-6 py-3 text-gray-900 transition-colors hover:bg-[#ffbca8]/80 rounded-sm"
