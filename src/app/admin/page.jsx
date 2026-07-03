@@ -65,7 +65,7 @@ export default function AdminDashboard() {
         data.append("image", imageFile);
       }
 
-      await api.post("/rooms", data, {
+      const res = await api.post("/rooms", data, {
         headers: {
           "Content-Type": "multipart/form-data",
         }
@@ -73,7 +73,10 @@ export default function AdminDashboard() {
 
       toast.success("Room created successfully!", { id: toastId });
       setIsModalOpen(false);
-      // Optional: Refetch rooms here to update the table
+      
+      // Update local state to reflect the newly created room
+      const newRoom = res.data.room || res.data;
+      setRooms([newRoom, ...rooms]);
     } catch (error) {
       console.error("Room creation error:", error);
       toast.error(error.response?.data?.message || "Failed to create room.", { id: toastId });
