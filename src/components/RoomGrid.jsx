@@ -6,7 +6,7 @@ export default function RoomGrid({ rooms, loading }) {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#032c28]"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0f284f]"></div>
       </div>
     );
   }
@@ -14,7 +14,7 @@ export default function RoomGrid({ rooms, loading }) {
   if (rooms.length === 0) {
     return (
       <div className="text-center py-20 bg-white rounded-lg border border-gray-100">
-        <h3 className="text-xl font-bold text-[#032c28] mb-2 uppercase">No Rooms Found</h3>
+        <h3 className="text-xl font-bold text-[#0f284f] mb-2 uppercase">No Rooms Found</h3>
         <p className="text-gray-500">Try adjusting your filters to find available rooms.</p>
       </div>
     );
@@ -43,7 +43,7 @@ export default function RoomGrid({ rooms, loading }) {
               />
             </div>
             <div className="p-6">
-              <h3 className="text-[#032c28] font-extrabold uppercase text-lg mb-2">
+              <h3 className="text-[#0f284f] font-extrabold uppercase text-lg mb-2">
                 {room.title}
               </h3>
               <div className="flex justify-between items-end mt-6">
@@ -54,7 +54,7 @@ export default function RoomGrid({ rooms, loading }) {
                   <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
                     From
                   </p>
-                  <p className="text-2xl font-black text-[#032c28]">
+                  <p className="text-2xl font-black text-[#0f284f]">
                     ${room.pricePerNight}
                   </p>
                 </div>

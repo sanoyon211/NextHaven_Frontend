@@ -31,10 +31,10 @@ export default function Navbar() {
   }, []);
 
   const roomTypes = [
-    "SINGLE",
-    "DOUBLE",
-    "DELUXE",
-    "SUITE",
+    { name: "STANDARD ROOM", slug: "single" },
+    { name: "SUPERIOR ROOM", slug: "double" },
+    { name: "DELUXE ROOM", slug: "deluxe" },
+    { name: "EXECUTIVE SUITE", slug: "suite" },
   ];
 
   const isHomePage = pathname === "/";
@@ -63,7 +63,7 @@ export default function Navbar() {
             onMouseEnter={() => setIsRoomsHovered(true)}
             onMouseLeave={() => setIsRoomsHovered(false)}
           >
-            <button className={`flex items-center space-x-1 transition-colors py-2 ${pathname.startsWith("/rooms") ? "text-[#cb5d49]" : "hover:text-[#cb5d49]"}`}>
+            <button className={`flex items-center space-x-1 transition-colors py-2 ${pathname.startsWith("/rooms") ? "text-[#ffbca8]" : "hover:text-[#ffbca8]"}`}>
               <span>OUR ROOMS</span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -95,11 +95,11 @@ export default function Navbar() {
                 >
                   {roomTypes.map((room) => (
                     <Link
-                      key={room}
-                      href={`/rooms/${room.toLowerCase()}`}
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#cb5d49] transition-colors"
+                      key={room.name}
+                      href={`/rooms/${room.slug}`}
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#ffbca8] transition-colors"
                     >
-                      {room}
+                      {room.name}
                     </Link>
                   ))}
                 </motion.div>
@@ -107,10 +107,10 @@ export default function Navbar() {
             </AnimatePresence>
           </div>
 
-          <Link href="/restaurant" className={`transition-colors ${pathname === "/restaurant" ? "text-[#cb5d49]" : "hover:text-[#cb5d49]"}`}>
+          <Link href="/restaurant" className={`transition-colors ${pathname === "/restaurant" ? "text-[#ffbca8]" : "hover:text-[#ffbca8]"}`}>
             RESTAURANT
           </Link>
-          <Link href="/about" className={`transition-colors ${pathname === "/about" ? "text-[#cb5d49]" : "hover:text-[#cb5d49]"}`}>
+          <Link href="/about" className={`transition-colors ${pathname === "/about" ? "text-[#ffbca8]" : "hover:text-[#ffbca8]"}`}>
             ABOUT US
           </Link>
         </nav>
@@ -124,16 +124,16 @@ export default function Navbar() {
 
         {/* Right Side: Contact & Button (Desktop) */}
         <div className="hidden md:flex flex-1 items-center justify-end space-x-8 text-sm font-semibold tracking-wide">
-          <Link href="/contact" className={`transition-colors ${pathname === "/contact" ? "text-[#cb5d49]" : "hover:text-[#cb5d49]"}`}>
+          <Link href="/contact" className={`transition-colors ${pathname === "/contact" ? "text-[#ffbca8]" : "hover:text-[#ffbca8]"}`}>
             CONTACT US
           </Link>
           {mounted ? (
             user ? (
-              <Link href="/dashboard" className={`transition-colors ${pathname === "/dashboard" ? "text-[#cb5d49]" : "hover:text-[#cb5d49]"}`}>
+              <Link href="/dashboard" className={`transition-colors ${pathname === "/dashboard" ? "text-[#ffbca8]" : "hover:text-[#ffbca8]"}`}>
                 DASHBOARD
               </Link>
             ) : (
-              <Link href="/login" className={`transition-colors ${pathname === "/login" ? "text-[#cb5d49]" : "hover:text-[#cb5d49]"}`}>
+              <Link href="/login" className={`transition-colors ${pathname === "/login" ? "text-[#ffbca8]" : "hover:text-[#ffbca8]"}`}>
                 LOGIN
               </Link>
             )
@@ -142,7 +142,7 @@ export default function Navbar() {
           )}
           <Link
             href="/rooms"
-            className="bg-[#cb5d49] px-6 py-3 text-gray-900 transition-colors hover:bg-[#cb5d49]/80 rounded-sm"
+            className="bg-[#ffbca8] px-6 py-3 text-gray-900 transition-colors hover:bg-[#ffbca8]/80 rounded-sm"
           >
             BOOK NOW
           </Link>
@@ -162,16 +162,16 @@ export default function Navbar() {
             className="md:hidden border-t border-gray-100 bg-white overflow-hidden absolute w-full left-0 top-full shadow-lg"
           >
             <nav className="flex flex-col px-4 py-6 space-y-4 text-sm font-semibold tracking-wide">
-              <Link onClick={() => setIsMobileMenuOpen(false)} href="/rooms" className={`block py-2 ${pathname.startsWith("/rooms") ? "text-[#cb5d49]" : "text-gray-900"}`}>
+              <Link onClick={() => setIsMobileMenuOpen(false)} href="/rooms" className={`block py-2 ${pathname.startsWith("/rooms") ? "text-[#ffbca8]" : "text-gray-900"}`}>
                 OUR ROOMS
               </Link>
-              <Link onClick={() => setIsMobileMenuOpen(false)} href="/restaurant" className={`block py-2 ${pathname === "/restaurant" ? "text-[#cb5d49]" : "text-gray-900"}`}>
+              <Link onClick={() => setIsMobileMenuOpen(false)} href="/restaurant" className={`block py-2 ${pathname === "/restaurant" ? "text-[#ffbca8]" : "text-gray-900"}`}>
                 RESTAURANT
               </Link>
-              <Link onClick={() => setIsMobileMenuOpen(false)} href="/about" className={`block py-2 ${pathname === "/about" ? "text-[#cb5d49]" : "text-gray-900"}`}>
+              <Link onClick={() => setIsMobileMenuOpen(false)} href="/about" className={`block py-2 ${pathname === "/about" ? "text-[#ffbca8]" : "text-gray-900"}`}>
                 ABOUT US
               </Link>
-              <Link onClick={() => setIsMobileMenuOpen(false)} href="/contact" className={`block py-2 ${pathname === "/contact" ? "text-[#cb5d49]" : "text-gray-900"}`}>
+              <Link onClick={() => setIsMobileMenuOpen(false)} href="/contact" className={`block py-2 ${pathname === "/contact" ? "text-[#ffbca8]" : "text-gray-900"}`}>
                 CONTACT US
               </Link>
               <div className="pt-4 border-t border-gray-100 flex flex-col space-y-4">
@@ -189,7 +189,7 @@ export default function Navbar() {
                 <Link
                   onClick={() => setIsMobileMenuOpen(false)}
                   href="/rooms"
-                  className="block w-full bg-[#cb5d49] px-6 py-3 text-center text-gray-900 transition-colors hover:bg-[#cb5d49]/80 rounded-sm"
+                  className="block w-full bg-[#ffbca8] px-6 py-3 text-center text-gray-900 transition-colors hover:bg-[#ffbca8]/80 rounded-sm"
                 >
                   BOOK NOW
                 </Link>

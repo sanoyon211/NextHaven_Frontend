@@ -28,7 +28,7 @@ export default function CheckoutSuccessPage() {
           <CheckCircle className="w-12 h-12 text-green-500" />
         </motion.div>
         
-        <h1 className="text-3xl md:text-4xl font-extrabold text-[#032c28] uppercase tracking-wider mb-4">
+        <h1 className="text-3xl md:text-4xl font-extrabold text-[#0f284f] uppercase tracking-wider mb-4">
           Booking Confirmed
         </h1>
         
@@ -38,7 +38,7 @@ export default function CheckoutSuccessPage() {
         
         <Link 
           href="/dashboard"
-          className="inline-block w-full sm:w-auto bg-[#032c28] text-white font-bold uppercase tracking-wider px-10 py-4 rounded-sm hover:bg-[#043e39] transition-colors"
+          className="inline-block w-full sm:w-auto bg-[#0f284f] text-white font-bold uppercase tracking-wider px-10 py-4 rounded-sm hover:bg-[#1a3d72] transition-colors"
         >
           View My Bookings
         </Link>

@@ -86,7 +86,7 @@ export default function LoginPage() {
         {/* Absolute Link back to home (optional but good practice) */}
         <Link 
           href="/" 
-          className="absolute top-8 right-8 text-sm font-semibold text-gray-500 hover:text-[#032c28] uppercase tracking-wider transition-colors"
+          className="absolute top-8 right-8 text-sm font-semibold text-gray-500 hover:text-[#0f284f] uppercase tracking-wider transition-colors"
         >
           Back to Home
         </Link>
@@ -98,7 +98,7 @@ export default function LoginPage() {
           className="w-full max-w-md"
         >
           <div className="text-center mb-10">
-            <h1 className="text-[#032c28] text-3xl font-bold uppercase tracking-wide mb-3">
+            <h1 className="text-[#0f284f] text-3xl font-bold uppercase tracking-wide mb-3">
               WELCOME TO HOTEL SUITES
             </h1>
             <p className="text-gray-500 text-base">
@@ -116,7 +116,7 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full border border-gray-300 rounded-sm p-4 text-sm focus:outline-none focus:border-[#032c28] focus:ring-1 focus:ring-[#032c28] transition-all"
+                className="w-full border border-gray-300 rounded-sm p-4 text-sm focus:outline-none focus:border-[#0f284f] focus:ring-1 focus:ring-[#0f284f] transition-all"
                 placeholder="you@example.com"
               />
             </div>
@@ -130,14 +130,14 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full border border-gray-300 rounded-sm p-4 text-sm focus:outline-none focus:border-[#032c28] focus:ring-1 focus:ring-[#032c28] transition-all"
+                className="w-full border border-gray-300 rounded-sm p-4 text-sm focus:outline-none focus:border-[#0f284f] focus:ring-1 focus:ring-[#0f284f] transition-all"
                 placeholder="••••••••"
               />
             </div>
 
             {isLogin && (
               <div className="flex justify-end">
-                <a href="#" className="text-xs font-semibold text-[#032c28] hover:underline">
+                <a href="#" className="text-xs font-semibold text-[#0f284f] hover:underline">
                   Forgot Password?
                 </a>
               </div>
@@ -146,7 +146,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-[#032c28] text-white font-bold uppercase tracking-wider py-4 rounded-sm hover:bg-[#043e39] transition-colors disabled:opacity-70"
+              className="w-full bg-[#0f284f] text-white font-bold uppercase tracking-wider py-4 rounded-sm hover:bg-[#1a3d72] transition-colors disabled:opacity-70"
             >
               {isLoading ? "PLEASE WAIT..." : (isLogin ? "SIGN IN" : "SIGN UP")}
             </button>
@@ -191,7 +191,7 @@ export default function LoginPage() {
             {isLogin ? "Don't have an account? " : "Already have an account? "}
             <button
               onClick={() => setIsLogin(!isLogin)}
-              className="font-bold text-[#032c28] hover:underline transition-colors"
+              className="font-bold text-[#0f284f] hover:underline transition-colors"
             >
               {isLogin ? "Sign up" : "Sign in"}
             </button>

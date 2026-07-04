@@ -111,12 +111,12 @@ export default function AdminDashboard() {
       <div className="max-w-7xl mx-auto">
         
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
-          <h1 className="text-3xl font-extrabold text-[#032c28] uppercase tracking-wider">
+          <h1 className="text-3xl font-extrabold text-[#0f284f] uppercase tracking-wider">
             Admin Dashboard
           </h1>
           <button 
             onClick={() => setIsModalOpen(true)}
-            className="flex items-center space-x-2 bg-[#032c28] text-white font-bold uppercase tracking-wider px-6 py-3 rounded-sm hover:bg-[#043e39] transition-colors"
+            className="flex items-center space-x-2 bg-[#0f284f] text-white font-bold uppercase tracking-wider px-6 py-3 rounded-sm hover:bg-[#1a3d72] transition-colors"
           >
             <Plus className="w-5 h-5" />
             <span>Add New Room</span>
@@ -131,7 +131,7 @@ export default function AdminDashboard() {
             </div>
             <div>
               <p className="text-sm text-gray-500 font-bold uppercase tracking-wider mb-1">Total Revenue</p>
-              <p className="text-3xl font-black text-[#032c28]">
+              <p className="text-3xl font-black text-[#0f284f]">
                 {loadingAnalytics ? "..." : `$${analytics.totalRevenue.toLocaleString()}`}
               </p>
             </div>
@@ -143,7 +143,7 @@ export default function AdminDashboard() {
             </div>
             <div>
               <p className="text-sm text-gray-500 font-bold uppercase tracking-wider mb-1">Active Bookings</p>
-              <p className="text-3xl font-black text-[#032c28]">
+              <p className="text-3xl font-black text-[#0f284f]">
                 {loadingAnalytics ? "..." : analytics.activeBookings}
               </p>
             </div>
@@ -155,7 +155,7 @@ export default function AdminDashboard() {
             </div>
             <div>
               <p className="text-sm text-gray-500 font-bold uppercase tracking-wider mb-1">Rooms Available</p>
-              <p className="text-3xl font-black text-[#032c28]">
+              <p className="text-3xl font-black text-[#0f284f]">
                 {loadingAnalytics ? "..." : analytics.availableRooms}
               </p>
             </div>
@@ -165,7 +165,7 @@ export default function AdminDashboard() {
         {/* Middle Section: Room Management Table */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
           <div className="p-6 border-b border-gray-100 flex justify-between items-center">
-            <h2 className="text-[#032c28] text-xl font-bold uppercase tracking-wider">
+            <h2 className="text-[#0f284f] text-xl font-bold uppercase tracking-wider">
               Room Management
             </h2>
           </div>
@@ -173,7 +173,7 @@ export default function AdminDashboard() {
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-gray-50 text-[#032c28] border-b border-gray-200 uppercase text-xs tracking-wider">
+                <tr className="bg-gray-50 text-[#0f284f] border-b border-gray-200 uppercase text-xs tracking-wider">
                   <th className="p-4 font-bold">Image</th>
                   <th className="p-4 font-bold">Title</th>
                   <th className="p-4 font-bold">Type</th>
@@ -214,7 +214,7 @@ export default function AdminDashboard() {
                     <td className="p-4 text-right space-x-2">
                       <button 
                         onClick={() => toast("Edit functionality coming soon")}
-                        className="p-2 text-gray-500 hover:text-[#032c28] hover:bg-blue-50 rounded-full transition-colors"
+                        className="p-2 text-gray-500 hover:text-[#0f284f] hover:bg-blue-50 rounded-full transition-colors"
                       >
                         <Edit className="w-4 h-4" />
                       </button>
@@ -238,7 +238,7 @@ export default function AdminDashboard() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
           <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             <div className="sticky top-0 bg-white border-b border-gray-100 px-6 py-4 flex justify-between items-center z-10">
-              <h2 className="text-xl font-bold text-[#032c28] uppercase tracking-wider">
+              <h2 className="text-xl font-bold text-[#0f284f] uppercase tracking-wider">
                 Create New Room
               </h2>
               <button 
@@ -259,7 +259,7 @@ export default function AdminDashboard() {
                     required
                     value={formData.title}
                     onChange={(e) => setFormData({...formData, title: e.target.value})}
-                    className="w-full border border-gray-300 rounded-sm p-3 text-sm focus:outline-none focus:border-[#032c28] transition-all"
+                    className="w-full border border-gray-300 rounded-sm p-3 text-sm focus:outline-none focus:border-[#0f284f] transition-all"
                     placeholder="e.g. Ocean View Suite"
                   />
                 </div>
@@ -269,7 +269,7 @@ export default function AdminDashboard() {
                   <select
                     value={formData.type}
                     onChange={(e) => setFormData({...formData, type: e.target.value})}
-                    className="w-full border border-gray-300 rounded-sm p-3 text-sm focus:outline-none focus:border-[#032c28] transition-all bg-white"
+                    className="w-full border border-gray-300 rounded-sm p-3 text-sm focus:outline-none focus:border-[#0f284f] transition-all bg-white"
                   >
                     <option value="Single">Single</option>
                     <option value="Double">Double</option>
@@ -286,7 +286,7 @@ export default function AdminDashboard() {
                     min="0"
                     value={formData.price}
                     onChange={(e) => setFormData({...formData, price: e.target.value})}
-                    className="w-full border border-gray-300 rounded-sm p-3 text-sm focus:outline-none focus:border-[#032c28] transition-all"
+                    className="w-full border border-gray-300 rounded-sm p-3 text-sm focus:outline-none focus:border-[#0f284f] transition-all"
                     placeholder="250"
                   />
                 </div>
@@ -299,7 +299,7 @@ export default function AdminDashboard() {
                     min="1"
                     value={formData.capacity}
                     onChange={(e) => setFormData({...formData, capacity: e.target.value})}
-                    className="w-full border border-gray-300 rounded-sm p-3 text-sm focus:outline-none focus:border-[#032c28] transition-all"
+                    className="w-full border border-gray-300 rounded-sm p-3 text-sm focus:outline-none focus:border-[#0f284f] transition-all"
                     placeholder="2"
                   />
                 </div>
@@ -313,7 +313,7 @@ export default function AdminDashboard() {
                   rows="3"
                   value={formData.description}
                   onChange={(e) => setFormData({...formData, description: e.target.value})}
-                  className="w-full border border-gray-300 rounded-sm p-3 text-sm focus:outline-none focus:border-[#032c28] transition-all resize-none"
+                  className="w-full border border-gray-300 rounded-sm p-3 text-sm focus:outline-none focus:border-[#0f284f] transition-all resize-none"
                   placeholder="Describe the room features..."
                 ></textarea>
               </div>
@@ -327,7 +327,7 @@ export default function AdminDashboard() {
                         type="checkbox" 
                         checked={amenities.includes(item)}
                         onChange={() => handleAmenityChange(item)}
-                        className="rounded-sm border-gray-300 text-[#032c28] focus:ring-[#032c28]"
+                        className="rounded-sm border-gray-300 text-[#0f284f] focus:ring-[#0f284f]"
                       />
                       <span className="text-sm text-gray-700">{item}</span>
                     </label>
@@ -341,7 +341,7 @@ export default function AdminDashboard() {
                   type="file"
                   accept="image/*"
                   onChange={(e) => setImageFile(e.target.files[0])}
-                  className="w-full border border-gray-300 rounded-sm p-2 text-sm focus:outline-none file:mr-4 file:py-2 file:px-4 file:rounded-sm file:border-0 file:text-sm file:font-semibold file:bg-[#032c28] file:text-white hover:file:bg-[#043e39] transition-all cursor-pointer"
+                  className="w-full border border-gray-300 rounded-sm p-2 text-sm focus:outline-none file:mr-4 file:py-2 file:px-4 file:rounded-sm file:border-0 file:text-sm file:font-semibold file:bg-[#0f284f] file:text-white hover:file:bg-[#1a3d72] transition-all cursor-pointer"
                 />
               </div>
 
@@ -356,7 +356,7 @@ export default function AdminDashboard() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="px-6 py-3 bg-[#032c28] rounded-sm text-sm font-bold text-white uppercase tracking-wider hover:bg-[#043e39] transition-colors disabled:opacity-70"
+                  className="px-6 py-3 bg-[#0f284f] rounded-sm text-sm font-bold text-white uppercase tracking-wider hover:bg-[#1a3d72] transition-colors disabled:opacity-70"
                 >
                   {isSubmitting ? "Creating..." : "Create Room"}
                 </button>

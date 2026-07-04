@@ -28,7 +28,7 @@ export default function CheckoutCancelPage() {
           <XCircle className="w-12 h-12 text-red-500" />
         </motion.div>
         
-        <h1 className="text-3xl md:text-4xl font-extrabold text-[#032c28] uppercase tracking-wider mb-4">
+        <h1 className="text-3xl md:text-4xl font-extrabold text-[#0f284f] uppercase tracking-wider mb-4">
           Payment Cancelled
         </h1>
         
@@ -38,7 +38,7 @@ export default function CheckoutCancelPage() {
         
         <Link 
           href="/"
-          className="inline-block w-full sm:w-auto border-2 border-[#032c28] text-[#032c28] font-bold uppercase tracking-wider px-10 py-4 rounded-sm hover:bg-gray-50 transition-colors"
+          className="inline-block w-full sm:w-auto border-2 border-[#0f284f] text-[#0f284f] font-bold uppercase tracking-wider px-10 py-4 rounded-sm hover:bg-gray-50 transition-colors"
         >
           Return to Home
         </Link>

@@ -21,7 +21,7 @@ export default function SearchBar({
 
   return (
     <div className="bg-white rounded-lg shadow-sm p-6 lg:sticky lg:top-24 border border-gray-100">
-      <h2 className="text-[#032c28] text-xl font-bold uppercase tracking-wider mb-8">
+      <h2 className="text-[#0f284f] text-xl font-bold uppercase tracking-wider mb-8">
         Filter By
       </h2>
 
@@ -37,7 +37,7 @@ export default function SearchBar({
               type="date"
               value={dates.checkIn}
               onChange={(e) => setDates({...dates, checkIn: e.target.value})}
-              className="w-full border border-gray-300 rounded-sm p-2 text-sm focus:outline-none focus:border-[#032c28]"
+              className="w-full border border-gray-300 rounded-sm p-2 text-sm focus:outline-none focus:border-[#0f284f]"
             />
           </div>
           <div>
@@ -46,7 +46,7 @@ export default function SearchBar({
               type="date"
               value={dates.checkOut}
               onChange={(e) => setDates({...dates, checkOut: e.target.value})}
-              className="w-full border border-gray-300 rounded-sm p-2 text-sm focus:outline-none focus:border-[#032c28]"
+              className="w-full border border-gray-300 rounded-sm p-2 text-sm focus:outline-none focus:border-[#0f284f]"
             />
           </div>
         </div>
@@ -105,7 +105,7 @@ export default function SearchBar({
       {/* Apply Filters Button */}
       <button 
         onClick={onApply}
-        className="w-full bg-[#032c28] text-white font-bold uppercase tracking-wider py-4 rounded-sm hover:bg-[#043e39] transition-colors mt-4"
+        className="w-full bg-[#0f284f] text-white font-bold uppercase tracking-wider py-4 rounded-sm hover:bg-[#1a3d72] transition-colors mt-4"
       >
         Apply Filters
       </button>

@@ -55,10 +55,10 @@ export default function RoomsPage() {
         
         {/* Mobile Filter Toggle */}
         <div className="lg:hidden flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-[#032c28] uppercase tracking-wide">Our Rooms</h1>
+          <h1 className="text-2xl font-bold text-[#0f284f] uppercase tracking-wide">Our Rooms</h1>
           <button 
             onClick={() => setIsMobileFiltersOpen(!isMobileFiltersOpen)}
-            className="flex items-center space-x-2 bg-white px-4 py-2 border border-gray-300 rounded-sm text-[#032c28] font-semibold uppercase text-sm"
+            className="flex items-center space-x-2 bg-white px-4 py-2 border border-gray-300 rounded-sm text-[#0f284f] font-semibold uppercase text-sm"
           >
             <Filter className="w-4 h-4" />
             <span>Filters</span>
@@ -86,7 +86,7 @@ export default function RoomsPage() {
             
             {/* Top Bar */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
-              <h1 className="hidden lg:block text-3xl font-extrabold text-[#032c28] uppercase tracking-wider">
+              <h1 className="hidden lg:block text-3xl font-extrabold text-[#0f284f] uppercase tracking-wider">
                 Our Rooms
               </h1>
               <div className="flex items-center justify-between w-full lg:w-auto">
@@ -94,7 +94,7 @@ export default function RoomsPage() {
                   {loading ? "Loading..." : `Showing ${rooms.length} available rooms`}
                 </span>
                 <select 
-                  className="border border-gray-300 rounded-sm px-4 py-2 text-sm text-gray-700 bg-white focus:outline-none focus:border-[#032c28] cursor-pointer"
+                  className="border border-gray-300 rounded-sm px-4 py-2 text-sm text-gray-700 bg-white focus:outline-none focus:border-[#0f284f] cursor-pointer"
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
                 >
