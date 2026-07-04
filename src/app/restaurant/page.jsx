@@ -3,9 +3,18 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { Clock, CalendarCheck, Phone } from "lucide-react";
-import { useState, useEffect } from "react";
+import { Clock, CalendarCheck, Phone, ShoppingBag, ArrowRight } from "lucide-react";
 import api from "@/lib/api";
+import toast from "react-hot-toast";
+import { useAuth } from "@/lib/AuthContext";
+import Swal from "sweetalert2";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 // Shared animation variants
 const fadeUp = {
@@ -24,8 +33,68 @@ const staggerContainer = {
 };
 
 export default function RestaurantPage() {
+  const { user } = useAuth();
   const [signatureMenu, setSignatureMenu] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [cart, setCart] = useState([]);
+  const router = require("next/navigation").useRouter();
+  
+  const [showReservationDialog, setShowReservationDialog] = useState(false);
+  const [isReserving, setIsReserving] = useState(false);
+  const [reservationForm, setReservationForm] = useState({
+    name: "", email: "", phone: "", date: "", time: "", guests: 2, specialRequests: ""
+  });
+
+  useEffect(() => {
+    if (user) {
+      setReservationForm(prev => ({ ...prev, name: user.name || "", email: user.email || "" }));
+    }
+  }, [user]);
+
+  const handleReservationSubmit = async (e) => {
+    e.preventDefault();
+    if (!user) {
+      toast.error("Please login to make a reservation");
+      router.push("/login");
+      return;
+    }
+    setIsReserving(true);
+    try {
+      await api.post("/reservations", reservationForm);
+      toast.success("Reservation submitted successfully!");
+      setShowReservationDialog(false);
+      setReservationForm(prev => ({ ...prev, phone: "", date: "", time: "", guests: 2, specialRequests: "" }));
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to submit reservation");
+    } finally {
+      setIsReserving(false);
+    }
+  };
+
+  useEffect(() => {
+    const savedCart = localStorage.getItem("foodCart");
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (savedCart) setCart(JSON.parse(savedCart));
+  }, []);
+
+  const addToCart = (item) => {
+    const newCart = [...cart];
+    const existingIndex = newCart.findIndex((i) => i._id === item._id);
+    if (existingIndex >= 0) {
+      newCart[existingIndex].quantity += 1;
+    } else {
+      newCart.push({ ...item, quantity: 1 });
+    }
+    setCart(newCart);
+    localStorage.setItem("foodCart", JSON.stringify(newCart));
+    toast.success(`Added ${item.name} to cart!`);
+  };
+
+  const handleOrderNow = (item) => {
+    const directOrder = [{ ...item, quantity: 1 }];
+    sessionStorage.setItem("directOrder", JSON.stringify(directOrder));
+    router.push("/restaurant/checkout?direct=true");
+  };
 
   useEffect(() => {
     const fetchSignatureMenu = async () => {
@@ -69,7 +138,7 @@ export default function RestaurantPage() {
             set in an atmosphere of unparalleled elegance and sophistication.
           </p>
           <button 
-            onClick={() => window.alert('Reservation system coming soon!')}
+            onClick={() => setShowReservationDialog(true)}
             className="bg-white text-[#0f284f] font-extrabold uppercase tracking-widest px-10 py-4 rounded-sm hover:bg-gray-100 transition-colors"
           >
             Reserve A Table
@@ -142,37 +211,107 @@ export default function RestaurantPage() {
           </motion.div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-16">
           {loading ? (
-            <div className="col-span-3 flex justify-center py-20">
+            <div className="col-span-full flex justify-center py-20">
               <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#0f284f]"></div>
             </div>
-          ) : signatureMenu.map((item, idx) => (
-            <motion.div
-              key={item._id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: idx * 0.2 }}
-              className="bg-white rounded-lg shadow-sm hover:shadow-xl border border-gray-100 overflow-hidden group transition-all flex flex-col"
-            >
-              <div className="relative h-64 w-full overflow-hidden shrink-0">
-                <Image
-                  src={item.imageUrl || "https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1500"}
-                  alt={item.name}
-                  fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  className="object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-              </div>
-              <div className="p-6 text-center flex-1 flex flex-col">
-                <h3 className="text-[#0f284f] text-xl font-bold uppercase tracking-wide mb-2 line-clamp-1">
-                  {item.name}
-                </h3>
-                <p className="text-gray-500 text-sm mb-4 line-clamp-2 flex-1">{item.ingredients}</p>
-                <p className="text-2xl font-black text-[#0f284f]">{item.price}</p>
-              </div>
-            </motion.div>
+          ) : signatureMenu.slice(0, 4).map((item, idx) => (
+            <Dialog key={item._id}>
+              <DialogTrigger 
+                nativeButton={false}
+                render={
+                  <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: idx * 0.2 }}
+                    whileHover={{ y: -5 }}
+                    className="bg-white rounded-lg shadow-sm hover:shadow-xl border border-gray-100 overflow-hidden group transition-all flex flex-col text-left cursor-pointer h-full"
+                  />
+                }
+              >
+                <div className="relative h-64 w-full overflow-hidden shrink-0">
+                  <Image
+                    src={item.imageUrl || "https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1500"}
+                    alt={item.name}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-sm">
+                    <span className="text-xs font-bold text-[#0f284f] uppercase tracking-wider">
+                      {item.category || "Signature"}
+                    </span>
+                  </div>
+                </div>
+                <div className="p-6 flex-1 flex flex-col">
+                  <div className="flex justify-between items-start mb-4 gap-2">
+                    <h3 className="text-[#0f284f] text-xl font-bold uppercase tracking-wide pr-4">
+                      {item.name}
+                    </h3>
+                    <p className="text-2xl font-black text-[#0f284f]">${item.price}</p>
+                  </div>
+                  <p className="text-gray-500 text-sm line-clamp-2 flex-1">
+                    {item.description || item.ingredients}
+                  </p>
+                </div>
+              </DialogTrigger>
+
+              <DialogContent className="sm:max-w-[700px] p-0 overflow-hidden bg-white border-0">
+                <div className="flex flex-col md:flex-row h-full">
+                  <div className="relative w-full md:w-1/2 h-64 md:h-auto">
+                    <Image
+                      src={item.imageUrl || "https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1500"}
+                      alt={item.name}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="p-8 md:w-1/2 flex flex-col justify-center">
+                    <DialogHeader className="text-left mb-6">
+                      <span className="text-xs font-bold text-[#ffbca8] uppercase tracking-wider mb-2 block">
+                        {item.category || "Signature"}
+                      </span>
+                      <DialogTitle className="text-[#0f284f] text-3xl font-extrabold uppercase tracking-wide">
+                        {item.name}
+                      </DialogTitle>
+                    </DialogHeader>
+                    
+                    <p className="text-2xl font-black text-[#0f284f] mb-6 border-b border-gray-100 pb-6">
+                      ${item.price}
+                    </p>
+                    
+                    <div className="space-y-4 mb-8">
+                      <div>
+                        <h4 className="text-sm font-bold text-gray-900 uppercase tracking-wide mb-1">Details</h4>
+                        <p className="text-gray-500 text-sm leading-relaxed">{item.description}</p>
+                      </div>
+                      <div>
+                        <h4 className="text-sm font-bold text-gray-900 uppercase tracking-wide mb-1">Ingredients</h4>
+                        <p className="text-gray-500 text-sm leading-relaxed italic">{item.ingredients}</p>
+                      </div>
+                    </div>
+
+                    <div className="flex gap-4">
+                      <button 
+                        onClick={() => addToCart(item)}
+                        className="flex-1 bg-white border-2 border-[#0f284f] text-[#0f284f] font-bold uppercase tracking-widest py-4 rounded-sm hover:bg-slate-50 transition-colors"
+                      >
+                        Add to Cart
+                      </button>
+                      <button 
+                        onClick={() => handleOrderNow(item)}
+                        className="flex-1 bg-[#0f284f] border-2 border-[#0f284f] text-white font-bold uppercase tracking-widest py-4 rounded-sm hover:bg-[#1a3d72] transition-colors"
+                      >
+                        Order Now
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
           ))}
         </div>
 
@@ -257,7 +396,7 @@ export default function RestaurantPage() {
                 We strongly recommend booking your table in advance, especially for dinner and weekend brunches. Walk-ins are accommodated subject to availability.
               </p>
               <button 
-                onClick={() => window.alert('Reservation system coming soon!')}
+                onClick={() => setShowReservationDialog(true)}
                 className="mt-auto border-2 border-[#0f284f] text-[#0f284f] font-bold uppercase tracking-widest px-6 py-3 hover:bg-[#0f284f] hover:text-white transition-colors"
               >
                 Book a Table
@@ -279,6 +418,76 @@ export default function RestaurantPage() {
           </motion.div>
         </div>
       </section>
+
+      {/* Floating Cart Button */}
+      {cart.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="fixed bottom-8 right-8 z-50"
+        >
+          <button
+            onClick={() => router.push("/restaurant/checkout")}
+            className="bg-[#0f284f] text-white px-6 py-4 rounded-full shadow-2xl hover:bg-[#1a3d72] transition-all flex items-center gap-3 group"
+          >
+            <div className="relative">
+              <ShoppingBag className="w-6 h-6" />
+              <span className="absolute -top-2 -right-2 bg-[#ffbca8] text-[#0f284f] text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full">
+                {cart.reduce((sum, item) => sum + item.quantity, 0)}
+              </span>
+            </div>
+            <span className="font-bold uppercase tracking-wide">Checkout</span>
+            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+          </button>
+        </motion.div>
+      )}
+
+      <Dialog open={showReservationDialog} onOpenChange={setShowReservationDialog}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-bold uppercase tracking-wider text-[#0f284f]">Book a Table</DialogTitle>
+          </DialogHeader>
+          <form onSubmit={handleReservationSubmit} className="space-y-4 mt-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">Name</label>
+                <input required value={reservationForm.name} onChange={e => setReservationForm({...reservationForm, name: e.target.value})} className="w-full border border-gray-300 p-3 rounded-sm focus:outline-none focus:border-[#0f284f]" />
+              </div>
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">Email</label>
+                <input required type="email" value={reservationForm.email} onChange={e => setReservationForm({...reservationForm, email: e.target.value})} className="w-full border border-gray-300 p-3 rounded-sm focus:outline-none focus:border-[#0f284f]" />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">Phone</label>
+                <input required value={reservationForm.phone} onChange={e => setReservationForm({...reservationForm, phone: e.target.value})} className="w-full border border-gray-300 p-3 rounded-sm focus:outline-none focus:border-[#0f284f]" />
+              </div>
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">Guests</label>
+                <input required type="number" min="1" value={reservationForm.guests} onChange={e => setReservationForm({...reservationForm, guests: e.target.value})} className="w-full border border-gray-300 p-3 rounded-sm focus:outline-none focus:border-[#0f284f]" />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">Date</label>
+                <input required type="date" value={reservationForm.date} onChange={e => setReservationForm({...reservationForm, date: e.target.value})} className="w-full border border-gray-300 p-3 rounded-sm focus:outline-none focus:border-[#0f284f]" />
+              </div>
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">Time</label>
+                <input required type="time" value={reservationForm.time} onChange={e => setReservationForm({...reservationForm, time: e.target.value})} className="w-full border border-gray-300 p-3 rounded-sm focus:outline-none focus:border-[#0f284f]" />
+              </div>
+            </div>
+            <div className="space-y-1">
+              <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">Special Requests</label>
+              <textarea value={reservationForm.specialRequests} onChange={e => setReservationForm({...reservationForm, specialRequests: e.target.value})} className="w-full border border-gray-300 p-3 rounded-sm resize-none focus:outline-none focus:border-[#0f284f]" rows="2" placeholder="Optional" />
+            </div>
+            <button type="submit" disabled={isReserving} className="w-full bg-[#0f284f] text-white font-bold uppercase tracking-wider py-4 rounded-sm hover:bg-[#1a3d72] transition-colors disabled:opacity-70 mt-4">
+              {isReserving ? "Submitting..." : "Confirm Reservation"}
+            </button>
+          </form>
+        </DialogContent>
+      </Dialog>
     </main>
   );
 }

@@ -158,28 +158,30 @@ export default function Home() {
             ) : rooms.map((room) => (
               <Link key={room._id} href={`/rooms/${room._id}`}>
                 <motion.div
-                  whileHover={{ scale: 1.03 }}
+                  whileHover={{ y: -5 }}
                   transition={{ type: "spring", stiffness: 300 }}
-                  className="bg-white shadow-md rounded-lg overflow-hidden group cursor-pointer"
+                  className="bg-white shadow-sm hover:shadow-xl rounded-lg overflow-hidden group cursor-pointer border border-gray-100 transition-all flex flex-col h-full"
                 >
-                  <div className="h-64 overflow-hidden relative">
+                  <div className="h-60 overflow-hidden relative bg-gray-100">
                     <Image
                       src={room.images?.[0] || "https://images.unsplash.com/photo-1590490359683-658d3d23f972?q=80&w=2000"}
                       alt={room.title}
                       fill
                       sizes="(max-width: 768px) 100vw, 25vw"
-                      className="object-cover transition-transform duration-500 group-hover:scale-110"
+                      className="object-cover transition-transform duration-700 group-hover:scale-110"
                     />
                   </div>
-                  <div className="p-6">
-                    <h3 className="text-[#0f284f] font-bold uppercase text-lg mb-2 truncate">
-                      {room.title}
+                  <div className="p-6 flex-1 flex flex-col">
+                    <h3 className="text-[#0f284f] font-extrabold uppercase text-lg mb-6 leading-snug">
+                      {room.roomNumber ? `ROOM ${room.roomNumber} - ${room.title}` : room.title}
                     </h3>
-                    <div className="flex justify-between items-end mt-6">
-                      <p className="text-gray-500 text-xs w-1/2 leading-relaxed truncate">{room.capacity} adults / {room.roomType}</p>
-                      <div className="text-right">
-                        <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mb-1">From</p>
-                        <p className="text-2xl font-extrabold text-[#0f284f]">${room.pricePerNight}</p>
+                    <div className="flex justify-between items-end mt-auto flex-1 gap-2">
+                      <p className="text-gray-500 text-sm leading-relaxed w-[60%]">
+                        {room.description || "Experience comfort and luxury in our beautifully appointed rooms, designed to provide you with the perfect retreat during your stay."}
+                      </p>
+                      <div className="text-right w-[40%]">
+                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">FROM</p>
+                        <p className="text-3xl font-black text-[#0f284f]">${room.price || room.pricePerNight}</p>
                       </div>
                     </div>
                   </div>

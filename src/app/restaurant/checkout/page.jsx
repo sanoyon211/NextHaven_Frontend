@@ -15,16 +15,26 @@ export default function CheckoutPage() {
   const [orderNotes, setOrderNotes] = useState("");
 
   useEffect(() => {
-    const savedCart = localStorage.getItem("foodCart");
-    if (savedCart) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setCart(JSON.parse(savedCart));
+    const searchParams = new URLSearchParams(window.location.search);
+    if (searchParams.get("direct") === "true") {
+      const directData = sessionStorage.getItem("directOrder");
+      if (directData) setCart(JSON.parse(directData));
+    } else {
+      const savedCart = localStorage.getItem("foodCart");
+      if (savedCart) {
+        setCart(JSON.parse(savedCart));
+      }
     }
   }, []);
 
   const updateCart = (newCart) => {
     setCart(newCart);
-    localStorage.setItem("foodCart", JSON.stringify(newCart));
+    const searchParams = new URLSearchParams(window.location.search);
+    if (searchParams.get("direct") === "true") {
+      sessionStorage.setItem("directOrder", JSON.stringify(newCart));
+    } else {
+      localStorage.setItem("foodCart", JSON.stringify(newCart));
+    }
   };
 
   const removeItem = (index) => {

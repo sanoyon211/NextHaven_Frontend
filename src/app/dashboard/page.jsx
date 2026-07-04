@@ -10,6 +10,7 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import toast from "react-hot-toast";
 import api from "@/lib/api";
+import Swal from "sweetalert2";
 
 export default function DashboardPage() {
   const { user, loading: authLoading, logout } = useAuth();
@@ -19,6 +20,7 @@ export default function DashboardPage() {
   
   const [bookings, setBookings] = useState([]);
   const [foodOrders, setFoodOrders] = useState([]);
+  const [reservations, setReservations] = useState([]);
   const [loadingData, setLoadingData] = useState(true);
 
   // Profile update state
@@ -47,6 +49,9 @@ export default function DashboardPage() {
         } else if (activeTab === "food_orders") {
           const res = await api.get("/food-orders/my-orders");
           setFoodOrders(res.data.data || []);
+        } else if (activeTab === "reservations") {
+          const res = await api.get("/reservations/my-reservations");
+          setReservations(res.data.data || []);
         }
       } catch (error) {
         toast.error(`Failed to load ${activeTab}`);
@@ -218,7 +223,16 @@ export default function DashboardPage() {
   };
 
   const handleCancelBooking = async (booking) => {
-    if (window.confirm("Are you sure you want to cancel this booking?")) {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "Do you want to cancel this booking?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#0f284f",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, cancel it!"
+    });
+    if (result.isConfirmed) {
       const toastId = toast.loading("Cancelling booking...");
       try {
         await api.put(`/bookings/${booking._id}/cancel`);
@@ -350,6 +364,13 @@ export default function DashboardPage() {
                 >
                   <Utensils className="w-4 h-4" />
                   <span>Food Orders</span>
+                </button>
+                <button 
+                  onClick={() => setActiveTab("reservations")}
+                  className={`flex-shrink-0 flex items-center space-x-3 px-4 py-3 rounded-sm transition-colors text-sm font-semibold tracking-wide uppercase ${activeTab === "reservations" ? "bg-[#0f284f] text-white" : "text-gray-600 hover:bg-gray-100 hover:text-[#0f284f]"}`}
+                >
+                  <Calendar className="w-4 h-4" />
+                  <span>Reservations</span>
                 </button>
                 <button 
                   onClick={() => logout()}
@@ -549,6 +570,46 @@ export default function DashboardPage() {
                         <p className="text-gray-500 mb-4">You have no food orders yet.</p>
                         <button onClick={() => router.push("/restaurant/all-menu")} className="bg-[#ffbca8] px-6 py-3 text-sm font-semibold tracking-wide text-gray-900 transition-colors hover:bg-[#ffbca8]/80 rounded-sm uppercase">
                           Order Food
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {activeTab === "reservations" && (
+                  <div className="bg-white rounded-sm shadow-sm border border-gray-100 p-8 md:p-12">
+                    <h1 className="text-3xl font-bold text-[#0f284f] uppercase tracking-wide mb-8 border-b border-gray-100 pb-4">
+                      My Table Reservations
+                    </h1>
+
+                    {reservations.length > 0 ? (
+                      <div className="space-y-6">
+                        {reservations.map((res) => (
+                          <div key={res._id} className="flex flex-col md:flex-row md:items-start justify-between border border-gray-100 rounded-sm p-6 hover:shadow-md transition-shadow">
+                            <div>
+                              <span className="text-xs font-bold text-gray-400 uppercase tracking-widest block mb-1">Reservation #{res._id.substring(0,8).toUpperCase()}</span>
+                              <h3 className="text-xl font-bold text-[#0f284f] uppercase tracking-wide mb-2">Table for {res.guests}</h3>
+                              <p className="text-gray-500 text-sm mb-1"><span className="font-semibold text-gray-700">Date:</span> {new Date(res.date).toLocaleDateString()}</p>
+                              <p className="text-gray-500 text-sm mb-1"><span className="font-semibold text-gray-700">Time:</span> {res.time}</p>
+                              {res.specialRequests && <p className="text-gray-500 text-sm mt-2 italic">"{res.specialRequests}"</p>}
+                            </div>
+                            <div className="text-left md:text-right mt-4 md:mt-0">
+                               <span className={`inline-block px-3 py-1 text-xs font-bold uppercase tracking-wide rounded-sm mb-4 ${
+                                    res.status === 'confirmed' ? 'bg-[#eef2f6] text-[#0f284f]' :
+                                    res.status === 'cancelled' ? 'bg-red-50 text-red-600' :
+                                    'bg-yellow-50 text-yellow-600'
+                                  }`}>
+                                    {res.status}
+                               </span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="text-center py-12">
+                        <p className="text-gray-500 mb-4">You have no table reservations.</p>
+                        <button onClick={() => router.push("/restaurant")} className="bg-[#ffbca8] px-6 py-3 text-sm font-semibold tracking-wide text-gray-900 transition-colors hover:bg-[#ffbca8]/80 rounded-sm uppercase">
+                          Reserve a Table
                         </button>
                       </div>
                     )}

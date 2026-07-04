@@ -56,6 +56,12 @@ export default function AllMenuPage() {
     toast.success(`Added ${item.name} to cart!`);
   };
 
+  const handleOrderNow = (item) => {
+    const directOrder = [{ ...item, quantity: 1 }];
+    sessionStorage.setItem("directOrder", JSON.stringify(directOrder));
+    router.push("/restaurant/checkout?direct=true");
+  };
+
   useEffect(() => {
     const fetchMenu = async () => {
       try {
@@ -225,12 +231,20 @@ export default function AllMenuPage() {
                         </div>
                       </div>
 
-                      <button 
-                        onClick={() => addToCart(item)}
-                        className="w-full bg-[#0f284f] text-white font-bold uppercase tracking-widest py-4 rounded-sm hover:bg-[#1a3d72] transition-colors"
-                      >
-                        Add to Cart
-                      </button>
+                      <div className="flex gap-4">
+                        <button 
+                          onClick={() => addToCart(item)}
+                          className="flex-1 bg-white border-2 border-[#0f284f] text-[#0f284f] font-bold uppercase tracking-widest py-4 rounded-sm hover:bg-slate-50 transition-colors"
+                        >
+                          Add to Cart
+                        </button>
+                        <button 
+                          onClick={() => handleOrderNow(item)}
+                          className="flex-1 bg-[#0f284f] border-2 border-[#0f284f] text-white font-bold uppercase tracking-widest py-4 rounded-sm hover:bg-[#1a3d72] transition-colors"
+                        >
+                          Order Now
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </DialogContent>

@@ -7,10 +7,11 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { Eye, EyeOff } from "lucide-react";
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import api from "@/lib/api";
 import { useAuth } from "@/lib/AuthContext";
+import Swal from "sweetalert2";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -56,6 +57,34 @@ export default function LoginPage() {
     } catch (error) {
       setIsLoading(false);
       toast.error("Google sign-in failed.");
+    }
+  };
+
+  const handleForgotPassword = async (e) => {
+    e.preventDefault();
+    const { value: resetEmail } = await Swal.fire({
+      title: "Reset Password",
+      input: "email",
+      inputLabel: "Enter your email address",
+      inputPlaceholder: "you@example.com",
+      showCancelButton: true,
+      confirmButtonColor: "#0f284f",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Send Reset Link",
+    });
+
+    if (resetEmail) {
+      try {
+        await sendPasswordResetEmail(auth, resetEmail);
+        Swal.fire({
+          title: "Email Sent!",
+          text: "Check your inbox for password reset instructions.",
+          icon: "success",
+          confirmButtonColor: "#0f284f",
+        });
+      } catch (error) {
+        toast.error(error.message || "Failed to send reset email.");
+      }
     }
   };
 
@@ -141,9 +170,13 @@ export default function LoginPage() {
             </div>
 
             <div className="flex justify-end">
-              <a href="#" className="text-xs font-semibold text-[#0f284f] hover:underline">
+              <button 
+                type="button" 
+                onClick={handleForgotPassword} 
+                className="text-xs font-semibold text-[#0f284f] hover:underline"
+              >
                 Forgot Password?
-              </a>
+              </button>
             </div>
 
             <button
