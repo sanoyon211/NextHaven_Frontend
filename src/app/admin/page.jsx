@@ -6,14 +6,17 @@ import Image from "next/image";
 import toast from "react-hot-toast";
 import { Plus, Edit, Trash2, DollarSign, BedDouble, CalendarCheck, X, ClipboardList, Utensils, Home } from "lucide-react";
 import api from "@/lib/api";
+import { useAuth } from "@/lib/AuthContext";
 
 export default function AdminDashboard() {
   const router = useRouter();
+  const { user, loading } = useAuth();
   const [activeTab, setActiveTab] = useState("rooms");
   
   const [rooms, setRooms] = useState([]);
   const [bookings, setBookings] = useState([]);
   const [foodOrders, setFoodOrders] = useState([]);
+  const [menus, setMenus] = useState([]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -24,6 +27,13 @@ export default function AdminDashboard() {
   });
   const [loadingAnalytics, setLoadingAnalytics] = useState(true);
   const [loadingData, setLoadingData] = useState(true);
+
+  useEffect(() => {
+    if (!loading && (!user || user.role !== 'admin')) {
+      toast.error("You are not authorized to view this page.");
+      router.push("/");
+    }
+  }, [user, loading, router]);
 
   useEffect(() => {
     const fetchAnalytics = async () => {
@@ -54,6 +64,9 @@ export default function AdminDashboard() {
         } else if (activeTab === "food_orders") {
           const res = await api.get("/food-orders");
           setFoodOrders(res.data.data || []);
+        } else if (activeTab === "menus") {
+          const res = await api.get("/menu");
+          setMenus(res.data.menuItems || []);
         }
       } catch (error) {
         toast.error(`Failed to load ${activeTab}`);
@@ -74,6 +87,19 @@ export default function AdminDashboard() {
   });
   const [amenities, setAmenities] = useState([]);
   const [imageFile, setImageFile] = useState(null);
+
+  // Menu Form State
+  const [isMenuModalOpen, setIsMenuModalOpen] = useState(false);
+  const [editingMenuId, setEditingMenuId] = useState(null);
+  const [menuFormData, setMenuFormData] = useState({
+    name: "",
+    category: "Starters",
+    price: "",
+    description: "",
+    ingredients: "",
+    isSignature: false,
+  });
+  const [menuImageFile, setMenuImageFile] = useState(null);
 
   const toggleStatus = (id) => {
     setRooms(rooms.map(room => {
@@ -140,6 +166,87 @@ export default function AdminDashboard() {
     }
   };
 
+  const handleMenuSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    const toastId = toast.loading(editingMenuId ? "Updating menu item..." : "Creating menu item...");
+
+    try {
+      const data = new FormData();
+      data.append("name", menuFormData.name);
+      data.append("category", menuFormData.category);
+      data.append("price", menuFormData.price);
+      data.append("description", menuFormData.description);
+      data.append("ingredients", menuFormData.ingredients);
+      data.append("isSignature", menuFormData.isSignature);
+      
+      if (menuImageFile) {
+        data.append("image", menuImageFile);
+      }
+
+      let res;
+      if (editingMenuId) {
+        res = await api.put(`/menu/${editingMenuId}`, data, { headers: { "Content-Type": "multipart/form-data" } });
+        setMenus(menus.map(m => m._id === editingMenuId ? res.data.menuItem : m));
+        toast.success("Menu item updated!", { id: toastId });
+      } else {
+        res = await api.post("/menu", data, { headers: { "Content-Type": "multipart/form-data" } });
+        setMenus([res.data.menuItem, ...menus]);
+        toast.success("Menu item created!", { id: toastId });
+      }
+      setIsMenuModalOpen(false);
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to save menu item.", { id: toastId });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const openMenuModal = (menuItem = null) => {
+    if (menuItem) {
+      setEditingMenuId(menuItem._id);
+      setMenuFormData({
+        name: menuItem.name,
+        category: menuItem.category,
+        price: menuItem.price,
+        description: menuItem.description,
+        ingredients: menuItem.ingredients,
+        isSignature: menuItem.isSignature,
+      });
+    } else {
+      setEditingMenuId(null);
+      setMenuFormData({
+        name: "",
+        category: "Starters",
+        price: "",
+        description: "",
+        ingredients: "",
+        isSignature: false,
+      });
+    }
+    setMenuImageFile(null);
+    setIsMenuModalOpen(true);
+  };
+
+  const handleDeleteMenu = async (id) => {
+    if (!confirm("Are you sure you want to delete this item?")) return;
+    try {
+      await api.delete(`/menu/${id}`);
+      setMenus(menus.filter(m => m._id !== id));
+      toast.success("Menu item deleted");
+    } catch (error) {
+      toast.error("Failed to delete item");
+    }
+  };
+
+  if (loading || !user || user.role !== 'admin') {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-[#f8fafc]">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#0f284f]"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex min-h-screen bg-[#f8fafc]">
       {/* Sidebar */}
@@ -182,6 +289,16 @@ export default function AdminDashboard() {
             >
               <Utensils className="w-4 h-4" /> Food Orders
             </button>
+            <button
+              onClick={() => setActiveTab("menus")}
+              className={`w-full flex items-center gap-3 px-4 py-3 font-bold uppercase tracking-wide text-sm transition-colors rounded-sm ${
+                activeTab === "menus"
+                  ? "bg-[#0f284f] text-white"
+                  : "text-gray-500 hover:text-gray-900 hover:bg-gray-50"
+              }`}
+            >
+              <ClipboardList className="w-4 h-4" /> Menu Items
+            </button>
           </nav>
         </div>
         <div className="p-4 border-t border-gray-100">
@@ -209,6 +326,15 @@ export default function AdminDashboard() {
             >
               <Plus className="w-5 h-5" />
               <span>Add New Room</span>
+            </button>
+          )}
+          {activeTab === "menus" && (
+            <button 
+              onClick={() => openMenuModal()}
+              className="flex items-center space-x-2 bg-[#0f284f] text-white font-bold uppercase tracking-wider px-6 py-3 rounded-sm hover:bg-[#1a3d72] transition-colors"
+            >
+              <Plus className="w-5 h-5" />
+              <span>Add Menu Item</span>
             </button>
           )}
         </div>
@@ -366,19 +492,24 @@ export default function AdminDashboard() {
                         <th className="p-4 font-bold">Order ID</th>
                         <th className="p-4 font-bold">Customer</th>
                         <th className="p-4 font-bold">Items</th>
+                        <th className="p-4 font-bold">Location</th>
                         <th className="p-4 font-bold">Total</th>
                         <th className="p-4 font-bold">Status</th>
                         <th className="p-4 font-bold">Action</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {foodOrders.length === 0 && <tr><td colSpan="6" className="p-6 text-center text-gray-500">No food orders found.</td></tr>}
+                      {foodOrders.length === 0 && <tr><td colSpan="7" className="p-6 text-center text-gray-500">No food orders found.</td></tr>}
                       {foodOrders.map((order) => (
                         <tr key={order._id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
                           <td className="p-4 font-mono text-sm text-gray-500">{order._id.substring(0, 8).toUpperCase()}</td>
                           <td className="p-4 font-bold text-gray-800">{order.user?.name || 'Unknown'}</td>
                           <td className="p-4 text-sm text-gray-600">
                             {order.items.map(i => `${i.quantity}x ${i.name}`).join(', ')}
+                          </td>
+                          <td className="p-4 text-sm text-gray-800 font-medium">
+                            <div>{order.deliveryLocation || 'N/A'}</div>
+                            {order.orderNotes && <div className="text-xs text-gray-500 mt-1 italic">Note: {order.orderNotes}</div>}
                           </td>
                           <td className="p-4 text-sm font-bold text-gray-900">${order.totalAmount}</td>
                           <td className="p-4">
@@ -393,13 +524,62 @@ export default function AdminDashboard() {
                             <select 
                               value={order.orderStatus}
                               onChange={(e) => updateFoodOrderStatus(order._id, e.target.value)}
-                              className="text-sm border border-gray-300 rounded p-1"
+                              className="text-sm border border-gray-300 rounded p-1 focus:outline-none focus:border-[#0f284f]"
                             >
                               <option value="preparing">Preparing</option>
                               <option value="ready">Ready</option>
                               <option value="delivered">Delivered</option>
                               <option value="cancelled">Cancelled</option>
                             </select>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+
+              {activeTab === "menus" && (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left border-collapse">
+                    <thead>
+                      <tr className="bg-gray-50 text-[#0f284f] border-b border-gray-200 uppercase text-xs tracking-wider">
+                        <th className="p-4 font-bold">Image</th>
+                        <th className="p-4 font-bold">Name</th>
+                        <th className="p-4 font-bold">Category</th>
+                        <th className="p-4 font-bold">Price</th>
+                        <th className="p-4 font-bold">Signature</th>
+                        <th className="p-4 font-bold text-right">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {menus.length === 0 && <tr><td colSpan="6" className="p-6 text-center text-gray-500">No menu items found.</td></tr>}
+                      {menus.map((item) => (
+                        <tr key={item._id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                          <td className="p-4">
+                            <div className="relative w-16 h-12 rounded-sm overflow-hidden">
+                              <Image
+                                src={item.imageUrl}
+                                alt={item.name}
+                                fill
+                                sizes="64px"
+                                className="object-cover"
+                              />
+                            </div>
+                          </td>
+                          <td className="p-4 font-bold text-gray-800">{item.name}</td>
+                          <td className="p-4 text-sm text-gray-600">{item.category}</td>
+                          <td className="p-4 text-sm font-bold text-gray-900">{item.price}</td>
+                          <td className="p-4">
+                            {item.isSignature ? <span className="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs font-bold rounded-sm">Yes</span> : <span className="text-gray-400 text-sm">No</span>}
+                          </td>
+                          <td className="p-4 text-right space-x-2">
+                            <button onClick={() => openMenuModal(item)} className="p-2 text-gray-500 hover:text-[#0f284f] hover:bg-blue-50 rounded-full transition-colors">
+                              <Edit className="w-4 h-4" />
+                            </button>
+                            <button onClick={() => handleDeleteMenu(item._id)} className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-full transition-colors">
+                              <Trash2 className="w-4 h-4" />
+                            </button>
                           </td>
                         </tr>
                       ))}
@@ -550,6 +730,129 @@ export default function AdminDashboard() {
                   className="px-6 py-3 bg-[#0f284f] rounded-sm text-sm font-bold text-white uppercase tracking-wider hover:bg-[#1a3d72] transition-colors disabled:opacity-70"
                 >
                   {isSubmitting ? "Creating..." : "Create Room"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Add/Edit Menu Modal */}
+      {isMenuModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div className="sticky top-0 bg-white border-b border-gray-100 px-6 py-4 flex justify-between items-center z-10">
+              <h2 className="text-xl font-bold text-[#0f284f] uppercase tracking-wider">
+                {editingMenuId ? "Edit Menu Item" : "Create Menu Item"}
+              </h2>
+              <button 
+                onClick={() => setIsMenuModalOpen(false)}
+                className="p-2 text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+            
+            <form onSubmit={handleMenuSubmit} className="p-6 space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <div className="space-y-1">
+                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">Name</label>
+                  <input
+                    type="text"
+                    required
+                    value={menuFormData.name}
+                    onChange={(e) => setMenuFormData({...menuFormData, name: e.target.value})}
+                    className="w-full border border-gray-300 rounded-sm p-3 text-sm focus:outline-none focus:border-[#0f284f] transition-all"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">Category</label>
+                  <select
+                    value={menuFormData.category}
+                    onChange={(e) => setMenuFormData({...menuFormData, category: e.target.value})}
+                    className="w-full border border-gray-300 rounded-sm p-3 text-sm focus:outline-none focus:border-[#0f284f] transition-all bg-white"
+                  >
+                    <option value="Starters">Starters</option>
+                    <option value="Main Courses">Main Courses</option>
+                    <option value="Desserts">Desserts</option>
+                    <option value="Drinks">Drinks</option>
+                  </select>
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">Price (e.g. $12.99)</label>
+                  <input
+                    type="text"
+                    required
+                    value={menuFormData.price}
+                    onChange={(e) => setMenuFormData({...menuFormData, price: e.target.value})}
+                    className="w-full border border-gray-300 rounded-sm p-3 text-sm focus:outline-none focus:border-[#0f284f] transition-all"
+                  />
+                </div>
+                
+                <div className="space-y-1 flex items-center mt-6">
+                  <label className="flex items-center space-x-3 cursor-pointer">
+                    <input 
+                      type="checkbox" 
+                      checked={menuFormData.isSignature}
+                      onChange={(e) => setMenuFormData({...menuFormData, isSignature: e.target.checked})}
+                      className="rounded-sm border-gray-300 text-[#0f284f] focus:ring-[#0f284f] w-5 h-5"
+                    />
+                    <span className="text-sm font-bold text-gray-700 uppercase tracking-wide">Is Signature Item?</span>
+                  </label>
+                </div>
+
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">Description</label>
+                <textarea
+                  required
+                  rows="2"
+                  value={menuFormData.description}
+                  onChange={(e) => setMenuFormData({...menuFormData, description: e.target.value})}
+                  className="w-full border border-gray-300 rounded-sm p-3 text-sm focus:outline-none focus:border-[#0f284f] transition-all resize-none"
+                ></textarea>
+              </div>
+              
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">Ingredients</label>
+                <textarea
+                  required
+                  rows="2"
+                  value={menuFormData.ingredients}
+                  onChange={(e) => setMenuFormData({...menuFormData, ingredients: e.target.value})}
+                  className="w-full border border-gray-300 rounded-sm p-3 text-sm focus:outline-none focus:border-[#0f284f] transition-all resize-none"
+                ></textarea>
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">Image {editingMenuId && "(Optional)"}</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  required={!editingMenuId}
+                  onChange={(e) => setMenuImageFile(e.target.files[0])}
+                  className="w-full border border-gray-300 rounded-sm p-2 text-sm focus:outline-none file:mr-4 file:py-2 file:px-4 file:rounded-sm file:border-0 file:text-sm file:font-semibold file:bg-[#0f284f] file:text-white hover:file:bg-[#1a3d72] transition-all cursor-pointer"
+                />
+              </div>
+
+              <div className="pt-4 flex justify-end space-x-4 border-t border-gray-100">
+                <button
+                  type="button"
+                  onClick={() => setIsMenuModalOpen(false)}
+                  className="px-6 py-3 border border-gray-300 rounded-sm text-sm font-bold text-gray-600 uppercase tracking-wider hover:bg-gray-50 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="px-6 py-3 bg-[#0f284f] rounded-sm text-sm font-bold text-white uppercase tracking-wider hover:bg-[#1a3d72] transition-colors disabled:opacity-70"
+                >
+                  {isSubmitting ? "Saving..." : "Save Menu Item"}
                 </button>
               </div>
             </form>

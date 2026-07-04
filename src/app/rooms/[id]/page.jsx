@@ -30,6 +30,13 @@ export default function RoomPage({ params }) {
   const [room, setRoom] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Booking Form State
+  const [checkIn, setCheckIn] = useState("");
+  const [checkOut, setCheckOut] = useState("");
+  const [adults, setAdults] = useState(1);
+  const [children, setChildren] = useState(0);
+  const [specialRequests, setSpecialRequests] = useState("");
+
   useEffect(() => {
     const fetchRoom = async () => {
       try {
@@ -72,19 +79,22 @@ export default function RoomPage({ params }) {
       return;
     }
 
+    if (!checkIn || !checkOut) {
+      toast.error("Please select check-in and check-out dates");
+      return;
+    }
+
     setIsBooking(true);
     const toastId = toast.loading("Redirecting to secure payment...");
 
     try {
-      // Use dummy dates for now
-      const checkInDate = new Date();
-      const checkOutDate = new Date();
-      checkOutDate.setDate(checkOutDate.getDate() + 2); // 2 days from now
-
       const response = await api.post("/bookings/checkout", {
         roomId: rawId,
-        checkInDate,
-        checkOutDate,
+        checkInDate: checkIn,
+        checkOutDate: checkOut,
+        numberOfAdults: adults,
+        numberOfChildren: children,
+        specialRequests,
       });
 
       if (response.data?.sessionUrl) {
@@ -129,13 +139,36 @@ export default function RoomPage({ params }) {
               ))}
             </ul>
 
-            <div>
+            <div className="bg-gray-50 p-6 rounded-lg mb-8 border border-gray-100">
+              <h3 className="text-[#0f284f] font-bold uppercase tracking-wider mb-4">Book Your Stay</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                <div>
+                  <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Check-in Date</label>
+                  <input type="date" value={checkIn} onChange={(e) => setCheckIn(e.target.value)} className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-[#0f284f]" required />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Check-out Date</label>
+                  <input type="date" value={checkOut} onChange={(e) => setCheckOut(e.target.value)} className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-[#0f284f]" required />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Adults</label>
+                  <input type="number" min="1" value={adults} onChange={(e) => setAdults(Number(e.target.value))} className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-[#0f284f]" required />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Children</label>
+                  <input type="number" min="0" value={children} onChange={(e) => setChildren(Number(e.target.value))} className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-[#0f284f]" />
+                </div>
+              </div>
+              <div className="mb-6">
+                <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Special Requests (Optional)</label>
+                <textarea value={specialRequests} onChange={(e) => setSpecialRequests(e.target.value)} rows="2" className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-[#0f284f] resize-none" placeholder="e.g. Late check-in, extra pillows..." />
+              </div>
               <button 
                 onClick={handleBooking}
                 disabled={isBooking}
-                className="bg-[#0f284f] text-white font-bold uppercase tracking-wider px-8 py-4 rounded hover:bg-[#1a3d72] transition-colors disabled:opacity-70"
+                className="w-full bg-[#0f284f] text-white font-bold uppercase tracking-wider px-8 py-4 rounded hover:bg-[#1a3d72] transition-colors disabled:opacity-70"
               >
-                {isBooking ? "PROCESSING..." : "BOOK YOUR STAY NOW"}
+                {isBooking ? "PROCESSING..." : "PROCEED TO PAYMENT"}
               </button>
             </div>
           </motion.div>

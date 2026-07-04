@@ -11,6 +11,8 @@ export default function CheckoutPage() {
   const router = useRouter();
   const [cart, setCart] = useState([]);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [deliveryLocation, setDeliveryLocation] = useState("");
+  const [orderNotes, setOrderNotes] = useState("");
 
   useEffect(() => {
     const savedCart = localStorage.getItem("foodCart");
@@ -50,6 +52,10 @@ export default function CheckoutPage() {
 
   const handleCheckout = async () => {
     if (cart.length === 0) return;
+    if (!deliveryLocation.trim()) {
+      toast.error("Please enter a delivery location");
+      return;
+    }
     setIsProcessing(true);
     try {
       // Prepare items for backend
@@ -58,7 +64,11 @@ export default function CheckoutPage() {
         quantity: item.quantity
       }));
 
-      const res = await api.post("/food-orders/checkout", { items });
+      const res = await api.post("/food-orders/checkout", { 
+        items,
+        deliveryLocation,
+        orderNotes
+      });
       
       if (res.data?.url) {
         // We do not clear the cart yet. The user might cancel. 
@@ -67,7 +77,8 @@ export default function CheckoutPage() {
       }
     } catch (error) {
       console.error(error);
-      toast.error("Failed to proceed to checkout");
+      const errorMsg = error.response?.data?.message || "Failed to proceed to checkout";
+      toast.error(errorMsg);
       setIsProcessing(false);
     }
   };
@@ -147,6 +158,34 @@ export default function CheckoutPage() {
                   </div>
                 );
               })}
+            </div>
+            
+            <div className="mt-8 pt-6 border-t border-gray-100 space-y-4">
+              <div>
+                <label className="block text-sm font-bold text-gray-700 uppercase tracking-wide mb-2">
+                  Delivery Location <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={deliveryLocation}
+                  onChange={(e) => setDeliveryLocation(e.target.value)}
+                  placeholder="e.g. Room 101 or Table 5"
+                  className="w-full border border-gray-300 rounded-sm p-3 focus:outline-none focus:border-[#0f284f] transition-colors"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-bold text-gray-700 uppercase tracking-wide mb-2">
+                  Order Notes (Optional)
+                </label>
+                <textarea
+                  value={orderNotes}
+                  onChange={(e) => setOrderNotes(e.target.value)}
+                  placeholder="e.g. Less spicy, Extra ketchup..."
+                  className="w-full border border-gray-300 rounded-sm p-3 focus:outline-none focus:border-[#0f284f] transition-colors resize-none"
+                  rows="2"
+                />
+              </div>
             </div>
           </div>
 
