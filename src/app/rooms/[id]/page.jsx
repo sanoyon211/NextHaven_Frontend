@@ -49,7 +49,7 @@ export default function RoomPage({ params }) {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#0f284f]"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#032c28]"></div>
       </div>
     );
   }
@@ -57,8 +57,8 @@ export default function RoomPage({ params }) {
   if (!room) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white flex-col">
-        <h1 className="text-3xl font-bold text-[#0f284f] uppercase tracking-wide mb-4">Room Not Found</h1>
-        <button onClick={() => router.push("/rooms")} className="bg-[#0f284f] text-white px-6 py-2 rounded">
+        <h1 className="text-3xl font-bold text-[#032c28] uppercase tracking-wide mb-4">Room Not Found</h1>
+        <button onClick={() => router.push("/rooms")} className="bg-[#032c28] text-white px-6 py-2 rounded">
           Back to Rooms
         </button>
       </div>
@@ -110,20 +110,20 @@ export default function RoomPage({ params }) {
             variants={fadeUp}
             className="flex flex-col justify-center"
           >
-            <h1 className="text-[#0f284f] text-4xl sm:text-5xl lg:text-6xl font-extrabold uppercase leading-tight mb-6">
+            <h1 className="text-[#032c28] text-4xl sm:text-5xl lg:text-6xl font-extrabold uppercase leading-tight mb-6">
               {room.title}
             </h1>
             <p className="text-gray-600 text-lg leading-relaxed mb-4">
               {room.description}
             </p>
-            <p className="text-[#0f284f] text-2xl font-black mb-8">
+            <p className="text-[#032c28] text-2xl font-black mb-8">
               ${room.pricePerNight} <span className="text-sm text-gray-500 font-medium uppercase tracking-widest">/ Night</span>
             </p>
             
             <ul className="space-y-4 mb-10">
               {(room.amenities && room.amenities.length > 0 ? room.amenities.slice(0, 4) : ["Master Bedroom with King-Size Bed", "Fully Equipped Kitchenette", "Modern En-suite Bathroom", "Spacious Private Balcony"]).map((feature, idx) => (
                 <li key={idx} className="flex items-center text-gray-700 font-medium">
-                  <Check className="h-5 w-5 text-[#0f284f] mr-3" />
+                  <Check className="h-5 w-5 text-[#032c28] mr-3" />
                   {feature}
                 </li>
               ))}
@@ -133,7 +133,7 @@ export default function RoomPage({ params }) {
               <button 
                 onClick={handleBooking}
                 disabled={isBooking}
-                className="bg-[#0f284f] text-white font-bold uppercase tracking-wider px-8 py-4 rounded hover:bg-[#1a3d72] transition-colors disabled:opacity-70"
+                className="bg-[#032c28] text-white font-bold uppercase tracking-wider px-8 py-4 rounded hover:bg-[#043e39] transition-colors disabled:opacity-70"
               >
                 {isBooking ? "PROCESSING..." : "BOOK YOUR STAY NOW"}
               </button>
@@ -212,7 +212,7 @@ export default function RoomPage({ params }) {
             viewport={{ once: true }}
             variants={fadeUp}
           >
-            <h2 className="text-[#0f284f] text-3xl font-bold uppercase mb-10 tracking-wide">
+            <h2 className="text-[#032c28] text-3xl font-bold uppercase mb-10 tracking-wide">
               Included Amenities and Services
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
@@ -244,7 +244,7 @@ export default function RoomPage({ params }) {
       </section>
 
       {/* 4. Hotel Facilities Section */}
-      <section className="bg-[#0f284f] text-white py-24 px-4 sm:px-6 lg:px-8">
+      <section className="bg-[#032c28] text-white py-24 px-4 sm:px-6 lg:px-8">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -317,13 +317,13 @@ export default function RoomPage({ params }) {
             viewport={{ once: true }}
             variants={fadeUp}
           >
-            <h2 className="text-[#0f284f] text-3xl font-bold uppercase mb-10 tracking-wide">
+            <h2 className="text-[#032c28] text-3xl font-bold uppercase mb-10 tracking-wide">
               Practical Information
             </h2>
             
             <Accordion type="single" className="w-full space-y-4">
               <AccordionItem value="item-1" className="bg-white border border-gray-100 rounded-lg px-6 py-2 shadow-sm hover:shadow-md transition-all">
-                <AccordionTrigger className="text-left font-bold text-[#0f284f] uppercase tracking-wide hover:no-underline hover:text-[#ffbca8] transition-colors">
+                <AccordionTrigger className="text-left font-bold text-[#032c28] uppercase tracking-wide hover:no-underline hover:text-[#cb5d49] transition-colors">
                   How do I make a reservation?
                 </AccordionTrigger>
                 <AccordionContent className="text-gray-500 leading-relaxed text-base pt-2 pb-4">
@@ -332,7 +332,7 @@ export default function RoomPage({ params }) {
               </AccordionItem>
               
               <AccordionItem value="item-2" className="bg-white border border-gray-100 rounded-lg px-6 py-2 shadow-sm hover:shadow-md transition-all">
-                <AccordionTrigger className="text-left font-bold text-[#0f284f] uppercase tracking-wide hover:no-underline hover:text-[#ffbca8] transition-colors">
+                <AccordionTrigger className="text-left font-bold text-[#032c28] uppercase tracking-wide hover:no-underline hover:text-[#cb5d49] transition-colors">
                   What is the check-in/check-out policy?
                 </AccordionTrigger>
                 <AccordionContent className="text-gray-500 leading-relaxed text-base pt-2 pb-4">
@@ -341,7 +341,7 @@ export default function RoomPage({ params }) {
               </AccordionItem>
               
               <AccordionItem value="item-3" className="bg-white border border-gray-100 rounded-lg px-6 py-2 shadow-sm hover:shadow-md transition-all">
-                <AccordionTrigger className="text-left font-bold text-[#0f284f] uppercase tracking-wide hover:no-underline hover:text-[#ffbca8] transition-colors">
+                <AccordionTrigger className="text-left font-bold text-[#032c28] uppercase tracking-wide hover:no-underline hover:text-[#cb5d49] transition-colors">
                   Do you offer airport shuttle service?
                 </AccordionTrigger>
                 <AccordionContent className="text-gray-500 leading-relaxed text-base pt-2 pb-4">
@@ -350,7 +350,7 @@ export default function RoomPage({ params }) {
               </AccordionItem>
               
               <AccordionItem value="item-4" className="bg-white border border-gray-100 rounded-lg px-6 py-2 shadow-sm hover:shadow-md transition-all">
-                <AccordionTrigger className="text-left font-bold text-[#0f284f] uppercase tracking-wide hover:no-underline hover:text-[#ffbca8] transition-colors">
+                <AccordionTrigger className="text-left font-bold text-[#032c28] uppercase tracking-wide hover:no-underline hover:text-[#cb5d49] transition-colors">
                   Is breakfast included in the room rate?
                 </AccordionTrigger>
                 <AccordionContent className="text-gray-500 leading-relaxed text-base pt-2 pb-4">
@@ -359,7 +359,7 @@ export default function RoomPage({ params }) {
               </AccordionItem>
               
               <AccordionItem value="item-5" className="bg-white border border-gray-100 rounded-lg px-6 py-2 shadow-sm hover:shadow-md transition-all">
-                <AccordionTrigger className="text-left font-bold text-[#0f284f] uppercase tracking-wide hover:no-underline hover:text-[#ffbca8] transition-colors">
+                <AccordionTrigger className="text-left font-bold text-[#032c28] uppercase tracking-wide hover:no-underline hover:text-[#cb5d49] transition-colors">
                   Are pets allowed in the hotel?
                 </AccordionTrigger>
                 <AccordionContent className="text-gray-500 leading-relaxed text-base pt-2 pb-4">
@@ -380,7 +380,7 @@ export default function RoomPage({ params }) {
           variants={fadeUp}
         >
           <div className="text-center mb-16">
-            <h2 className="text-[#0f284f] text-3xl font-bold uppercase tracking-wider mb-4">
+            <h2 className="text-[#032c28] text-3xl font-bold uppercase tracking-wider mb-4">
               Guest Reviews & Ratings
             </h2>
             <p className="text-gray-500 max-w-2xl mx-auto">
@@ -408,7 +408,7 @@ export default function RoomPage({ params }) {
                   className="w-12 h-12 rounded-full mr-4 object-cover"
                 />
                 <div>
-                  <h4 className="text-[#0f284f] font-bold">Sarah Jenkins</h4>
+                  <h4 className="text-[#032c28] font-bold">Sarah Jenkins</h4>
                   <span className="text-sm text-gray-500">Stayed in June</span>
                 </div>
               </div>
@@ -433,7 +433,7 @@ export default function RoomPage({ params }) {
                   className="w-12 h-12 rounded-full mr-4 object-cover"
                 />
                 <div>
-                  <h4 className="text-[#0f284f] font-bold">Michael Chen</h4>
+                  <h4 className="text-[#032c28] font-bold">Michael Chen</h4>
                   <span className="text-sm text-gray-500">Stayed in August</span>
                 </div>
               </div>
@@ -458,7 +458,7 @@ export default function RoomPage({ params }) {
                   className="w-12 h-12 rounded-full mr-4 object-cover"
                 />
                 <div>
-                  <h4 className="text-[#0f284f] font-bold">Emma Roberts</h4>
+                  <h4 className="text-[#032c28] font-bold">Emma Roberts</h4>
                   <span className="text-sm text-gray-500">Stayed in September</span>
                 </div>
               </div>

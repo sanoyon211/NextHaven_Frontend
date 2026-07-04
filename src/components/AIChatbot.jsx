@@ -48,7 +48,7 @@ export default function AIChatbot() {
       {/* Floating Chat Button */}
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 p-4 bg-[#0f284f] text-white rounded-full shadow-2xl hover:bg-[#1a3d72] transition-transform hover:scale-105 z-50 flex items-center justify-center"
+        className="fixed bottom-6 right-6 p-4 bg-[#032c28] text-white rounded-full shadow-2xl hover:bg-[#043e39] transition-transform hover:scale-105 z-50 flex items-center justify-center"
       >
         <MessageCircle className="w-7 h-7" />
       </button>
@@ -63,7 +63,7 @@ export default function AIChatbot() {
             className="fixed inset-0 md:inset-auto md:bottom-24 md:right-6 w-full h-full md:w-[350px] md:h-auto bg-white md:rounded-lg shadow-2xl z-[60] md:border border-gray-100 overflow-hidden flex flex-col"
           >
             {/* Header */}
-            <div className="bg-[#0f284f] text-white p-4 flex justify-between items-center">
+            <div className="bg-[#032c28] text-white p-4 flex justify-between items-center">
               <div>
                 <h3 className="font-bold text-sm tracking-wide uppercase">NextHaven Concierge</h3>
                 <p className="text-xs text-gray-300">AI-Powered Assistant</p>
@@ -80,7 +80,7 @@ export default function AIChatbot() {
                   key={idx}
                   className={`max-w-[80%] p-3 rounded-lg text-sm shadow-sm ${
                     msg.role === "user"
-                      ? "bg-[#ffbca8] text-gray-900 self-end rounded-tr-none font-medium"
+                      ? "bg-[#cb5d49] text-gray-900 self-end rounded-tr-none font-medium"
                       : "bg-white text-gray-700 self-start rounded-tl-none border border-gray-100 leading-relaxed"
                   }`}
                 >
@@ -105,12 +105,12 @@ export default function AIChatbot() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleSend()}
-                className="flex-1 border border-gray-200 rounded-full px-4 py-2 text-sm focus:outline-none focus:border-[#0f284f]"
+                className="flex-1 border border-gray-200 rounded-full px-4 py-2 text-sm focus:outline-none focus:border-[#032c28]"
               />
               <button
                 onClick={handleSend}
                 disabled={!input.trim() || loading}
-                className="p-2 bg-[#0f284f] text-white rounded-full hover:bg-[#1a3d72] transition-colors disabled:opacity-50"
+                className="p-2 bg-[#032c28] text-white rounded-full hover:bg-[#043e39] transition-colors disabled:opacity-50"
               >
                 <Send className="w-4 h-4" />
               </button>

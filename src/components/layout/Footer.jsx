@@ -26,7 +26,10 @@ const Instagram = ({ className }) => (
 
 export default function Footer() {
   return (
-    <footer className="bg-[#032c28] text-white">
+    <footer 
+      className="bg-[#032c28] text-white"
+      style={{ backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(0,0,0,0.15) 40px, rgba(0,0,0,0.15) 80px)' }}
+    >
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="flex flex-col gap-6 md:grid md:grid-cols-4 lg:gap-8">
           
@@ -41,7 +44,7 @@ export default function Footer() {
             </p>
             <Link
               href="/rooms"
-              className="bg-[#ffbca8] px-6 py-3 text-sm font-semibold tracking-wide text-gray-900 transition-colors hover:bg-[#ffbca8]/80 rounded-sm"
+              className="bg-[#cb5d49] px-8 py-3 text-sm font-bold tracking-widest text-white uppercase transition-colors hover:bg-[#cb5d49]/80 rounded-sm"
             >
               BOOK NOW
             </Link>
@@ -49,7 +52,7 @@ export default function Footer() {
 
           {/* Column 2: Address */}
           <div>
-            <h3 className="mb-6 text-sm font-semibold tracking-widest text-gray-400">
+            <h3 className="mb-6 text-sm font-extrabold tracking-widest text-white uppercase">
               ADDRESS
             </h3>
             <address className="text-sm font-normal not-italic leading-relaxed text-gray-300">
@@ -62,7 +65,7 @@ export default function Footer() {
 
           {/* Column 3: Contact */}
           <div>
-            <h3 className="mb-6 text-sm font-semibold tracking-widest text-gray-400">
+            <h3 className="mb-6 text-sm font-extrabold tracking-widest text-white uppercase">
               CONTACT
             </h3>
             <div className="space-y-2 text-sm text-gray-300">
@@ -81,34 +84,34 @@ export default function Footer() {
 
           {/* Column 4: Follow */}
           <div>
-            <h3 className="mb-6 text-sm font-semibold tracking-widest text-gray-400">
+            <h3 className="mb-6 text-sm font-extrabold tracking-widest text-white uppercase">
               FOLLOW
             </h3>
             <div className="flex space-x-4">
               <a
                 href="#"
-                className="text-gray-300 hover:text-[#ffbca8] transition-colors"
+                className="text-gray-300 hover:text-[#cb5d49] transition-colors"
                 aria-label="Facebook"
               >
                 <Facebook className="h-5 w-5" />
               </a>
               <a
                 href="#"
-                className="text-gray-300 hover:text-[#ffbca8] transition-colors"
+                className="text-gray-300 hover:text-[#cb5d49] transition-colors"
                 aria-label="Twitter"
               >
                 <Twitter className="h-5 w-5" />
               </a>
               <a
                 href="#"
-                className="text-gray-300 hover:text-[#ffbca8] transition-colors"
+                className="text-gray-300 hover:text-[#cb5d49] transition-colors"
                 aria-label="Youtube"
               >
                 <Youtube className="h-5 w-5" />
               </a>
               <a
                 href="#"
-                className="text-gray-300 hover:text-[#ffbca8] transition-colors"
+                className="text-gray-300 hover:text-[#cb5d49] transition-colors"
                 aria-label="Instagram"
               >
                 <Instagram className="h-5 w-5" />

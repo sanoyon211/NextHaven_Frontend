@@ -51,7 +51,7 @@ export default function RestaurantPage() {
           </p>
           <button 
             onClick={() => window.alert('Reservation system coming soon!')}
-            className="bg-white text-[#0f284f] font-extrabold uppercase tracking-widest px-10 py-4 rounded-sm hover:bg-gray-100 transition-colors"
+            className="bg-white text-[#032c28] font-extrabold uppercase tracking-widest px-10 py-4 rounded-sm hover:bg-gray-100 transition-colors"
           >
             Reserve A Table
           </button>
@@ -92,7 +92,7 @@ export default function RestaurantPage() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="flex flex-col justify-center space-y-6 md:pl-10"
           >
-            <h2 className="text-[#0f284f] text-4xl font-bold uppercase tracking-wider mb-4">
+            <h2 className="text-[#032c28] text-4xl font-bold uppercase tracking-wider mb-4">
               A Symphony of Flavors
             </h2>
             <p className="text-gray-500 leading-relaxed text-lg">
@@ -114,7 +114,7 @@ export default function RestaurantPage() {
             viewport={{ once: true }}
             variants={fadeUp}
           >
-            <h2 className="text-[#0f284f] text-3xl md:text-4xl font-bold uppercase tracking-wider mb-4">
+            <h2 className="text-[#032c28] text-3xl md:text-4xl font-bold uppercase tracking-wider mb-4">
               Our Signature Menu
             </h2>
             <p className="text-gray-500 max-w-2xl mx-auto">
@@ -142,11 +142,11 @@ export default function RestaurantPage() {
               />
             </div>
             <div className="p-6 text-center">
-              <h3 className="text-[#0f284f] text-xl font-bold uppercase tracking-wide mb-2">
+              <h3 className="text-[#032c28] text-xl font-bold uppercase tracking-wide mb-2">
                 Wagyu Ribeye Steak
               </h3>
               <p className="text-gray-500 text-sm mb-4">Potato gratin, wild mushrooms, bordelaise sauce</p>
-              <p className="text-2xl font-black text-[#0f284f]">$85</p>
+              <p className="text-2xl font-black text-[#032c28]">$85</p>
             </div>
           </motion.div>
 
@@ -168,11 +168,11 @@ export default function RestaurantPage() {
               />
             </div>
             <div className="p-6 text-center">
-              <h3 className="text-[#0f284f] text-xl font-bold uppercase tracking-wide mb-2">
+              <h3 className="text-[#032c28] text-xl font-bold uppercase tracking-wide mb-2">
                 Pan-Seared Scallops
               </h3>
               <p className="text-gray-500 text-sm mb-4">Cauliflower purée, crispy pancetta, sage</p>
-              <p className="text-2xl font-black text-[#0f284f]">$28</p>
+              <p className="text-2xl font-black text-[#032c28]">$28</p>
             </div>
           </motion.div>
 
@@ -194,11 +194,11 @@ export default function RestaurantPage() {
               />
             </div>
             <div className="p-6 text-center">
-              <h3 className="text-[#0f284f] text-xl font-bold uppercase tracking-wide mb-2">
+              <h3 className="text-[#032c28] text-xl font-bold uppercase tracking-wide mb-2">
                 Chocolate Soufflé
               </h3>
               <p className="text-gray-500 text-sm mb-4">Madagascar vanilla bean ice cream</p>
-              <p className="text-2xl font-black text-[#0f284f]">$22</p>
+              <p className="text-2xl font-black text-[#032c28]">$22</p>
             </div>
           </motion.div>
         </div>
@@ -211,7 +211,7 @@ export default function RestaurantPage() {
           className="text-center"
         >
           <Link href="/restaurant/all-menu">
-            <button className="bg-[#0f284f] text-white font-extrabold uppercase tracking-widest px-10 py-4 rounded-sm hover:bg-[#1a3d72] transition-colors">
+            <button className="bg-[#032c28] text-white font-extrabold uppercase tracking-widest px-10 py-4 rounded-sm hover:bg-[#043e39] transition-colors">
               View Full Menu
             </button>
           </Link>
@@ -258,8 +258,8 @@ export default function RestaurantPage() {
           >
             {/* Hours */}
             <motion.div variants={fadeUp} className="flex flex-col items-center text-center p-8 bg-white rounded-lg shadow-sm border border-gray-100">
-              <Clock className="w-10 h-10 text-[#ffbca8] mb-6" />
-              <h3 className="text-[#0f284f] text-xl font-bold uppercase tracking-wider mb-6">Opening Hours</h3>
+              <Clock className="w-10 h-10 text-[#cb5d49] mb-6" />
+              <h3 className="text-[#032c28] text-xl font-bold uppercase tracking-wider mb-6">Opening Hours</h3>
               <div className="space-y-4 text-gray-500">
                 <div>
                   <p className="font-bold text-gray-900 uppercase text-xs tracking-wider mb-1">Breakfast</p>
@@ -278,14 +278,14 @@ export default function RestaurantPage() {
 
             {/* Reservations */}
             <motion.div variants={fadeUp} className="flex flex-col items-center text-center p-8 bg-white rounded-lg shadow-sm border border-gray-100">
-              <CalendarCheck className="w-10 h-10 text-[#ffbca8] mb-6" />
-              <h3 className="text-[#0f284f] text-xl font-bold uppercase tracking-wider mb-6">Reservations</h3>
+              <CalendarCheck className="w-10 h-10 text-[#cb5d49] mb-6" />
+              <h3 className="text-[#032c28] text-xl font-bold uppercase tracking-wider mb-6">Reservations</h3>
               <p className="text-gray-500 leading-relaxed mb-6">
                 We strongly recommend booking your table in advance, especially for dinner and weekend brunches. Walk-ins are accommodated subject to availability.
               </p>
               <button 
                 onClick={() => window.alert('Reservation system coming soon!')}
-                className="mt-auto border-2 border-[#0f284f] text-[#0f284f] font-bold uppercase tracking-widest px-6 py-3 hover:bg-[#0f284f] hover:text-white transition-colors"
+                className="mt-auto border-2 border-[#032c28] text-[#032c28] font-bold uppercase tracking-widest px-6 py-3 hover:bg-[#032c28] hover:text-white transition-colors"
               >
                 Book a Table
               </button>
@@ -293,14 +293,14 @@ export default function RestaurantPage() {
 
             {/* Contact */}
             <motion.div variants={fadeUp} className="flex flex-col items-center text-center p-8 bg-white rounded-lg shadow-sm border border-gray-100">
-              <Phone className="w-10 h-10 text-[#ffbca8] mb-6" />
-              <h3 className="text-[#0f284f] text-xl font-bold uppercase tracking-wider mb-6">Contact Us</h3>
+              <Phone className="w-10 h-10 text-[#cb5d49] mb-6" />
+              <h3 className="text-[#032c28] text-xl font-bold uppercase tracking-wider mb-6">Contact Us</h3>
               <p className="text-gray-500 leading-relaxed mb-6">
                 For private dining, large groups, or special dietary requirements, please speak with our restaurant manager.
               </p>
               <div className="mt-auto space-y-2">
-                <p className="text-[#0f284f] font-bold">+45 35634 3444</p>
-                <p className="text-[#0f284f] font-bold">dining@thehotel.com</p>
+                <p className="text-[#032c28] font-bold">+45 35634 3444</p>
+                <p className="text-[#032c28] font-bold">dining@thehotel.com</p>
               </div>
             </motion.div>
           </motion.div>

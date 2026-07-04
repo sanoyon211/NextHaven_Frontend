@@ -57,7 +57,7 @@ export default function AboutPage() {
             transition={{ duration: 0.8 }}
             className="flex flex-col justify-center"
           >
-            <h1 className="text-[#0f284f] text-4xl sm:text-5xl lg:text-5xl font-extrabold uppercase leading-[1.15] mb-8 tracking-tight">
+            <h1 className="text-[#032c28] text-4xl sm:text-5xl lg:text-5xl font-extrabold uppercase leading-[1.15] mb-8 tracking-tight">
               WHERE EVERY STAY IS A HUG OF HOSPITALITY
             </h1>
             <p className="text-gray-600 text-lg leading-relaxed mb-6">
@@ -86,7 +86,7 @@ export default function AboutPage() {
               variants={fadeUp}
               className="flex flex-col justify-center order-2 lg:order-1"
             >
-              <h2 className="text-[#0f284f] text-4xl sm:text-5xl font-extrabold uppercase leading-tight mb-8">
+              <h2 className="text-[#032c28] text-4xl sm:text-5xl font-extrabold uppercase leading-tight mb-8">
                 CHECKOUT OUR ROOMS
               </h2>
               <p className="text-gray-600 text-lg leading-relaxed mb-10">
@@ -98,7 +98,7 @@ export default function AboutPage() {
               <div>
                 <Link
                   href="/book"
-                  className="inline-flex items-center justify-center bg-[#0f284f] text-white font-bold uppercase tracking-wider px-10 py-5 rounded-sm hover:bg-[#1a3d72] transition-colors"
+                  className="inline-flex items-center justify-center bg-[#032c28] text-white font-bold uppercase tracking-wider px-10 py-5 rounded-sm hover:bg-[#043e39] transition-colors"
                 >
                   BOOK YOUR STAY NOW
                 </Link>
@@ -170,7 +170,7 @@ export default function AboutPage() {
             variants={fadeUp}
             className="flex flex-col justify-center"
           >
-            <h2 className="text-[#0f284f] text-4xl sm:text-5xl font-extrabold uppercase leading-tight mb-8">
+            <h2 className="text-[#032c28] text-4xl sm:text-5xl font-extrabold uppercase leading-tight mb-8">
               HOW TO FIND OUR HOTEL
             </h2>
             <p className="text-gray-600 text-lg leading-relaxed mb-12">
@@ -183,8 +183,8 @@ export default function AboutPage() {
               
               {/* Mini Column 1: Airport */}
               <div>
-                <Plane className="w-10 h-10 text-[#ffbca8] mb-4" />
-                <h3 className="text-[#ffbca8] text-sm font-bold uppercase tracking-widest mb-3">
+                <Plane className="w-10 h-10 text-[#cb5d49] mb-4" />
+                <h3 className="text-[#cb5d49] text-sm font-bold uppercase tracking-widest mb-3">
                   31 KILOMETRES FROM AIRPORT
                 </h3>
                 <p className="text-gray-500 text-sm leading-relaxed">
@@ -195,8 +195,8 @@ export default function AboutPage() {
 
               {/* Mini Column 2: City Center */}
               <div>
-                <Map className="w-10 h-10 text-[#ffbca8] mb-4" />
-                <h3 className="text-[#ffbca8] text-sm font-bold uppercase tracking-widest mb-3">
+                <Map className="w-10 h-10 text-[#cb5d49] mb-4" />
+                <h3 className="text-[#cb5d49] text-sm font-bold uppercase tracking-widest mb-3">
                   1.3 KILOMETRES FROM City Center
                 </h3>
                 <p className="text-gray-500 text-sm leading-relaxed">

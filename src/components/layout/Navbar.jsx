@@ -10,12 +10,24 @@ import { Menu, X } from "lucide-react";
 export default function Navbar() {
   const [isRoomsHovered, setIsRoomsHovered] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const { user } = useAuth();
   const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+    
+    const handleScroll = () => {
+      if (window.scrollY > 10) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+    
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const roomTypes = [
@@ -25,9 +37,14 @@ export default function Navbar() {
     "SUITE",
   ];
 
+  const isHomePage = pathname === "/";
+  const headerClasses = isHomePage
+    ? `fixed top-0 z-50 w-full transition-all duration-300 ${isScrolled ? "bg-white shadow-sm py-0" : "bg-transparent py-2"} text-gray-900`
+    : `sticky top-0 z-50 w-full transition-all duration-300 bg-white shadow-sm text-gray-900`;
+
   return (
-    <header className="sticky top-0 z-50 w-full bg-white text-gray-900 shadow-sm relative">
-      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+    <header className={headerClasses}>
+      <div className={`mx-auto flex transition-all duration-300 ${isScrolled ? "h-14" : "h-20"} max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8`}>
         
         {/* Mobile Menu Button */}
         <div className="flex md:hidden items-center flex-1">
@@ -46,7 +63,7 @@ export default function Navbar() {
             onMouseEnter={() => setIsRoomsHovered(true)}
             onMouseLeave={() => setIsRoomsHovered(false)}
           >
-            <button className={`flex items-center space-x-1 transition-colors py-2 ${pathname.startsWith("/rooms") ? "text-[#ffbca8]" : "hover:text-[#ffbca8]"}`}>
+            <button className={`flex items-center space-x-1 transition-colors py-2 ${pathname.startsWith("/rooms") ? "text-[#cb5d49]" : "hover:text-[#cb5d49]"}`}>
               <span>OUR ROOMS</span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -80,7 +97,7 @@ export default function Navbar() {
                     <Link
                       key={room}
                       href={`/rooms/${room.toLowerCase()}`}
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#ffbca8] transition-colors"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#cb5d49] transition-colors"
                     >
                       {room}
                     </Link>
@@ -90,10 +107,10 @@ export default function Navbar() {
             </AnimatePresence>
           </div>
 
-          <Link href="/restaurant" className={`transition-colors ${pathname === "/restaurant" ? "text-[#ffbca8]" : "hover:text-[#ffbca8]"}`}>
+          <Link href="/restaurant" className={`transition-colors ${pathname === "/restaurant" ? "text-[#cb5d49]" : "hover:text-[#cb5d49]"}`}>
             RESTAURANT
           </Link>
-          <Link href="/about" className={`transition-colors ${pathname === "/about" ? "text-[#ffbca8]" : "hover:text-[#ffbca8]"}`}>
+          <Link href="/about" className={`transition-colors ${pathname === "/about" ? "text-[#cb5d49]" : "hover:text-[#cb5d49]"}`}>
             ABOUT US
           </Link>
         </nav>
@@ -107,16 +124,16 @@ export default function Navbar() {
 
         {/* Right Side: Contact & Button (Desktop) */}
         <div className="hidden md:flex flex-1 items-center justify-end space-x-8 text-sm font-semibold tracking-wide">
-          <Link href="/contact" className={`transition-colors ${pathname === "/contact" ? "text-[#ffbca8]" : "hover:text-[#ffbca8]"}`}>
+          <Link href="/contact" className={`transition-colors ${pathname === "/contact" ? "text-[#cb5d49]" : "hover:text-[#cb5d49]"}`}>
             CONTACT US
           </Link>
           {mounted ? (
             user ? (
-              <Link href="/dashboard" className={`transition-colors ${pathname === "/dashboard" ? "text-[#ffbca8]" : "hover:text-[#ffbca8]"}`}>
+              <Link href="/dashboard" className={`transition-colors ${pathname === "/dashboard" ? "text-[#cb5d49]" : "hover:text-[#cb5d49]"}`}>
                 DASHBOARD
               </Link>
             ) : (
-              <Link href="/login" className={`transition-colors ${pathname === "/login" ? "text-[#ffbca8]" : "hover:text-[#ffbca8]"}`}>
+              <Link href="/login" className={`transition-colors ${pathname === "/login" ? "text-[#cb5d49]" : "hover:text-[#cb5d49]"}`}>
                 LOGIN
               </Link>
             )
@@ -125,7 +142,7 @@ export default function Navbar() {
           )}
           <Link
             href="/rooms"
-            className="bg-[#ffbca8] px-6 py-3 text-gray-900 transition-colors hover:bg-[#ffbca8]/80 rounded-sm"
+            className="bg-[#cb5d49] px-6 py-3 text-gray-900 transition-colors hover:bg-[#cb5d49]/80 rounded-sm"
           >
             BOOK NOW
           </Link>
@@ -145,16 +162,16 @@ export default function Navbar() {
             className="md:hidden border-t border-gray-100 bg-white overflow-hidden absolute w-full left-0 top-full shadow-lg"
           >
             <nav className="flex flex-col px-4 py-6 space-y-4 text-sm font-semibold tracking-wide">
-              <Link onClick={() => setIsMobileMenuOpen(false)} href="/rooms" className={`block py-2 ${pathname.startsWith("/rooms") ? "text-[#ffbca8]" : "text-gray-900"}`}>
+              <Link onClick={() => setIsMobileMenuOpen(false)} href="/rooms" className={`block py-2 ${pathname.startsWith("/rooms") ? "text-[#cb5d49]" : "text-gray-900"}`}>
                 OUR ROOMS
               </Link>
-              <Link onClick={() => setIsMobileMenuOpen(false)} href="/restaurant" className={`block py-2 ${pathname === "/restaurant" ? "text-[#ffbca8]" : "text-gray-900"}`}>
+              <Link onClick={() => setIsMobileMenuOpen(false)} href="/restaurant" className={`block py-2 ${pathname === "/restaurant" ? "text-[#cb5d49]" : "text-gray-900"}`}>
                 RESTAURANT
               </Link>
-              <Link onClick={() => setIsMobileMenuOpen(false)} href="/about" className={`block py-2 ${pathname === "/about" ? "text-[#ffbca8]" : "text-gray-900"}`}>
+              <Link onClick={() => setIsMobileMenuOpen(false)} href="/about" className={`block py-2 ${pathname === "/about" ? "text-[#cb5d49]" : "text-gray-900"}`}>
                 ABOUT US
               </Link>
-              <Link onClick={() => setIsMobileMenuOpen(false)} href="/contact" className={`block py-2 ${pathname === "/contact" ? "text-[#ffbca8]" : "text-gray-900"}`}>
+              <Link onClick={() => setIsMobileMenuOpen(false)} href="/contact" className={`block py-2 ${pathname === "/contact" ? "text-[#cb5d49]" : "text-gray-900"}`}>
                 CONTACT US
               </Link>
               <div className="pt-4 border-t border-gray-100 flex flex-col space-y-4">
@@ -172,7 +189,7 @@ export default function Navbar() {
                 <Link
                   onClick={() => setIsMobileMenuOpen(false)}
                   href="/rooms"
-                  className="block w-full bg-[#ffbca8] px-6 py-3 text-center text-gray-900 transition-colors hover:bg-[#ffbca8]/80 rounded-sm"
+                  className="block w-full bg-[#cb5d49] px-6 py-3 text-center text-gray-900 transition-colors hover:bg-[#cb5d49]/80 rounded-sm"
                 >
                   BOOK NOW
                 </Link>

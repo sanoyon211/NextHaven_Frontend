@@ -16,7 +16,7 @@ export default function Home() {
           transition={{ duration: 0.8 }}
           className="flex flex-col justify-center p-4 md:p-8 lg:p-16"
         >
-          <h1 className="text-[#0f284f] text-3xl md:text-5xl lg:text-6xl font-bold uppercase leading-tight mb-6">
+          <h1 className="text-[#032c28] text-3xl md:text-5xl lg:text-6xl font-bold uppercase leading-tight mb-6">
             ROOM TO REMEMBER
           </h1>
           <p className="text-gray-600 text-lg leading-relaxed mb-10 max-w-xl">
@@ -27,7 +27,7 @@ export default function Home() {
           <div>
             <Link
               href="/rooms"
-              className="inline-flex items-center justify-center bg-[#0f284f] text-white font-bold uppercase tracking-wider px-8 py-4 rounded-sm hover:bg-[#1a3d72] transition-colors"
+              className="inline-flex items-center justify-center bg-[#032c28] text-white font-bold uppercase tracking-wider px-8 py-4 rounded-sm hover:bg-[#043e39] transition-colors"
             >
               BOOK YOUR STAY NOW
             </Link>
@@ -58,7 +58,7 @@ export default function Home() {
         <div className="mx-auto max-w-7xl">
           {/* Booking Bar Title */}
           <div className="text-center mb-10">
-            <h2 className="text-[#0f284f] text-3xl md:text-4xl font-bold uppercase tracking-wider">
+            <h2 className="text-[#032c28] text-3xl md:text-4xl font-bold uppercase tracking-wider">
               Book Your Stay
             </h2>
           </div>
@@ -68,15 +68,15 @@ export default function Home() {
             <form className="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
               <div className="flex flex-col">
                 <label className="text-xs font-semibold text-gray-500 uppercase mb-2">Check-in</label>
-                <input type="date" className="border border-gray-300 rounded p-3 text-sm focus:outline-none focus:border-[#0f284f]" />
+                <input type="date" className="border border-gray-300 rounded p-3 text-sm focus:outline-none focus:border-[#032c28]" />
               </div>
               <div className="flex flex-col">
                 <label className="text-xs font-semibold text-gray-500 uppercase mb-2">Check-out</label>
-                <input type="date" className="border border-gray-300 rounded p-3 text-sm focus:outline-none focus:border-[#0f284f]" />
+                <input type="date" className="border border-gray-300 rounded p-3 text-sm focus:outline-none focus:border-[#032c28]" />
               </div>
               <div className="flex flex-col">
                 <label className="text-xs font-semibold text-gray-500 uppercase mb-2">Adults</label>
-                <select className="border border-gray-300 rounded p-3 text-sm focus:outline-none focus:border-[#0f284f] bg-white">
+                <select className="border border-gray-300 rounded p-3 text-sm focus:outline-none focus:border-[#032c28] bg-white">
                   <option>1</option>
                   <option>2</option>
                   <option>3</option>
@@ -84,13 +84,13 @@ export default function Home() {
               </div>
               <div className="flex flex-col">
                 <label className="text-xs font-semibold text-gray-500 uppercase mb-2">Children</label>
-                <select className="border border-gray-300 rounded p-3 text-sm focus:outline-none focus:border-[#0f284f] bg-white">
+                <select className="border border-gray-300 rounded p-3 text-sm focus:outline-none focus:border-[#032c28] bg-white">
                   <option>0</option>
                   <option>1</option>
                   <option>2</option>
                 </select>
               </div>
-              <button type="submit" className="bg-[#0f284f] text-white font-bold uppercase tracking-wider p-3 rounded hover:bg-[#1a3d72] transition-colors h-[46px]">
+              <button type="submit" className="bg-[#032c28] text-white font-bold uppercase tracking-wider p-3 rounded hover:bg-[#043e39] transition-colors h-[46px]">
                 Search
               </button>
             </form>
@@ -138,14 +138,14 @@ export default function Home() {
                     />
                   </div>
                   <div className="p-6">
-                    <h3 className="text-[#0f284f] font-bold uppercase text-lg mb-2">
+                    <h3 className="text-[#032c28] font-bold uppercase text-lg mb-2">
                       {room.title}
                     </h3>
                     <div className="flex justify-between items-end mt-6">
                       <p className="text-gray-500 text-xs w-1/2 leading-relaxed">{room.details}</p>
                       <div className="text-right">
                         <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mb-1">From</p>
-                        <p className="text-2xl font-extrabold text-[#0f284f]">{room.price}</p>
+                        <p className="text-2xl font-extrabold text-[#032c28]">{room.price}</p>
                       </div>
                     </div>
                   </div>

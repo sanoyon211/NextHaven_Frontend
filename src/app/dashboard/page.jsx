@@ -47,7 +47,7 @@ export default function DashboardPage() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#f8fafc]">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#0f284f]"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#032c28]"></div>
       </div>
     );
   }
@@ -59,7 +59,7 @@ export default function DashboardPage() {
     
     // Header
     doc.setFontSize(22);
-    doc.setTextColor(15, 40, 79); // #0f284f
+    doc.setTextColor(15, 40, 79); // #032c28
     doc.text("HOTEL SUITES", 14, 20);
     
     doc.setFontSize(12);
@@ -171,13 +171,13 @@ export default function DashboardPage() {
                   {user.avatar ? (
                     <Image src={user.avatar} alt="Avatar" fill className="object-cover" />
                   ) : (
-                    <div className="h-full w-full flex items-center justify-center bg-[#0f284f] text-white text-2xl sm:text-3xl font-bold">
+                    <div className="h-full w-full flex items-center justify-center bg-[#032c28] text-white text-2xl sm:text-3xl font-bold">
                       {user.name?.charAt(0) || user.email?.charAt(0)}
                     </div>
                   )}
                 </div>
                 <div>
-                  <h2 className="text-lg sm:text-xl font-bold text-[#0f284f] uppercase tracking-wide">
+                  <h2 className="text-lg sm:text-xl font-bold text-[#032c28] uppercase tracking-wide">
                     {user.name || 'Guest'}
                   </h2>
                   <p className="text-gray-500 text-xs sm:text-sm mt-1">{user.email}</p>
@@ -187,14 +187,14 @@ export default function DashboardPage() {
               <nav className="flex flex-row overflow-x-auto lg:flex-col space-x-2 lg:space-x-0 lg:space-y-2 pb-2 lg:pb-0 scrollbar-hide">
                 <button 
                   onClick={() => setActiveTab("profile")}
-                  className={`flex-shrink-0 flex items-center space-x-3 px-4 py-3 rounded-sm transition-colors text-sm font-semibold tracking-wide uppercase ${activeTab === "profile" ? "bg-[#0f284f] text-white" : "text-gray-600 hover:bg-gray-100 hover:text-[#0f284f]"}`}
+                  className={`flex-shrink-0 flex items-center space-x-3 px-4 py-3 rounded-sm transition-colors text-sm font-semibold tracking-wide uppercase ${activeTab === "profile" ? "bg-[#032c28] text-white" : "text-gray-600 hover:bg-gray-100 hover:text-[#032c28]"}`}
                 >
                   <User className="w-4 h-4" />
                   <span>My Profile</span>
                 </button>
                 <button 
                   onClick={() => setActiveTab("bookings")}
-                  className={`flex-shrink-0 flex items-center space-x-3 px-4 py-3 rounded-sm transition-colors text-sm font-semibold tracking-wide uppercase ${activeTab === "bookings" ? "bg-[#0f284f] text-white" : "text-gray-600 hover:bg-gray-100 hover:text-[#0f284f]"}`}
+                  className={`flex-shrink-0 flex items-center space-x-3 px-4 py-3 rounded-sm transition-colors text-sm font-semibold tracking-wide uppercase ${activeTab === "bookings" ? "bg-[#032c28] text-white" : "text-gray-600 hover:bg-gray-100 hover:text-[#032c28]"}`}
                 >
                   <Calendar className="w-4 h-4" />
                   <span>My Bookings</span>
@@ -214,15 +214,15 @@ export default function DashboardPage() {
           <div className="lg:col-span-3">
             
             {/* Loyalty Status Card */}
-            <div className="bg-[#0f284f] text-white rounded-sm shadow-lg border border-gray-100 p-8 mb-8 relative overflow-hidden">
+            <div className="bg-[#032c28] text-white rounded-sm shadow-lg border border-gray-100 p-8 mb-8 relative overflow-hidden">
               <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
                 <Crown className="w-48 h-48" />
               </div>
               <div className="relative z-10 flex flex-col md:flex-row md:items-end justify-between">
                 <div>
                   <div className="flex items-center space-x-3 mb-2">
-                    <Crown className="w-6 h-6 sm:w-8 sm:h-8 text-[#ffbca8]" />
-                    <h2 className="text-2xl sm:text-3xl font-extrabold uppercase tracking-widest text-[#ffbca8] whitespace-nowrap">
+                    <Crown className="w-6 h-6 sm:w-8 sm:h-8 text-[#cb5d49]" />
+                    <h2 className="text-2xl sm:text-3xl font-extrabold uppercase tracking-widest text-[#cb5d49] whitespace-nowrap">
                       {displayTier} Member
                     </h2>
                   </div>
@@ -243,11 +243,11 @@ export default function DashboardPage() {
                         initial={{ width: 0 }}
                         animate={{ width: `${loyalty.progress}%` }}
                         transition={{ duration: 1.5, ease: "easeOut" }}
-                        className="h-full bg-[#ffbca8]"
+                        className="h-full bg-[#cb5d49]"
                       />
                     </div>
                     <p className="text-sm text-right font-medium text-gray-300">
-                      Earn <span className="text-[#ffbca8] font-bold">{loyalty.pointsNeeded}</span> more points for {loyalty.nextTier}!
+                      Earn <span className="text-[#cb5d49] font-bold">{loyalty.pointsNeeded}</span> more points for {loyalty.nextTier}!
                     </p>
                   </div>
                 )}
@@ -256,7 +256,7 @@ export default function DashboardPage() {
 
             {activeTab === "bookings" && (
               <div className="bg-white rounded-sm shadow-sm border border-gray-100 p-8 md:p-12">
-                <h1 className="text-3xl font-bold text-[#0f284f] uppercase tracking-wide mb-8 border-b border-gray-100 pb-4">
+                <h1 className="text-3xl font-bold text-[#032c28] uppercase tracking-wide mb-8 border-b border-gray-100 pb-4">
                   Personal Booking History
                 </h1>
 
@@ -271,26 +271,26 @@ export default function DashboardPage() {
                           <div className="flex flex-col md:flex-row md:items-start justify-between">
                             <div>
                               <span className="text-xs font-bold text-gray-400 uppercase tracking-widest block mb-1">Booking #{booking.id}</span>
-                              <h3 className="text-xl font-bold text-[#0f284f] uppercase tracking-wide mb-2">{booking.roomName}</h3>
+                              <h3 className="text-xl font-bold text-[#032c28] uppercase tracking-wide mb-2">{booking.roomName}</h3>
                               <p className="text-gray-500 text-sm mb-1"><span className="font-semibold text-gray-700">Check-in:</span> {booking.checkIn}</p>
                               <p className="text-gray-500 text-sm mb-4 md:mb-0"><span className="font-semibold text-gray-700">Check-out:</span> {booking.checkOut}</p>
                             </div>
                             <div className="text-left md:text-right flex flex-col justify-between items-start md:items-end">
                               <span className={`inline-block px-3 py-1 text-xs font-bold uppercase tracking-wide rounded-sm mb-4 ${
-                                booking.status === 'Paid' ? 'bg-[#eef2f6] text-[#0f284f]' :
+                                booking.status === 'Paid' ? 'bg-[#eef2f6] text-[#032c28]' :
                                 booking.status === 'Cancelled' ? 'bg-red-50 text-red-600' :
                                 'bg-blue-50 text-blue-600'
                               }`}>
                                 {booking.status}
                               </span>
-                              <p className="text-2xl font-black text-[#0f284f] mb-4">{booking.total}</p>
+                              <p className="text-2xl font-black text-[#032c28] mb-4">{booking.total}</p>
                               
                               {/* Actions Area */}
                               <div className="flex flex-wrap gap-2 justify-start md:justify-end">
                                 {booking.status === 'Paid' && (
                                   <button 
                                     onClick={() => generatePDF(booking)}
-                                    className="flex items-center space-x-2 text-sm font-bold text-[#0f284f] bg-[#eef2f6] hover:bg-[#e2e8f0] px-4 py-2 rounded-sm transition-colors uppercase tracking-wider"
+                                    className="flex items-center space-x-2 text-sm font-bold text-[#032c28] bg-[#eef2f6] hover:bg-[#e2e8f0] px-4 py-2 rounded-sm transition-colors uppercase tracking-wider"
                                   >
                                     <FileText className="w-4 h-4" />
                                     <span>Invoice</span>
@@ -315,7 +315,7 @@ export default function DashboardPage() {
                 ) : (
                   <div className="text-center py-12">
                     <p className="text-gray-500 mb-4">You have no booking history yet.</p>
-                    <button className="bg-[#ffbca8] px-6 py-3 text-sm font-semibold tracking-wide text-gray-900 transition-colors hover:bg-[#ffbca8]/80 rounded-sm uppercase">
+                    <button className="bg-[#cb5d49] px-6 py-3 text-sm font-semibold tracking-wide text-gray-900 transition-colors hover:bg-[#cb5d49]/80 rounded-sm uppercase">
                       Book a Room
                     </button>
                   </div>
@@ -325,7 +325,7 @@ export default function DashboardPage() {
 
             {activeTab === "profile" && (
               <div className="bg-white rounded-sm shadow-sm border border-gray-100 p-8 md:p-12">
-                <h1 className="text-3xl font-bold text-[#0f284f] uppercase tracking-wide mb-8 border-b border-gray-100 pb-4">
+                <h1 className="text-3xl font-bold text-[#032c28] uppercase tracking-wide mb-8 border-b border-gray-100 pb-4">
                   My Profile
                 </h1>
                 <p className="text-gray-500">Profile settings form will go here.</p>

@@ -8,74 +8,46 @@ import SearchBar from "@/components/SearchBar";
 import RoomGrid from "@/components/RoomGrid";
 
 export default function RoomsPage() {
-  const [allRooms, setAllRooms] = useState([]);
-  const [filteredRooms, setFilteredRooms] = useState([]);
+  const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
   
-  const [priceRange, setPriceRange] = useState([1000]);
+
   const [selectedTypes, setSelectedTypes] = useState([]);
   const [selectedAmenities, setSelectedAmenities] = useState([]);
   const [dates, setDates] = useState({ checkIn: "", checkOut: "" });
   const [sortBy, setSortBy] = useState("Price: Low to High");
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
 
-  // Fetch rooms initially (and on date change if needed)
-  const fetchRooms = useCallback(async () => {
+  // Fetch rooms with filters applied
+  const fetchRooms = async () => {
     setLoading(true);
     try {
       const params = new URLSearchParams();
       if (dates.checkIn) params.append("checkIn", dates.checkIn);
       if (dates.checkOut) params.append("checkOut", dates.checkOut);
 
+      if (selectedTypes.length > 0) params.append("roomType", selectedTypes.join(","));
+      if (selectedAmenities.length > 0) params.append("amenities", selectedAmenities.join(","));
+      
+      let sortParam = "";
+      if (sortBy === "Price: Low to High") sortParam = "priceAsc";
+      else if (sortBy === "Price: High to Low") sortParam = "priceDesc";
+      
+      if (sortParam) params.append("sort", sortParam);
+
       const res = await api.get(`/rooms?${params.toString()}`);
-      setAllRooms(res.data.rooms || res.data);
+      setRooms(res.data.rooms || res.data);
     } catch (error) {
       toast.error("Failed to fetch rooms.");
     } finally {
       setLoading(false);
     }
-  }, [dates]);
+  };
 
   useEffect(() => {
     fetchRooms();
-  }, [fetchRooms]);
-
-  // Client-side filtering and sorting
-  useEffect(() => {
-    let result = [...allRooms];
-
-    // Filter by Max Price
-    if (priceRange[0] !== undefined) {
-      result = result.filter(room => room.pricePerNight <= priceRange[0]);
-    }
-
-    // Filter by Room Type
-    if (selectedTypes.length > 0) {
-      result = result.filter(room => 
-        selectedTypes.some(type => room.roomType.toLowerCase() === type.toLowerCase())
-      );
-    }
-
-    // Filter by Amenities
-    if (selectedAmenities.length > 0) {
-      result = result.filter(room => 
-        selectedAmenities.every(amenity => room.amenities.includes(amenity))
-      );
-    }
-
-    // Sort
-    if (sortBy === "Price: Low to High") {
-      result.sort((a, b) => a.pricePerNight - b.pricePerNight);
-    } else if (sortBy === "Price: High to Low") {
-      result.sort((a, b) => b.pricePerNight - a.pricePerNight);
-    } else if (sortBy === "Most Popular") {
-      // Dummy sort for now if no popularity metric
-    } else if (sortBy === "Top Rated") {
-      // Dummy sort for now if no rating metric
-    }
-
-    setFilteredRooms(result);
-  }, [allRooms, priceRange, selectedTypes, selectedAmenities, sortBy]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sortBy]); // Re-fetch on mount and when sorting changes
 
   return (
     <main className="min-h-screen bg-[#f8fafc] w-full py-12 px-4 sm:px-6 lg:px-8">
@@ -83,10 +55,10 @@ export default function RoomsPage() {
         
         {/* Mobile Filter Toggle */}
         <div className="lg:hidden flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-[#0f284f] uppercase tracking-wide">Our Rooms</h1>
+          <h1 className="text-2xl font-bold text-[#032c28] uppercase tracking-wide">Our Rooms</h1>
           <button 
             onClick={() => setIsMobileFiltersOpen(!isMobileFiltersOpen)}
-            className="flex items-center space-x-2 bg-white px-4 py-2 border border-gray-300 rounded-sm text-[#0f284f] font-semibold uppercase text-sm"
+            className="flex items-center space-x-2 bg-white px-4 py-2 border border-gray-300 rounded-sm text-[#032c28] font-semibold uppercase text-sm"
           >
             <Filter className="w-4 h-4" />
             <span>Filters</span>
@@ -98,15 +70,14 @@ export default function RoomsPage() {
           {/* Left Column (Filter Sidebar) */}
           <aside className={`lg:col-span-1 ${isMobileFiltersOpen ? 'block' : 'hidden'} lg:block`}>
             <SearchBar 
-              priceRange={priceRange}
-              setPriceRange={setPriceRange}
+
               selectedTypes={selectedTypes}
               setSelectedTypes={setSelectedTypes}
               selectedAmenities={selectedAmenities}
               setSelectedAmenities={setSelectedAmenities}
               dates={dates}
               setDates={setDates}
-              onApply={() => {}} // No longer needs to fetch on apply since it's client-side reactive
+              onApply={() => fetchRooms()}
             />
           </aside>
 
@@ -115,15 +86,15 @@ export default function RoomsPage() {
             
             {/* Top Bar */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
-              <h1 className="hidden lg:block text-3xl font-extrabold text-[#0f284f] uppercase tracking-wider">
+              <h1 className="hidden lg:block text-3xl font-extrabold text-[#032c28] uppercase tracking-wider">
                 Our Rooms
               </h1>
               <div className="flex items-center justify-between w-full lg:w-auto">
                 <span className="text-sm text-gray-500 font-medium mr-4">
-                  {loading ? "Loading..." : `Showing ${filteredRooms.length} available rooms`}
+                  {loading ? "Loading..." : `Showing ${rooms.length} available rooms`}
                 </span>
                 <select 
-                  className="border border-gray-300 rounded-sm px-4 py-2 text-sm text-gray-700 bg-white focus:outline-none focus:border-[#0f284f] cursor-pointer"
+                  className="border border-gray-300 rounded-sm px-4 py-2 text-sm text-gray-700 bg-white focus:outline-none focus:border-[#032c28] cursor-pointer"
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
                 >
@@ -136,7 +107,7 @@ export default function RoomsPage() {
             </div>
 
             {/* Room Grid */}
-            <RoomGrid rooms={filteredRooms} loading={loading} />
+            <RoomGrid rooms={rooms} loading={loading} />
 
           </section>
         </div>

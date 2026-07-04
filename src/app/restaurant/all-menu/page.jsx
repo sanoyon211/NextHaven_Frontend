@@ -150,7 +150,7 @@ export default function AllMenuPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <h1 className="text-[#0f284f] text-4xl md:text-5xl font-bold uppercase tracking-widest mb-6 drop-shadow-sm">
+            <h1 className="text-[#032c28] text-4xl md:text-5xl font-bold uppercase tracking-widest mb-6 drop-shadow-sm">
               Our Exquisite Menu
             </h1>
             <p className="text-gray-500 max-w-2xl mx-auto mb-10 leading-relaxed">
@@ -166,7 +166,7 @@ export default function AllMenuPage() {
                 placeholder="Search menu items..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-12 py-6 bg-white border-gray-200 shadow-sm rounded-full text-base focus-visible:ring-[#0f284f]"
+                className="pl-12 py-6 bg-white border-gray-200 shadow-sm rounded-full text-base focus-visible:ring-[#032c28]"
               />
             </div>
           </motion.div>
@@ -197,17 +197,17 @@ export default function AllMenuPage() {
                         className="object-cover transition-transform duration-700 group-hover:scale-110"
                       />
                       <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-sm">
-                        <span className="text-xs font-bold text-[#0f284f] uppercase tracking-wider">
+                        <span className="text-xs font-bold text-[#032c28] uppercase tracking-wider">
                           {item.category}
                         </span>
                       </div>
                     </div>
                     <div className="p-6">
                       <div className="flex justify-between items-start mb-4">
-                        <h3 className="text-[#0f284f] text-xl font-bold uppercase tracking-wide pr-4">
+                        <h3 className="text-[#032c28] text-xl font-bold uppercase tracking-wide pr-4">
                           {item.name}
                         </h3>
-                        <p className="text-2xl font-black text-[#0f284f]">{item.price}</p>
+                        <p className="text-2xl font-black text-[#032c28]">{item.price}</p>
                       </div>
                       <p className="text-gray-500 text-sm line-clamp-2">
                         {item.description}
@@ -229,15 +229,15 @@ export default function AllMenuPage() {
                     </div>
                     <div className="p-8 md:w-1/2 flex flex-col justify-center">
                       <DialogHeader className="text-left mb-6">
-                        <span className="text-xs font-bold text-[#ffbca8] uppercase tracking-wider mb-2 block">
+                        <span className="text-xs font-bold text-[#cb5d49] uppercase tracking-wider mb-2 block">
                           {item.category}
                         </span>
-                        <DialogTitle className="text-[#0f284f] text-3xl font-extrabold uppercase tracking-wide">
+                        <DialogTitle className="text-[#032c28] text-3xl font-extrabold uppercase tracking-wide">
                           {item.name}
                         </DialogTitle>
                       </DialogHeader>
                       
-                      <p className="text-2xl font-black text-[#0f284f] mb-6 border-b border-gray-100 pb-6">
+                      <p className="text-2xl font-black text-[#032c28] mb-6 border-b border-gray-100 pb-6">
                         {item.price}
                       </p>
                       
@@ -254,7 +254,7 @@ export default function AllMenuPage() {
 
                       <button 
                         onClick={() => alert(`Added ${item.name} to your room order!`)}
-                        className="w-full bg-[#0f284f] text-white font-bold uppercase tracking-widest py-4 rounded-sm hover:bg-[#1a3d72] transition-colors"
+                        className="w-full bg-[#032c28] text-white font-bold uppercase tracking-widest py-4 rounded-sm hover:bg-[#043e39] transition-colors"
                       >
                         Order To Room
                       </button>
@@ -288,7 +288,7 @@ export default function AllMenuPage() {
             />
           </div>
           <div className="p-10 md:p-12 flex flex-col justify-center">
-            <h2 className="text-[#0f284f] text-2xl md:text-3xl font-bold uppercase tracking-wider mb-6">
+            <h2 className="text-[#032c28] text-2xl md:text-3xl font-bold uppercase tracking-wider mb-6">
               Dietary Preferences & Allergies
             </h2>
             <p className="text-gray-500 leading-relaxed mb-8">
@@ -297,7 +297,7 @@ export default function AllMenuPage() {
             <div className="space-y-6">
               <div className="flex items-center">
                 <div className="bg-[#eef2f6] p-3 rounded-full mr-4">
-                  <Leaf className="w-6 h-6 text-[#0f284f]" />
+                  <Leaf className="w-6 h-6 text-[#032c28]" />
                 </div>
                 <div>
                   <h4 className="text-gray-900 font-bold uppercase tracking-wide text-sm">Vegan & Vegetarian</h4>
@@ -306,7 +306,7 @@ export default function AllMenuPage() {
               </div>
               <div className="flex items-center">
                 <div className="bg-[#eef2f6] p-3 rounded-full mr-4">
-                  <WheatOff className="w-6 h-6 text-[#0f284f]" />
+                  <WheatOff className="w-6 h-6 text-[#032c28]" />
                 </div>
                 <div>
                   <h4 className="text-gray-900 font-bold uppercase tracking-wide text-sm">Gluten & Nut-Free</h4>
