@@ -5,8 +5,25 @@ import Link from "next/link";
 export default function RoomGrid({ rooms, loading }) {
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0f284f]"></div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {[...Array(6)].map((_, i) => (
+          <div key={i} className="bg-white shadow-sm rounded-lg overflow-hidden border border-gray-100 animate-pulse">
+            <div className="h-60 bg-gray-200"></div>
+            <div className="p-6">
+              <div className="h-6 bg-gray-200 rounded w-3/4 mb-4"></div>
+              <div className="flex justify-between items-end mt-6">
+                <div className="space-y-2 w-1/2">
+                  <div className="h-3 bg-gray-200 rounded"></div>
+                  <div className="h-3 bg-gray-200 rounded w-5/6"></div>
+                </div>
+                <div className="text-right">
+                  <div className="h-3 bg-gray-200 rounded w-12 ml-auto mb-2"></div>
+                  <div className="h-8 bg-gray-200 rounded w-20 ml-auto"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     );
   }

@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState, useEffect } from "react";
 import api from "./api";
+import toast from "react-hot-toast";
 
 const AuthContext = createContext();
 
@@ -27,8 +28,10 @@ export function AuthProvider({ children }) {
   const logout = async () => {
     try {
       await api.post('/auth/logout');
+      toast.success("Logged out successfully");
     } catch (error) {
       console.error('Logout failed:', error);
+      toast.error("Logout failed");
     }
     setUser(null);
     // You could also sign out of Firebase here if needed

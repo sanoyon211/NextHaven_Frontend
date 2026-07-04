@@ -30,6 +30,7 @@ export default function RoomPage({ params }) {
   const [isBooking, setIsBooking] = useState(false);
   const [room, setRoom] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [bookedDates, setBookedDates] = useState([]);
 
   // Booking Form State
   const [checkIn, setCheckIn] = useState("");
@@ -39,10 +40,14 @@ export default function RoomPage({ params }) {
   const [specialRequests, setSpecialRequests] = useState("");
 
   useEffect(() => {
-    const fetchRoom = async () => {
+    const fetchRoomData = async () => {
       try {
-        const res = await api.get(`/rooms/${rawId}`);
-        setRoom(res.data.room || res.data);
+        const [roomRes, datesRes] = await Promise.all([
+          api.get(`/rooms/${rawId}`),
+          api.get(`/bookings/room/${rawId}/dates`).catch(() => ({ data: { data: [] } }))
+        ]);
+        setRoom(roomRes.data.room || roomRes.data);
+        setBookedDates(datesRes.data.data || []);
       } catch (error) {
         toast.error("Failed to load room details.");
       } finally {
@@ -50,15 +55,37 @@ export default function RoomPage({ params }) {
       }
     };
     if (rawId) {
-      fetchRoom();
+      fetchRoomData();
     }
   }, [rawId]);
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#0f284f]"></div>
-      </div>
+      <main className="bg-white w-full min-h-screen">
+        <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center animate-pulse">
+            <div className="flex flex-col justify-center">
+              <div className="h-14 bg-gray-200 rounded-sm w-3/4 mb-6"></div>
+              <div className="h-4 bg-gray-200 rounded w-full mb-2"></div>
+              <div className="h-4 bg-gray-200 rounded w-5/6 mb-4"></div>
+              <div className="h-8 bg-gray-200 rounded-sm w-1/4 mb-8"></div>
+              
+              <div className="space-y-4 mb-10">
+                {[1, 2, 3, 4].map((i) => (
+                  <div key={i} className="flex items-center">
+                    <div className="h-5 w-5 bg-gray-200 rounded-full mr-3"></div>
+                    <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="bg-gray-50 p-6 rounded-lg border border-gray-100 h-80"></div>
+            </div>
+
+            <div className="h-[60vh] lg:h-[80vh] w-full bg-gray-200 rounded-sm"></div>
+          </div>
+        </section>
+      </main>
     );
   }
 
@@ -71,6 +98,58 @@ export default function RoomPage({ params }) {
         </button>
       </div>
     );
+  }
+
+  const handleCheckInChange = (e) => {
+    const selectedDate = e.target.value;
+    const selectedDateObj = new Date(selectedDate);
+    
+    // Check if selected check-in date falls inside any existing booking
+    const isBooked = bookedDates.some(booking => {
+      const inDate = new Date(booking.checkInDate);
+      const outDate = new Date(booking.checkOutDate);
+      // It's occupied if it's >= checkIn and < checkOut
+      return selectedDateObj >= inDate && selectedDateObj < outDate;
+    });
+
+    if (isBooked) {
+      toast.error("This date is already booked. Please select an available date.");
+      setCheckIn("");
+      setCheckOut("");
+      return;
+    }
+
+    setCheckIn(selectedDate);
+    
+    // Reset checkout if it's before or equal to checkin
+    if (checkOut && new Date(checkOut) <= selectedDateObj) {
+      setCheckOut("");
+    }
+  };
+
+  const getMaxCheckOutDate = () => {
+    if (!checkIn) return undefined;
+    const checkInDateObj = new Date(checkIn);
+    
+    // Find the next booking that starts AFTER the selected check-in
+    const upcomingBookings = bookedDates
+      .map(b => new Date(b.checkInDate))
+      .filter(date => date > checkInDateObj)
+      .sort((a, b) => a - b);
+      
+    if (upcomingBookings.length > 0) {
+      // The max check-out date is the checkIn date of the next booking
+      return upcomingBookings[0].toISOString().split('T')[0];
+    }
+    return undefined; // No future bookings, they can book as long as they want
+  };
+
+  const todayStr = new Date().toISOString().split('T')[0];
+  let minCheckOutStr = todayStr;
+  if (checkIn) {
+    const minCheckOutDate = new Date(checkIn);
+    minCheckOutDate.setDate(minCheckOutDate.getDate() + 1);
+    minCheckOutStr = minCheckOutDate.toISOString().split('T')[0];
   }
 
   const handleBooking = async () => {
@@ -162,11 +241,27 @@ export default function RoomPage({ params }) {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                 <div>
                   <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Check-in Date</label>
-                  <input type="date" value={checkIn} onChange={(e) => setCheckIn(e.target.value)} className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-[#0f284f]" required />
+                  <input 
+                    type="date" 
+                    value={checkIn} 
+                    onChange={handleCheckInChange}
+                    min={todayStr}
+                    className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-[#0f284f]" 
+                    required 
+                  />
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Check-out Date</label>
-                  <input type="date" value={checkOut} onChange={(e) => setCheckOut(e.target.value)} className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-[#0f284f]" required />
+                  <input 
+                    type="date" 
+                    value={checkOut} 
+                    onChange={(e) => setCheckOut(e.target.value)} 
+                    min={minCheckOutStr}
+                    max={getMaxCheckOutDate()}
+                    disabled={!checkIn}
+                    className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-[#0f284f] disabled:bg-gray-100 disabled:cursor-not-allowed" 
+                    required 
+                  />
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Adults</label>
