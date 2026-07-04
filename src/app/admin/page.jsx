@@ -320,11 +320,48 @@ export default function AdminDashboard() {
 
   if (loading || !user || user.role !== 'admin') {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-50">
-        <div className="relative flex justify-center items-center">
-          <div className="absolute animate-ping w-16 h-16 rounded-full bg-[#0f284f]/20"></div>
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#0f284f]"></div>
-        </div>
+      <div className="flex min-h-screen bg-slate-50/50">
+        {/* Sidebar Skeleton */}
+        <aside className="w-64 bg-white border-r border-slate-200/60 hidden md:flex flex-col h-screen sticky top-0 animate-pulse">
+          <div className="px-8 py-10 border-b border-slate-100/80">
+            <div className="h-8 bg-gray-200 rounded w-3/4 mb-2"></div>
+            <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+          </div>
+          <nav className="p-4 space-y-2">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <div key={i} className="w-full h-12 bg-gray-100 rounded-xl"></div>
+            ))}
+          </nav>
+        </aside>
+        
+        {/* Main Content Skeleton */}
+        <main className="flex-1 w-full py-10 px-4 sm:px-8 lg:px-12 animate-pulse">
+          <div className="max-w-7xl mx-auto">
+            <div className="flex justify-between items-center mb-10">
+              <div>
+                <div className="h-8 bg-gray-200 rounded w-64 mb-2"></div>
+                <div className="h-4 bg-gray-200 rounded w-96"></div>
+              </div>
+              <div className="h-10 bg-gray-200 rounded-xl w-32"></div>
+            </div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+              {[1, 2, 3, 4].map((i) => (
+                <div key={i} className="h-32 bg-white border border-gray-100 rounded-2xl p-6">
+                  <div className="h-4 bg-gray-200 rounded w-1/2 mb-4"></div>
+                  <div className="h-8 bg-gray-200 rounded w-3/4"></div>
+                </div>
+              ))}
+            </div>
+            
+            <div className="bg-white rounded-2xl border border-gray-100 min-h-[400px] p-6">
+               <div className="h-10 bg-gray-100 rounded mb-6"></div>
+               {[1, 2, 3, 4, 5].map((i) => (
+                 <div key={i} className="h-16 bg-gray-50 rounded mb-2 border border-gray-100"></div>
+               ))}
+            </div>
+          </div>
+        </main>
       </div>
     );
   }
@@ -440,8 +477,11 @@ export default function AdminDashboard() {
           {/* Tab Content Table Wrapper */}
           <div className="bg-white rounded-2xl shadow-sm border border-slate-200/60 overflow-hidden min-h-[400px]">
             {loadingData ? (
-              <div className="flex justify-center items-center h-[400px]">
-                <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-[#0f284f]"></div>
+              <div className="p-6 animate-pulse">
+                <div className="h-10 bg-gray-100 rounded mb-6"></div>
+                {[1, 2, 3, 4, 5].map((i) => (
+                  <div key={i} className="h-16 bg-gray-50 rounded mb-2 border border-gray-100"></div>
+                ))}
               </div>
             ) : (
               <>
