@@ -1,4 +1,8 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const Facebook = ({ className }) => (
   <svg className={className} fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -25,6 +29,16 @@ const Instagram = ({ className }) => (
 );
 
 export default function Footer() {
+  const pathname = usePathname();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+  if (pathname && pathname.startsWith("/admin")) return null;
+
   return (
     <footer 
       className="bg-[#032c28] text-white"

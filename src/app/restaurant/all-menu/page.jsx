@@ -152,6 +152,7 @@ export default function AllMenuPage() {
               filteredMenu.map((item) => (
                 <Dialog key={item._id}>
                   <DialogTrigger 
+                    nativeButton={false}
                     render={
                       <motion.div
                         variants={fadeUp}

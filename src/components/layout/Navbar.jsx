@@ -19,16 +19,15 @@ export default function Navbar() {
     setMounted(true);
     
     const handleScroll = () => {
-      if (window.scrollY > 10) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
+      setIsScrolled(window.scrollY > 20);
     };
-    
+
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  if (!mounted) return null;
+  if (pathname && pathname.startsWith("/admin")) return null;
 
   const roomTypes = [
     { name: "STANDARD ROOM", slug: "single" },

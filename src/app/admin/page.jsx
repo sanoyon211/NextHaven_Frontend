@@ -1,12 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import toast from "react-hot-toast";
-import { Plus, Edit, Trash2, DollarSign, BedDouble, CalendarCheck, X, ClipboardList, Utensils } from "lucide-react";
+import { Plus, Edit, Trash2, DollarSign, BedDouble, CalendarCheck, X, ClipboardList, Utensils, Home } from "lucide-react";
 import api from "@/lib/api";
 
 export default function AdminDashboard() {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState("rooms");
   
   const [rooms, setRooms] = useState([]);
@@ -62,9 +64,9 @@ export default function AdminDashboard() {
     fetchData();
   }, [activeTab]);
 
-  // Form State for Room
   const [formData, setFormData] = useState({
     title: "",
+    roomNumber: "",
     type: "Standard",
     price: "",
     capacity: "",
@@ -110,6 +112,7 @@ export default function AdminDashboard() {
     try {
       const data = new FormData();
       data.append("title", formData.title);
+      data.append("roomNumber", formData.roomNumber);
       data.append("roomType", formData.type);
       data.append("price", formData.price);
       data.append("capacity", formData.capacity);
@@ -138,8 +141,62 @@ export default function AdminDashboard() {
   };
 
   return (
-    <main className="min-h-screen bg-[#f8fafc] w-full py-12 px-4 sm:px-6 lg:px-8 relative">
-      <div className="max-w-7xl mx-auto">
+    <div className="flex min-h-screen bg-[#f8fafc]">
+      {/* Sidebar */}
+      <aside className="w-64 bg-white border-r border-gray-100 flex flex-col justify-between hidden md:flex sticky top-0 h-screen overflow-y-auto">
+        <div>
+          <div className="p-6 border-b border-gray-100">
+            <h1 className="text-2xl font-extrabold text-[#0f284f] uppercase tracking-wider">
+              NextHaven
+            </h1>
+            <p className="text-xs font-bold text-gray-400 tracking-widest uppercase mt-1">Admin Panel</p>
+          </div>
+          <nav className="p-4 space-y-2">
+            <button
+              onClick={() => setActiveTab("rooms")}
+              className={`w-full flex items-center gap-3 px-4 py-3 font-bold uppercase tracking-wide text-sm transition-colors rounded-sm ${
+                activeTab === "rooms"
+                  ? "bg-[#0f284f] text-white"
+                  : "text-gray-500 hover:text-gray-900 hover:bg-gray-50"
+              }`}
+            >
+              <BedDouble className="w-4 h-4" /> Rooms
+            </button>
+            <button
+              onClick={() => setActiveTab("bookings")}
+              className={`w-full flex items-center gap-3 px-4 py-3 font-bold uppercase tracking-wide text-sm transition-colors rounded-sm ${
+                activeTab === "bookings"
+                  ? "bg-[#0f284f] text-white"
+                  : "text-gray-500 hover:text-gray-900 hover:bg-gray-50"
+              }`}
+            >
+              <ClipboardList className="w-4 h-4" /> Bookings
+            </button>
+            <button
+              onClick={() => setActiveTab("food_orders")}
+              className={`w-full flex items-center gap-3 px-4 py-3 font-bold uppercase tracking-wide text-sm transition-colors rounded-sm ${
+                activeTab === "food_orders"
+                  ? "bg-[#0f284f] text-white"
+                  : "text-gray-500 hover:text-gray-900 hover:bg-gray-50"
+              }`}
+            >
+              <Utensils className="w-4 h-4" /> Food Orders
+            </button>
+          </nav>
+        </div>
+        <div className="p-4 border-t border-gray-100">
+          <button
+            onClick={() => router.push("/")}
+            className="w-full flex items-center gap-3 px-4 py-3 font-bold uppercase tracking-wide text-sm transition-colors rounded-sm text-gray-500 hover:text-[#0f284f] hover:bg-gray-50"
+          >
+            <Home className="w-4 h-4" /> Back to Home
+          </button>
+        </div>
+      </aside>
+
+      {/* Main Content */}
+      <main className="flex-1 w-full py-8 px-4 sm:px-6 lg:px-8 relative">
+        <div className="max-w-6xl mx-auto">
         
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
           <h1 className="text-3xl font-extrabold text-[#0f284f] uppercase tracking-wider">
@@ -195,40 +252,6 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        {/* Tabs */}
-        <div className="flex border-b border-gray-200 mb-8 overflow-x-auto no-scrollbar">
-          <button
-            onClick={() => setActiveTab("rooms")}
-            className={`flex items-center gap-2 px-6 py-4 font-bold uppercase tracking-wide text-sm whitespace-nowrap transition-colors ${
-              activeTab === "rooms"
-                ? "border-b-2 border-[#0f284f] text-[#0f284f]"
-                : "text-gray-500 hover:text-gray-900"
-            }`}
-          >
-            <BedDouble className="w-4 h-4" /> Rooms
-          </button>
-          <button
-            onClick={() => setActiveTab("bookings")}
-            className={`flex items-center gap-2 px-6 py-4 font-bold uppercase tracking-wide text-sm whitespace-nowrap transition-colors ${
-              activeTab === "bookings"
-                ? "border-b-2 border-[#0f284f] text-[#0f284f]"
-                : "text-gray-500 hover:text-gray-900"
-            }`}
-          >
-            <ClipboardList className="w-4 h-4" /> Bookings
-          </button>
-          <button
-            onClick={() => setActiveTab("food_orders")}
-            className={`flex items-center gap-2 px-6 py-4 font-bold uppercase tracking-wide text-sm whitespace-nowrap transition-colors ${
-              activeTab === "food_orders"
-                ? "border-b-2 border-[#0f284f] text-[#0f284f]"
-                : "text-gray-500 hover:text-gray-900"
-            }`}
-          >
-            <Utensils className="w-4 h-4" /> Food Orders
-          </button>
-        </div>
-
         {/* Tab Content */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden min-h-[400px]">
           {loadingData ? (
@@ -243,6 +266,7 @@ export default function AdminDashboard() {
                     <thead>
                       <tr className="bg-gray-50 text-[#0f284f] border-b border-gray-200 uppercase text-xs tracking-wider">
                         <th className="p-4 font-bold">Image</th>
+                        <th className="p-4 font-bold">Room #</th>
                         <th className="p-4 font-bold">Title</th>
                         <th className="p-4 font-bold">Type</th>
                         <th className="p-4 font-bold">Price</th>
@@ -265,6 +289,7 @@ export default function AdminDashboard() {
                               />
                             </div>
                           </td>
+                          <td className="p-4 font-bold text-gray-800">{room.roomNumber}</td>
                           <td className="p-4 font-bold text-gray-800">{room.title}</td>
                           <td className="p-4 text-sm text-gray-600">{room.roomType || room.type}</td>
                           <td className="p-4 text-sm font-bold text-gray-900">${room.price || room.pricePerNight}</td>
@@ -419,6 +444,18 @@ export default function AdminDashboard() {
                 </div>
 
                 <div className="space-y-1">
+                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">Room Number</label>
+                  <input
+                    type="text"
+                    required
+                    value={formData.roomNumber}
+                    onChange={(e) => setFormData({...formData, roomNumber: e.target.value})}
+                    className="w-full border border-gray-300 rounded-sm p-3 text-sm focus:outline-none focus:border-[#0f284f] transition-all"
+                    placeholder="e.g. 101"
+                  />
+                </div>
+
+                <div className="space-y-1">
                   <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">Room Type</label>
                   <select
                     value={formData.type}
@@ -520,6 +557,7 @@ export default function AdminDashboard() {
         </div>
       )}
 
-    </main>
+      </main>
+    </div>
   );
 }
