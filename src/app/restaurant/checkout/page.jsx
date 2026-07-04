@@ -71,10 +71,8 @@ export default function CheckoutPage() {
         orderNotes
       });
       
-      if (res.data?.url) {
-        // We do not clear the cart yet. The user might cancel. 
-        // We'll clear the cart on the success page.
-        window.location.href = res.data.url;
+      if (res.data?.clientSecret) {
+        router.push(`/payment?clientSecret=${res.data.clientSecret}&amount=${res.data.amount}`);
       }
     } catch (error) {
       console.error(error);

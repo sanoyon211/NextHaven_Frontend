@@ -84,13 +84,18 @@ export default function RoomPage({ params }) {
       toast.error("Please select check-in and check-out dates");
       return;
     }
+    
+    if (new Date(checkIn) >= new Date(checkOut)) {
+      toast.error("Check-out date must be after check-in date");
+      return;
+    }
 
     setIsBooking(true);
     const toastId = toast.loading("Redirecting to secure payment...");
 
     try {
       const response = await api.post("/bookings/checkout", {
-        roomId: rawId,
+        roomId: room._id,
         checkInDate: checkIn,
         checkOutDate: checkOut,
         numberOfAdults: adults,
@@ -98,16 +103,28 @@ export default function RoomPage({ params }) {
         specialRequests,
       });
 
-      if (response.data?.sessionUrl) {
-        window.location.href = response.data.sessionUrl;
+      if (response.data?.clientSecret) {
+        router.push(`/payment?clientSecret=${response.data.clientSecret}&amount=${response.data.amount}`);
       } else {
-        throw new Error("No session URL returned");
+        throw new Error("No client secret returned");
       }
     } catch (error) {
-      toast.error("Failed to initiate booking. Please try again.", { id: toastId });
+      const errorMsg = error.response?.data?.message || "Failed to initiate booking. Please try again.";
+      toast.error(errorMsg, { id: toastId });
       setIsBooking(false);
     }
   };
+
+  let totalNights = 0;
+  let totalCost = 0;
+  if (checkIn && checkOut) {
+    const inDate = new Date(checkIn);
+    const outDate = new Date(checkOut);
+    if (!isNaN(inDate) && !isNaN(outDate) && outDate > inDate) {
+      totalNights = Math.ceil((outDate - inDate) / (1000 * 60 * 60 * 24));
+      totalCost = totalNights * room.pricePerNight;
+    }
+  }
 
   return (
     <main className="bg-white w-full overflow-hidden">
@@ -164,6 +181,16 @@ export default function RoomPage({ params }) {
                 <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Special Requests (Optional)</label>
                 <textarea value={specialRequests} onChange={(e) => setSpecialRequests(e.target.value)} rows="2" className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-[#0f284f] resize-none" placeholder="e.g. Late check-in, extra pillows..." />
               </div>
+              
+              {totalNights > 0 && (
+                <div className="mb-6 p-4 bg-white border border-gray-200 rounded-sm flex justify-between items-center shadow-sm">
+                  <span className="text-gray-600 font-semibold uppercase tracking-wider text-sm">
+                    {totalNights} {totalNights > 1 ? "Nights" : "Night"}
+                  </span>
+                  <span className="text-2xl font-black text-[#0f284f]">${totalCost.toFixed(2)}</span>
+                </div>
+              )}
+
               <button 
                 onClick={handleBooking}
                 disabled={isBooking}
@@ -346,15 +373,17 @@ export default function RoomPage({ params }) {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="w-full h-[500px] lg:h-full lg:min-h-[600px] sticky top-24 relative"
+            className="w-full h-[500px] lg:h-full lg:min-h-[600px] sticky top-24"
           >
-            <Image
-              src="https://images.unsplash.com/photo-1514933651103-005eec06c04b?q=80&w=2000"
-              alt="Dining Lounge"
-              fill
-              sizes="(max-width: 1024px) 100vw, 50vw"
-              className="object-cover rounded-sm shadow-xl"
-            />
+            <div className="relative w-full h-full">
+              <Image
+                src="https://images.unsplash.com/photo-1514933651103-005eec06c04b?q=80&w=2000"
+                alt="Dining Lounge"
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover rounded-sm shadow-xl"
+              />
+            </div>
           </motion.div>
 
           <motion.div
