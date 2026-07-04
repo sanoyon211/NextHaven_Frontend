@@ -465,7 +465,7 @@ export default function AdminDashboard() {
                         <tr key={booking._id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
                           <td className="p-4 font-mono text-sm text-gray-500">{booking._id.substring(0, 8).toUpperCase()}</td>
                           <td className="p-4 font-bold text-gray-800">{booking.user?.name || 'Unknown'}</td>
-                          <td className="p-4 text-sm text-gray-600">{booking.room?.title || 'Unknown Room'}</td>
+                          <td className="p-4 text-sm text-gray-600">{booking.room?.roomNumber ? `Room ${booking.room.roomNumber} - ${booking.room.title}` : (booking.room?.title || 'Unknown Room')}</td>
                           <td className="p-4 text-sm text-gray-600">
                             {new Date(booking.checkInDate).toLocaleDateString()} - {new Date(booking.checkOutDate).toLocaleDateString()}
                           </td>

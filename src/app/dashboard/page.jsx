@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { User, Calendar, LogOut, FileText, XCircle, Crown, Utensils } from "lucide-react";
 import jsPDF from "jspdf";
-import "jspdf-autotable";
+import autoTable from "jspdf-autotable";
 import toast from "react-hot-toast";
 import api from "@/lib/api";
 
@@ -70,83 +70,151 @@ export default function DashboardPage() {
   const generatePDF = (booking) => {
     const doc = new jsPDF();
     
-    // Header
-    doc.setFontSize(22);
-    doc.setTextColor(15, 40, 79);
-    doc.text("NEXT HAVEN", 14, 20);
+    // Header Background
+    doc.setFillColor(15, 40, 79);
+    doc.rect(0, 0, 210, 40, 'F');
+
+    // Header Text
+    doc.setFontSize(24);
+    doc.setTextColor(255, 255, 255);
+    doc.setFont("helvetica", "bold");
+    doc.text("NEXT HAVEN", 14, 25);
     
-    doc.setFontSize(12);
-    doc.setTextColor(100);
-    doc.text("Booking Invoice", 14, 30);
-    
-    // Booking Details
     doc.setFontSize(10);
-    doc.setTextColor(50);
-    doc.text(`Booking ID: ${booking._id.substring(0, 8).toUpperCase()}`, 14, 45);
-    doc.text(`Guest Name: ${user?.name || 'Guest'}`, 14, 52);
-    doc.text(`Date: ${new Date().toLocaleDateString()}`, 14, 59);
+    doc.setFont("helvetica", "normal");
+    doc.setTextColor(200, 200, 200);
+    doc.text("Premium Hotel Suites", 14, 32);
+
+    doc.setFontSize(20);
+    doc.setTextColor(255, 255, 255);
+    doc.text("INVOICE", 165, 25);
+
+    // Billed To Section
+    doc.setTextColor(50, 50, 50);
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "bold");
+    doc.text("BILLED TO:", 14, 55);
+    doc.setFont("helvetica", "normal");
+    doc.text(`${user?.name || 'Guest'}`, 14, 62);
+    doc.text(`${user?.email || ''}`, 14, 67);
+
+    // Invoice Details
+    doc.setFont("helvetica", "bold");
+    doc.text("INVOICE DETAILS:", 130, 55);
+    doc.setFont("helvetica", "normal");
+    doc.text(`Invoice No: INV-${booking._id.substring(0, 8).toUpperCase()}`, 130, 62);
+    doc.text(`Date: ${new Date().toLocaleDateString()}`, 130, 67);
+    doc.text(`Status: PAID`, 130, 72);
 
     // Table
-    doc.autoTable({
-      startY: 70,
+    autoTable(doc, {
+      startY: 85,
       head: [['Description', 'Check-in', 'Check-out', 'Total']],
       body: [
-        [booking.room?.title || "Room", new Date(booking.checkInDate).toLocaleDateString(), new Date(booking.checkOutDate).toLocaleDateString(), `$${booking.totalAmount}`]
+        [booking.room?.roomNumber ? `Room ${booking.room.roomNumber} - ${booking.room.title}` : (booking.room?.title || "Room"), new Date(booking.checkInDate).toLocaleDateString(), new Date(booking.checkOutDate).toLocaleDateString(), `$${Number(booking.totalAmount).toFixed(2)}`]
       ],
-      headStyles: { fillColor: [15, 40, 79] },
-      alternateRowStyles: { fillColor: [248, 250, 252] },
+      theme: 'striped',
+      headStyles: { fillColor: [15, 40, 79], textColor: 255, fontStyle: 'bold', halign: 'center' },
+      styles: { fontSize: 10, cellPadding: 6, halign: 'center' },
+      columnStyles: { 0: { halign: 'left' } },
+      alternateRowStyles: { fillColor: [245, 247, 250] },
     });
 
-    // Footer
-    const finalY = doc.lastAutoTable.finalY || 90;
+    // Summary
+    const finalY = doc.lastAutoTable.finalY || 120;
+    
+    doc.setDrawColor(220, 220, 220);
+    doc.line(130, finalY + 5, 196, finalY + 5);
+
     doc.setFontSize(12);
     doc.setTextColor(15, 40, 79);
-    doc.text(`Total Paid: $${booking.totalAmount}`, 14, finalY + 15);
+    doc.setFont("helvetica", "bold");
+    doc.text("Total Paid:", 130, finalY + 15);
+    doc.text(`$${Number(booking.totalAmount).toFixed(2)}`, 196, finalY + 15, { align: "right" });
+
+    // Footer
+    doc.setDrawColor(200, 200, 200);
+    doc.line(14, 280, 196, 280);
+    doc.setFontSize(9);
+    doc.setTextColor(150, 150, 150);
+    doc.setFont("helvetica", "normal");
+    doc.text("Thank you for choosing Next Haven. We hope you enjoy your stay!", 105, 287, { align: "center" });
     
-    doc.setFontSize(10);
-    doc.setTextColor(150);
-    doc.text("Thank you for choosing Next Haven!", 14, finalY + 30);
-    
-    doc.save(`Invoice_${booking._id.substring(0, 8)}.pdf`);
+    doc.save(`NextHaven_Invoice_${booking._id.substring(0, 8)}.pdf`);
   };
 
   const generateFoodOrderPDF = (order) => {
     const doc = new jsPDF();
     
-    doc.setFontSize(22);
-    doc.setTextColor(15, 40, 79);
-    doc.text("NEXT HAVEN", 14, 20);
-    
-    doc.setFontSize(12);
-    doc.setTextColor(100);
-    doc.text("Food Order Invoice", 14, 30);
+    // Header Background
+    doc.setFillColor(236, 72, 153); // Pink for food orders
+    doc.rect(0, 0, 210, 40, 'F');
+
+    // Header Text
+    doc.setFontSize(24);
+    doc.setTextColor(255, 255, 255);
+    doc.setFont("helvetica", "bold");
+    doc.text("NEXT HAVEN", 14, 25);
     
     doc.setFontSize(10);
-    doc.setTextColor(50);
-    doc.text(`Order ID: ${order._id.substring(0, 8).toUpperCase()}`, 14, 45);
-    doc.text(`Guest Name: ${user?.name || 'Guest'}`, 14, 52);
-    doc.text(`Date: ${new Date(order.createdAt).toLocaleDateString()}`, 14, 59);
+    doc.setFont("helvetica", "normal");
+    doc.setTextColor(250, 200, 220);
+    doc.text("Restaurant & Dining", 14, 32);
 
-    const bodyData = order.items.map(item => [item.name, item.quantity, `$${item.price}`, `$${(item.quantity * item.price).toFixed(2)}`]);
+    doc.setFontSize(20);
+    doc.setTextColor(255, 255, 255);
+    doc.text("RECEIPT", 165, 25);
 
-    doc.autoTable({
-      startY: 70,
-      head: [['Item', 'Quantity', 'Price', 'Subtotal']],
+    // Billed To Section
+    doc.setTextColor(50, 50, 50);
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "bold");
+    doc.text("BILLED TO:", 14, 55);
+    doc.setFont("helvetica", "normal");
+    doc.text(`${user?.name || 'Guest'}`, 14, 62);
+    doc.text(`${user?.email || ''}`, 14, 67);
+
+    // Order Details
+    doc.setFont("helvetica", "bold");
+    doc.text("ORDER DETAILS:", 130, 55);
+    doc.setFont("helvetica", "normal");
+    doc.text(`Order No: FD-${order._id.substring(0, 8).toUpperCase()}`, 130, 62);
+    doc.text(`Date: ${new Date(order.createdAt).toLocaleDateString()}`, 130, 67);
+    doc.text(`Status: PAID`, 130, 72);
+
+    const bodyData = order.items.map(item => [item.name, item.quantity, `$${Number(item.price).toFixed(2)}`, `$${(item.quantity * item.price).toFixed(2)}`]);
+
+    autoTable(doc, {
+      startY: 85,
+      head: [['Item', 'Qty', 'Price', 'Subtotal']],
       body: bodyData,
-      headStyles: { fillColor: [15, 40, 79] },
-      alternateRowStyles: { fillColor: [248, 250, 252] },
+      theme: 'striped',
+      headStyles: { fillColor: [236, 72, 153], textColor: 255, fontStyle: 'bold', halign: 'center' },
+      styles: { fontSize: 10, cellPadding: 6, halign: 'center' },
+      columnStyles: { 0: { halign: 'left' } },
+      alternateRowStyles: { fillColor: [253, 242, 248] },
     });
 
-    const finalY = doc.lastAutoTable.finalY || 90;
+    const finalY = doc.lastAutoTable.finalY || 120;
+
+    doc.setDrawColor(220, 220, 220);
+    doc.line(130, finalY + 5, 196, finalY + 5);
+    
     doc.setFontSize(12);
-    doc.setTextColor(15, 40, 79);
-    doc.text(`Total Paid: $${order.totalAmount}`, 14, finalY + 15);
+    doc.setTextColor(236, 72, 153);
+    doc.setFont("helvetica", "bold");
+    doc.text("Total Paid:", 130, finalY + 15);
+    doc.text(`$${Number(order.totalAmount).toFixed(2)}`, 196, finalY + 15, { align: "right" });
     
-    doc.setFontSize(10);
-    doc.setTextColor(150);
-    doc.text("Hope you enjoy your meal!", 14, finalY + 30);
+    // Footer
+    doc.setDrawColor(200, 200, 200);
+    doc.line(14, 280, 196, 280);
+    doc.setFontSize(9);
+    doc.setTextColor(150, 150, 150);
+    doc.setFont("helvetica", "normal");
+    doc.text("Thank you for dining with Next Haven. We hope you enjoyed your meal!", 105, 287, { align: "center" });
     
-    doc.save(`FoodInvoice_${order._id.substring(0, 8)}.pdf`);
+    doc.save(`NextHaven_Receipt_${order._id.substring(0, 8)}.pdf`);
   };
 
   const handleCancelBooking = async (booking) => {
@@ -367,7 +435,7 @@ export default function DashboardPage() {
                               <div className="flex flex-col md:flex-row md:items-start justify-between">
                                 <div>
                                   <span className="text-xs font-bold text-gray-400 uppercase tracking-widest block mb-1">Booking #{booking._id.substring(0,8).toUpperCase()}</span>
-                                  <h3 className="text-xl font-bold text-[#0f284f] uppercase tracking-wide mb-2">{booking.room?.title || "Room"}</h3>
+                                  <h3 className="text-xl font-bold text-[#0f284f] uppercase tracking-wide mb-2">{booking.room?.roomNumber ? `Room ${booking.room.roomNumber} - ${booking.room.title}` : (booking.room?.title || "Room")}</h3>
                                   <p className="text-gray-500 text-sm mb-1"><span className="font-semibold text-gray-700">Check-in:</span> {new Date(booking.checkInDate).toLocaleDateString()}</p>
                                   <p className="text-gray-500 text-sm mb-4 md:mb-0"><span className="font-semibold text-gray-700">Check-out:</span> {new Date(booking.checkOutDate).toLocaleDateString()}</p>
                                 </div>

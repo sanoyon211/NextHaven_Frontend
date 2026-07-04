@@ -94,7 +94,7 @@ export default function SignupPage() {
         >
           <div className="text-center mb-10">
             <h1 className="text-[#0f284f] text-3xl font-bold uppercase tracking-wide mb-3">
-              JOIN HOTEL SUITES
+              JOIN NEXT HAVEN
             </h1>
             <p className="text-gray-500 text-base">
               Create an account to get started

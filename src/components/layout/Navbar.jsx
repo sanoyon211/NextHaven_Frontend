@@ -120,7 +120,7 @@ export default function Navbar() {
         {/* Center: Text Logo */}
         <div className="flex shrink-0 items-center justify-center flex-1 md:flex-none">
           <Link href="/" className="text-2xl md:text-3xl font-extrabold tracking-widest text-gray-900 whitespace-nowrap">
-            HOTEL SUITES
+            NEXT HAVEN
           </Link>
         </div>
 

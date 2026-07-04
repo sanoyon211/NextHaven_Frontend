@@ -139,7 +139,7 @@ export default function RoomPage({ params }) {
             className="flex flex-col justify-center"
           >
             <h1 className="text-[#0f284f] text-4xl sm:text-5xl lg:text-6xl font-extrabold uppercase leading-tight mb-6">
-              {room.title}
+              {room.roomNumber ? `Room ${room.roomNumber} - ${room.title}` : room.title}
             </h1>
             <p className="text-gray-600 text-lg leading-relaxed mb-4">
               {room.description}

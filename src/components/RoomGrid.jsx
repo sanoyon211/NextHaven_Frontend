@@ -44,7 +44,7 @@ export default function RoomGrid({ rooms, loading }) {
             </div>
             <div className="p-6">
               <h3 className="text-[#0f284f] font-extrabold uppercase text-lg mb-2">
-                {room.title}
+                {room.roomNumber ? `Room ${room.roomNumber} - ${room.title}` : room.title}
               </h3>
               <div className="flex justify-between items-end mt-6">
                 <p className="text-gray-500 text-xs w-1/2 leading-relaxed font-medium">

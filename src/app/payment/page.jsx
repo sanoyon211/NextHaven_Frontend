@@ -11,6 +11,7 @@ import {
 import { useSearchParams, useRouter } from "next/navigation";
 import { Lock, ShieldCheck } from "lucide-react";
 import { toast } from "react-hot-toast";
+import api from "@/lib/api";
 
 // Initialize Stripe outside of component to avoid recreating it
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
@@ -44,10 +45,15 @@ function CheckoutForm({ amount }) {
       toast.error(error.message || "Payment failed");
       setIsProcessing(false);
     } else if (paymentIntent && paymentIntent.status === "succeeded") {
-      toast.success("Payment successful!");
-      // The webhook will handle marking it as paid.
-      // Redirect the user to success page.
-      router.push("/checkout/success");
+      // Manually verify payment to bypass webhook requirement for local development
+      try {
+        await api.post("/bookings/verify-payment", { paymentIntentId: paymentIntent.id });
+        toast.success("Payment successful!");
+        window.location.href = "/checkout/success";
+      } catch (err) {
+        toast.error("Failed to verify payment status.");
+        setIsProcessing(false);
+      }
     } else {
       setIsProcessing(false);
     }

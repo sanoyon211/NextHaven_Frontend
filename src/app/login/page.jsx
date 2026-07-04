@@ -95,7 +95,7 @@ export default function LoginPage() {
         >
           <div className="text-center mb-10">
             <h1 className="text-[#0f284f] text-3xl font-bold uppercase tracking-wide mb-3">
-              WELCOME TO HOTEL SUITES
+              WELCOME TO NEXT HAVEN
             </h1>
             <p className="text-gray-500 text-base">
               Sign in to your account to continue

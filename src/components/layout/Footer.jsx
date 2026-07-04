@@ -51,7 +51,7 @@ export default function Footer() {
           {/* Column 1: Logo, Text, Button */}
           <div className="flex flex-col items-start space-y-6">
             <h2 className="text-2xl font-extrabold tracking-widest">
-              HOTEL SUITES
+              NEXT HAVEN
             </h2>
             <p className="text-sm leading-relaxed text-gray-300">
               Welcome to our exquisite Beach Hotel, where relaxation meets luxury,
