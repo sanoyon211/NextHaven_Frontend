@@ -3,18 +3,16 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import toast from "react-hot-toast";
-import { Plus, Edit, Trash2, DollarSign, BedDouble, CalendarCheck, X } from "lucide-react";
+import { Plus, Edit, Trash2, DollarSign, BedDouble, CalendarCheck, X, ClipboardList, Utensils } from "lucide-react";
 import api from "@/lib/api";
 
-const INITIAL_ROOMS = [
-  { id: 1, title: "Standard Room", type: "Standard", price: "$59", status: "Available", image: "https://images.unsplash.com/photo-1590490359683-658d3d23f972?q=80&w=500" },
-  { id: 2, title: "Superior Room", type: "Superior", price: "$79", status: "Maintenance", image: "https://images.unsplash.com/photo-1566665797739-1674de7a421a?q=80&w=500" },
-  { id: 3, title: "Deluxe Room", type: "Deluxe", price: "$129", status: "Available", image: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=500" },
-  { id: 4, title: "Executive Suite", type: "Suite", price: "$199", status: "Available", image: "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?q=80&w=500" },
-];
-
 export default function AdminDashboard() {
-  const [rooms, setRooms] = useState(INITIAL_ROOMS);
+  const [activeTab, setActiveTab] = useState("rooms");
+  
+  const [rooms, setRooms] = useState([]);
+  const [bookings, setBookings] = useState([]);
+  const [foodOrders, setFoodOrders] = useState([]);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [analytics, setAnalytics] = useState({
@@ -23,6 +21,7 @@ export default function AdminDashboard() {
     availableRooms: 0
   });
   const [loadingAnalytics, setLoadingAnalytics] = useState(true);
+  const [loadingData, setLoadingData] = useState(true);
 
   useEffect(() => {
     const fetchAnalytics = async () => {
@@ -40,7 +39,30 @@ export default function AdminDashboard() {
     fetchAnalytics();
   }, []);
 
-  // Form State
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoadingData(true);
+      try {
+        if (activeTab === "rooms") {
+          const res = await api.get("/rooms");
+          setRooms(res.data.rooms || res.data);
+        } else if (activeTab === "bookings") {
+          const res = await api.get("/bookings");
+          setBookings(res.data.data || []);
+        } else if (activeTab === "food_orders") {
+          const res = await api.get("/food-orders");
+          setFoodOrders(res.data.data || []);
+        }
+      } catch (error) {
+        toast.error(`Failed to load ${activeTab}`);
+      } finally {
+        setLoadingData(false);
+      }
+    };
+    fetchData();
+  }, [activeTab]);
+
+  // Form State for Room
   const [formData, setFormData] = useState({
     title: "",
     type: "Standard",
@@ -53,13 +75,25 @@ export default function AdminDashboard() {
 
   const toggleStatus = (id) => {
     setRooms(rooms.map(room => {
-      if (room.id === id) {
+      if (room._id === id || room.id === id) {
         const newStatus = room.status === "Available" ? "Maintenance" : "Available";
         toast(`Room status changed to ${newStatus}`, { icon: '🔄' });
         return { ...room, status: newStatus };
       }
       return room;
     }));
+  };
+
+  const updateFoodOrderStatus = async (id, status) => {
+    try {
+      await api.put(`/food-orders/${id}/status`, { orderStatus: status });
+      setFoodOrders(foodOrders.map(order => 
+        order._id === id ? { ...order, orderStatus: status } : order
+      ));
+      toast.success(`Order status updated to ${status}`);
+    } catch (error) {
+      toast.error("Failed to update status");
+    }
   };
 
   const handleAmenityChange = (amenity) => {
@@ -80,7 +114,6 @@ export default function AdminDashboard() {
       data.append("price", formData.price);
       data.append("capacity", formData.capacity);
       data.append("description", formData.description);
-      // Append amenities as a comma-separated string or multiple fields depending on backend
       data.append("amenities", amenities.join(",")); 
       
       if (imageFile) {
@@ -95,8 +128,6 @@ export default function AdminDashboard() {
 
       toast.success("Room created successfully!", { id: toastId });
       setIsModalOpen(false);
-      
-      // Update local state to reflect the newly created room
       const newRoom = res.data.room || res.data;
       setRooms([newRoom, ...rooms]);
     } catch (error) {
@@ -114,13 +145,15 @@ export default function AdminDashboard() {
           <h1 className="text-3xl font-extrabold text-[#0f284f] uppercase tracking-wider">
             Admin Dashboard
           </h1>
-          <button 
-            onClick={() => setIsModalOpen(true)}
-            className="flex items-center space-x-2 bg-[#0f284f] text-white font-bold uppercase tracking-wider px-6 py-3 rounded-sm hover:bg-[#1a3d72] transition-colors"
-          >
-            <Plus className="w-5 h-5" />
-            <span>Add New Room</span>
-          </button>
+          {activeTab === "rooms" && (
+            <button 
+              onClick={() => setIsModalOpen(true)}
+              className="flex items-center space-x-2 bg-[#0f284f] text-white font-bold uppercase tracking-wider px-6 py-3 rounded-sm hover:bg-[#1a3d72] transition-colors"
+            >
+              <Plus className="w-5 h-5" />
+              <span>Add New Room</span>
+            </button>
+          )}
         </div>
 
         {/* Top Section: Revenue Analytics Cards */}
@@ -162,78 +195,199 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        {/* Middle Section: Room Management Table */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
-          <div className="p-6 border-b border-gray-100 flex justify-between items-center">
-            <h2 className="text-[#0f284f] text-xl font-bold uppercase tracking-wider">
-              Room Management
-            </h2>
-          </div>
-          
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="bg-gray-50 text-[#0f284f] border-b border-gray-200 uppercase text-xs tracking-wider">
-                  <th className="p-4 font-bold">Image</th>
-                  <th className="p-4 font-bold">Title</th>
-                  <th className="p-4 font-bold">Type</th>
-                  <th className="p-4 font-bold">Price</th>
-                  <th className="p-4 font-bold">Status</th>
-                  <th className="p-4 font-bold text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {rooms.map((room) => (
-                  <tr key={room.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                    <td className="p-4">
-                      <div className="relative w-20 h-14 rounded-sm overflow-hidden">
-                        <Image
-                          src={room.image}
-                          alt={room.title}
-                          fill
-                          sizes="80px"
-                          className="object-cover"
-                        />
-                      </div>
-                    </td>
-                    <td className="p-4 font-bold text-gray-800">{room.title}</td>
-                    <td className="p-4 text-sm text-gray-600">{room.type}</td>
-                    <td className="p-4 text-sm font-bold text-gray-900">{room.price}</td>
-                    <td className="p-4">
-                      <button 
-                        onClick={() => toggleStatus(room.id)}
-                        className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider transition-colors ${
-                          room.status === "Available" 
-                            ? "bg-green-100 text-green-800 hover:bg-green-200" 
-                            : "bg-red-100 text-red-800 hover:bg-red-200"
-                        }`}
-                      >
-                        {room.status}
-                      </button>
-                    </td>
-                    <td className="p-4 text-right space-x-2">
-                      <button 
-                        onClick={() => toast("Edit functionality coming soon")}
-                        className="p-2 text-gray-500 hover:text-[#0f284f] hover:bg-blue-50 rounded-full transition-colors"
-                      >
-                        <Edit className="w-4 h-4" />
-                      </button>
-                      <button 
-                        onClick={() => toast.error("Delete functionality coming soon")}
-                        className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-full transition-colors"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+        {/* Tabs */}
+        <div className="flex border-b border-gray-200 mb-8 overflow-x-auto no-scrollbar">
+          <button
+            onClick={() => setActiveTab("rooms")}
+            className={`flex items-center gap-2 px-6 py-4 font-bold uppercase tracking-wide text-sm whitespace-nowrap transition-colors ${
+              activeTab === "rooms"
+                ? "border-b-2 border-[#0f284f] text-[#0f284f]"
+                : "text-gray-500 hover:text-gray-900"
+            }`}
+          >
+            <BedDouble className="w-4 h-4" /> Rooms
+          </button>
+          <button
+            onClick={() => setActiveTab("bookings")}
+            className={`flex items-center gap-2 px-6 py-4 font-bold uppercase tracking-wide text-sm whitespace-nowrap transition-colors ${
+              activeTab === "bookings"
+                ? "border-b-2 border-[#0f284f] text-[#0f284f]"
+                : "text-gray-500 hover:text-gray-900"
+            }`}
+          >
+            <ClipboardList className="w-4 h-4" /> Bookings
+          </button>
+          <button
+            onClick={() => setActiveTab("food_orders")}
+            className={`flex items-center gap-2 px-6 py-4 font-bold uppercase tracking-wide text-sm whitespace-nowrap transition-colors ${
+              activeTab === "food_orders"
+                ? "border-b-2 border-[#0f284f] text-[#0f284f]"
+                : "text-gray-500 hover:text-gray-900"
+            }`}
+          >
+            <Utensils className="w-4 h-4" /> Food Orders
+          </button>
+        </div>
+
+        {/* Tab Content */}
+        <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden min-h-[400px]">
+          {loadingData ? (
+            <div className="flex justify-center py-20">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#0f284f]"></div>
+            </div>
+          ) : (
+            <>
+              {activeTab === "rooms" && (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left border-collapse">
+                    <thead>
+                      <tr className="bg-gray-50 text-[#0f284f] border-b border-gray-200 uppercase text-xs tracking-wider">
+                        <th className="p-4 font-bold">Image</th>
+                        <th className="p-4 font-bold">Title</th>
+                        <th className="p-4 font-bold">Type</th>
+                        <th className="p-4 font-bold">Price</th>
+                        <th className="p-4 font-bold">Status</th>
+                        <th className="p-4 font-bold text-right">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {rooms.length === 0 && <tr><td colSpan="6" className="p-6 text-center text-gray-500">No rooms found.</td></tr>}
+                      {rooms.map((room) => (
+                        <tr key={room._id || room.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                          <td className="p-4">
+                            <div className="relative w-20 h-14 rounded-sm overflow-hidden">
+                              <Image
+                                src={room.image || room.imageUrl || "https://images.unsplash.com/photo-1590490359683-658d3d23f972?q=80"}
+                                alt={room.title}
+                                fill
+                                sizes="80px"
+                                className="object-cover"
+                              />
+                            </div>
+                          </td>
+                          <td className="p-4 font-bold text-gray-800">{room.title}</td>
+                          <td className="p-4 text-sm text-gray-600">{room.roomType || room.type}</td>
+                          <td className="p-4 text-sm font-bold text-gray-900">${room.price || room.pricePerNight}</td>
+                          <td className="p-4">
+                            <button 
+                              onClick={() => toggleStatus(room._id || room.id)}
+                              className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider transition-colors ${
+                                room.status?.toLowerCase() === "available" 
+                                  ? "bg-green-100 text-green-800 hover:bg-green-200" 
+                                  : "bg-red-100 text-red-800 hover:bg-red-200"
+                              }`}
+                            >
+                              {room.status}
+                            </button>
+                          </td>
+                          <td className="p-4 text-right space-x-2">
+                            <button className="p-2 text-gray-500 hover:text-[#0f284f] hover:bg-blue-50 rounded-full transition-colors">
+                              <Edit className="w-4 h-4" />
+                            </button>
+                            <button className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-full transition-colors">
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+
+              {activeTab === "bookings" && (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left border-collapse">
+                    <thead>
+                      <tr className="bg-gray-50 text-[#0f284f] border-b border-gray-200 uppercase text-xs tracking-wider">
+                        <th className="p-4 font-bold">Booking ID</th>
+                        <th className="p-4 font-bold">Guest</th>
+                        <th className="p-4 font-bold">Room</th>
+                        <th className="p-4 font-bold">Dates</th>
+                        <th className="p-4 font-bold">Total</th>
+                        <th className="p-4 font-bold">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {bookings.length === 0 && <tr><td colSpan="6" className="p-6 text-center text-gray-500">No bookings found.</td></tr>}
+                      {bookings.map((booking) => (
+                        <tr key={booking._id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                          <td className="p-4 font-mono text-sm text-gray-500">{booking._id.substring(0, 8).toUpperCase()}</td>
+                          <td className="p-4 font-bold text-gray-800">{booking.user?.name || 'Unknown'}</td>
+                          <td className="p-4 text-sm text-gray-600">{booking.room?.title || 'Unknown Room'}</td>
+                          <td className="p-4 text-sm text-gray-600">
+                            {new Date(booking.checkInDate).toLocaleDateString()} - {new Date(booking.checkOutDate).toLocaleDateString()}
+                          </td>
+                          <td className="p-4 text-sm font-bold text-gray-900">${booking.totalAmount}</td>
+                          <td className="p-4">
+                            <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${
+                              booking.paymentStatus === 'paid' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+                            }`}>
+                              {booking.paymentStatus}
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+
+              {activeTab === "food_orders" && (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left border-collapse">
+                    <thead>
+                      <tr className="bg-gray-50 text-[#0f284f] border-b border-gray-200 uppercase text-xs tracking-wider">
+                        <th className="p-4 font-bold">Order ID</th>
+                        <th className="p-4 font-bold">Customer</th>
+                        <th className="p-4 font-bold">Items</th>
+                        <th className="p-4 font-bold">Total</th>
+                        <th className="p-4 font-bold">Status</th>
+                        <th className="p-4 font-bold">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {foodOrders.length === 0 && <tr><td colSpan="6" className="p-6 text-center text-gray-500">No food orders found.</td></tr>}
+                      {foodOrders.map((order) => (
+                        <tr key={order._id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                          <td className="p-4 font-mono text-sm text-gray-500">{order._id.substring(0, 8).toUpperCase()}</td>
+                          <td className="p-4 font-bold text-gray-800">{order.user?.name || 'Unknown'}</td>
+                          <td className="p-4 text-sm text-gray-600">
+                            {order.items.map(i => `${i.quantity}x ${i.name}`).join(', ')}
+                          </td>
+                          <td className="p-4 text-sm font-bold text-gray-900">${order.totalAmount}</td>
+                          <td className="p-4">
+                            <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${
+                              order.orderStatus === 'delivered' ? 'bg-green-100 text-green-800' : 
+                              order.orderStatus === 'cancelled' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800'
+                            }`}>
+                              {order.orderStatus}
+                            </span>
+                          </td>
+                          <td className="p-4">
+                            <select 
+                              value={order.orderStatus}
+                              onChange={(e) => updateFoodOrderStatus(order._id, e.target.value)}
+                              className="text-sm border border-gray-300 rounded p-1"
+                            >
+                              <option value="preparing">Preparing</option>
+                              <option value="ready">Ready</option>
+                              <option value="delivered">Delivered</option>
+                              <option value="cancelled">Cancelled</option>
+                            </select>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </>
+          )}
         </div>
       </div>
 
-      {/* Add New Room Modal */}
+      {/* Add New Room Modal (Code omitted for brevity, keeping existing modal) */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
           <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">

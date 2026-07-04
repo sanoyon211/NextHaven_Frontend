@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { Search, Leaf, WheatOff } from "lucide-react";
+import { Search, Leaf, WheatOff, ShoppingBag, ArrowRight } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import api from "@/lib/api";
-
+import toast from "react-hot-toast";
 // Shared animation variants
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -34,6 +34,26 @@ export default function AllMenuPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [menuItems, setMenuItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [cart, setCart] = useState([]);
+  const router = require("next/navigation").useRouter();
+
+  useEffect(() => {
+    const savedCart = localStorage.getItem("foodCart");
+    if (savedCart) setCart(JSON.parse(savedCart));
+  }, []);
+
+  const addToCart = (item) => {
+    const newCart = [...cart];
+    const existingIndex = newCart.findIndex((i) => i._id === item._id);
+    if (existingIndex >= 0) {
+      newCart[existingIndex].quantity += 1;
+    } else {
+      newCart.push({ ...item, quantity: 1 });
+    }
+    setCart(newCart);
+    localStorage.setItem("foodCart", JSON.stringify(newCart));
+    toast.success(`Added ${item.name} to cart!`);
+  };
 
   useEffect(() => {
     const fetchMenu = async () => {
@@ -204,10 +224,10 @@ export default function AllMenuPage() {
                       </div>
 
                       <button 
-                        onClick={() => alert(`Added ${item.name} to your room order!`)}
+                        onClick={() => addToCart(item)}
                         className="w-full bg-[#0f284f] text-white font-bold uppercase tracking-widest py-4 rounded-sm hover:bg-[#1a3d72] transition-colors"
                       >
-                        Order To Room
+                        Add to Cart
                       </button>
                     </div>
                   </div>
@@ -269,6 +289,29 @@ export default function AllMenuPage() {
         </motion.div>
 
       </div>
+
+      {/* Floating Cart Button */}
+      {cart.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="fixed bottom-8 right-8 z-50"
+        >
+          <button
+            onClick={() => router.push("/restaurant/checkout")}
+            className="bg-[#0f284f] text-white px-6 py-4 rounded-full shadow-2xl hover:bg-[#1a3d72] transition-all flex items-center gap-3 group"
+          >
+            <div className="relative">
+              <ShoppingBag className="w-6 h-6" />
+              <span className="absolute -top-2 -right-2 bg-[#ffbca8] text-[#0f284f] text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full">
+                {cart.reduce((sum, item) => sum + item.quantity, 0)}
+              </span>
+            </div>
+            <span className="font-bold uppercase tracking-wide">Checkout</span>
+            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+          </button>
+        </motion.div>
+      )}
     </main>
   );
 }
