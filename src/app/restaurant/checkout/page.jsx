@@ -7,6 +7,16 @@ import { Trash2, ArrowLeft, Loader2 } from "lucide-react";
 import toast from "react-hot-toast";
 import api from "@/lib/api";
 
+const fadeUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
+};
+
 export default function CheckoutPage() {
   const router = useRouter();
   const [cart, setCart] = useState([]);
@@ -94,7 +104,10 @@ export default function CheckoutPage() {
 
   if (cart.length === 0) {
     return (
-      <div className="min-h-screen bg-[#f8fafc] pt-32 pb-20 px-4 flex flex-col items-center justify-center">
+      <motion.div 
+        initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+        className="min-h-screen bg-[#f8fafc] pt-32 pb-20 px-4 flex flex-col items-center justify-center"
+      >
         <h2 className="text-2xl font-bold text-[#0f284f] mb-4 uppercase tracking-wide">Your Cart is Empty</h2>
         <button
           onClick={() => router.push("/restaurant/all-menu")}
@@ -102,25 +115,29 @@ export default function CheckoutPage() {
         >
           <ArrowLeft className="w-5 h-5" /> Back to Menu
         </button>
-      </div>
+      </motion.div>
     );
   }
 
   return (
     <div className="min-h-screen bg-[#f8fafc] pt-32 pb-20 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto">
-        <button
+      <motion.div 
+        variants={staggerContainer} initial="hidden" animate="visible"
+        className="max-w-4xl mx-auto"
+      >
+        <motion.button
+          variants={fadeUp}
           onClick={() => router.push("/restaurant/all-menu")}
           className="flex items-center gap-2 text-gray-500 hover:text-[#0f284f] transition-colors mb-8 font-semibold"
         >
           <ArrowLeft className="w-5 h-5" /> Back to Menu
-        </button>
+        </motion.button>
 
-        <h1 className="text-3xl md:text-4xl font-extrabold text-[#0f284f] uppercase tracking-wider mb-10">
+        <motion.h1 variants={fadeUp} className="text-3xl md:text-4xl font-extrabold text-[#0f284f] uppercase tracking-wider mb-10">
           Checkout
-        </h1>
+        </motion.h1>
 
-        <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+        <motion.div variants={fadeUp} className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
           <div className="p-6 md:p-8">
             <h2 className="text-xl font-bold text-gray-900 uppercase tracking-wide mb-6 border-b border-gray-100 pb-4">
               Order Summary
@@ -216,8 +233,8 @@ export default function CheckoutPage() {
               )}
             </button>
           </div>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </div>
   );
 }

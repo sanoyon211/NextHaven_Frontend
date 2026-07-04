@@ -8,6 +8,22 @@ import { Plus, Edit, Trash2, DollarSign, BedDouble, CalendarCheck, X, ClipboardL
 import api from "@/lib/api";
 import { useAuth } from "@/lib/AuthContext";
 import Swal from "sweetalert2";
+import { motion, AnimatePresence } from "framer-motion";
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+};
+
+const fadeRight = {
+  hidden: { opacity: 0, x: -30 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: "easeOut" } },
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
+};
 
 export default function AdminDashboard() {
   const router = useRouter();
@@ -369,7 +385,10 @@ export default function AdminDashboard() {
   return (
     <div className="flex min-h-screen bg-slate-50/50">
       {/* Sidebar - Premium Soft Design */}
-      <aside className="w-64 bg-white border-r border-slate-200/60 flex flex-col justify-between hidden md:flex sticky top-0 h-screen overflow-y-auto">
+      <motion.aside 
+        initial="hidden" animate="visible" variants={fadeRight}
+        className="w-64 bg-white border-r border-slate-200/60 flex flex-col justify-between hidden md:flex sticky top-0 h-screen overflow-y-auto"
+      >
         <div>
           <div className="px-8 py-10 border-b border-slate-100/80">
             <h1 className="text-2xl font-extrabold tracking-tight text-slate-900">
@@ -407,14 +426,14 @@ export default function AdminDashboard() {
             <Home className="w-4 h-4 text-slate-400" /> Back to Website
           </button>
         </div>
-      </aside>
+      </motion.aside>
 
       {/* Main Content */}
       <main className="flex-1 w-full py-10 px-4 sm:px-8 lg:px-12 relative overflow-x-hidden">
         <div className="max-w-7xl mx-auto">
 
           {/* Header Section */}
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4">
+          <motion.div variants={fadeUp} className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4">
             <div>
               <h1 className="text-3xl font-bold tracking-tight text-slate-900">
                 Dashboard Overview
@@ -448,17 +467,17 @@ export default function AdminDashboard() {
                 </button>
               )}
             </div>
-          </div>
+          </motion.div>
 
           {/* Analytics Cards with subtle hover animations */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+          <motion.div variants={staggerContainer} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
             {[
               { title: "Total Revenue", value: `$${analytics.totalRevenue.toLocaleString()}`, icon: DollarSign, color: "text-emerald-600", bg: "bg-emerald-50" },
               { title: "Active Bookings", value: analytics.activeBookings, icon: CalendarCheck, color: "text-[#0f284f]", bg: "bg-[#0f284f]/10" },
               { title: "Rooms Available", value: analytics.availableRooms, icon: BedDouble, color: "text-blue-600", bg: "bg-blue-50" },
               { title: "Total Rooms", value: analytics.totalRooms, icon: Home, color: "text-purple-600", bg: "bg-purple-50" }
             ].map((stat, index) => (
-              <div key={index} className="bg-white rounded-2xl shadow-sm border border-slate-200/60 p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-md hover:-translate-y-1 group">
+              <motion.div variants={fadeUp} key={index} className="bg-white rounded-2xl shadow-sm border border-slate-200/60 p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-md hover:-translate-y-1 group">
                 <div className="flex items-center justify-between mb-4">
                   <p className="text-sm font-semibold text-slate-500">{stat.title}</p>
                   <div className={`p-2.5 ${stat.bg} rounded-xl ${stat.color} transition-transform group-hover:scale-110`}>
@@ -470,12 +489,12 @@ export default function AdminDashboard() {
                     {loadingAnalytics ? "..." : stat.value}
                   </p>
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
 
           {/* Tab Content Table Wrapper */}
-          <div className="bg-white rounded-2xl shadow-sm border border-slate-200/60 overflow-hidden min-h-[400px]">
+          <motion.div variants={fadeUp} className="bg-white rounded-2xl shadow-sm border border-slate-200/60 overflow-hidden min-h-[400px]">
             {loadingData ? (
               <div className="p-6 animate-pulse">
                 <div className="h-10 bg-gray-100 rounded mb-6"></div>
@@ -757,13 +776,20 @@ export default function AdminDashboard() {
                 )}
               </>
             )}
-          </div>
+          </motion.div>
         </div>
 
         {/* Modernized Room Modal */}
-        {isModalOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm transition-opacity">
-            <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col transform transition-all">
+        <AnimatePresence>
+          {isModalOpen && (
+            <motion.div 
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm transition-opacity"
+            >
+              <motion.div 
+                initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }}
+                className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col transform transition-all"
+              >
               <div className="bg-slate-50 border-b border-slate-100 px-8 py-5 flex justify-between items-center">
                 <h2 className="text-lg font-bold text-slate-900">
                   {editingRoomId ? "Edit Room Details" : "Create New Room"}
@@ -888,14 +914,22 @@ export default function AdminDashboard() {
                   </button>
                 </div>
               </form>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         )}
+        </AnimatePresence>
 
         {/* Modernized Menu Modal */}
+        <AnimatePresence>
         {isMenuModalOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm transition-opacity">
-            <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col transform transition-all">
+          <motion.div 
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm transition-opacity"
+          >
+            <motion.div 
+              initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }}
+              className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col transform transition-all"
+            >
               <div className="bg-slate-50 border-b border-slate-100 px-8 py-5 flex justify-between items-center">
                 <h2 className="text-lg font-bold text-slate-900">
                   {editingMenuId ? "Edit Menu Item" : "Create Menu Item"}
@@ -1005,9 +1039,10 @@ export default function AdminDashboard() {
                   </button>
                 </div>
               </form>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         )}
+        </AnimatePresence>
 
       </main>
     </div>

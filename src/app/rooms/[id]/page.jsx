@@ -21,6 +21,16 @@ const fadeUp = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
 };
 
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2,
+    },
+  },
+};
+
 export default function RoomPage({ params }) {
   const resolvedParams = use(params);
   const rawId = resolvedParams?.id;
@@ -558,9 +568,12 @@ export default function RoomPage({ params }) {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <motion.div 
+            variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          >
             {/* Review 1 */}
-            <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+            <motion.div variants={fadeUp} className="bg-white p-8 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
               <div className="flex text-yellow-400 mb-4">
                 <Star className="w-5 h-5 fill-current" />
                 <Star className="w-5 h-5 fill-current" />
@@ -584,10 +597,10 @@ export default function RoomPage({ params }) {
                   <span className="text-sm text-gray-500">Stayed in June</span>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
             {/* Review 2 */}
-            <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+            <motion.div variants={fadeUp} className="bg-white p-8 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
               <div className="flex text-yellow-400 mb-4">
                 <Star className="w-5 h-5 fill-current" />
                 <Star className="w-5 h-5 fill-current" />
@@ -611,10 +624,10 @@ export default function RoomPage({ params }) {
                   <span className="text-sm text-gray-500">Stayed in August</span>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
             {/* Review 3 */}
-            <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow md:col-span-2 lg:col-span-1">
+            <motion.div variants={fadeUp} className="bg-white p-8 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow md:col-span-2 lg:col-span-1">
               <div className="flex text-yellow-400 mb-4">
                 <Star className="w-5 h-5 fill-current" />
                 <Star className="w-5 h-5 fill-current" />
@@ -638,8 +651,8 @@ export default function RoomPage({ params }) {
                   <span className="text-sm text-gray-500">Stayed in September</span>
                 </div>
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </motion.div>
       </section>
     </main>

@@ -3,7 +3,7 @@
 import { useAuth } from "@/lib/AuthContext";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { User, Calendar, LogOut, FileText, XCircle, Crown, Utensils } from "lucide-react";
 import jsPDF from "jspdf";
@@ -64,9 +64,19 @@ export default function DashboardPage() {
 
   if (authLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#f8fafc]">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#0f284f]"></div>
-      </div>
+      <main className="min-h-screen bg-[#f8fafc] py-16 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 animate-pulse">
+            <div className="lg:col-span-1">
+              <div className="bg-white rounded-sm shadow-sm border border-gray-100 p-6 h-96"></div>
+            </div>
+            <div className="lg:col-span-3 space-y-8">
+              <div className="h-40 bg-[#0f284f]/10 rounded-sm shadow-sm border border-gray-100 p-8"></div>
+              <div className="h-96 bg-white rounded-sm shadow-sm border border-gray-100 p-8"></div>
+            </div>
+          </div>
+        </div>
+      </main>
     );
   }
 
@@ -428,13 +438,22 @@ export default function DashboardPage() {
             </div>
 
             {loadingData && activeTab !== "profile" ? (
-              <div className="bg-white rounded-sm shadow-sm border border-gray-100 p-8 flex justify-center py-20">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#0f284f]"></div>
+              <div className="bg-white rounded-sm shadow-sm border border-gray-100 p-8 md:p-12 animate-pulse">
+                <div className="h-10 bg-gray-200 rounded w-1/3 mb-8"></div>
+                <div className="space-y-6">
+                  {[1, 2, 3].map((i) => (
+                    <div key={i} className="h-32 bg-gray-50 border border-gray-100 rounded-sm"></div>
+                  ))}
+                </div>
               </div>
             ) : (
-              <>
+              <AnimatePresence mode="wait">
                 {activeTab === "bookings" && (
-                  <div className="bg-white rounded-sm shadow-sm border border-gray-100 p-8 md:p-12">
+                  <motion.div 
+                    key="bookings"
+                    initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }}
+                    className="bg-white rounded-sm shadow-sm border border-gray-100 p-8 md:p-12"
+                  >
                     <h1 className="text-3xl font-bold text-[#0f284f] uppercase tracking-wide mb-8 border-b border-gray-100 pb-4">
                       Personal Booking History
                     </h1>
@@ -505,11 +524,15 @@ export default function DashboardPage() {
                         </button>
                       </div>
                     )}
-                  </div>
+                  </motion.div>
                 )}
 
                 {activeTab === "food_orders" && (
-                  <div className="bg-white rounded-sm shadow-sm border border-gray-100 p-8 md:p-12">
+                  <motion.div 
+                    key="food_orders"
+                    initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }}
+                    className="bg-white rounded-sm shadow-sm border border-gray-100 p-8 md:p-12"
+                  >
                     <h1 className="text-3xl font-bold text-[#0f284f] uppercase tracking-wide mb-8 border-b border-gray-100 pb-4">
                       My Food Orders
                     </h1>
@@ -573,11 +596,15 @@ export default function DashboardPage() {
                         </button>
                       </div>
                     )}
-                  </div>
+                  </motion.div>
                 )}
 
                 {activeTab === "reservations" && (
-                  <div className="bg-white rounded-sm shadow-sm border border-gray-100 p-8 md:p-12">
+                  <motion.div 
+                    key="reservations"
+                    initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }}
+                    className="bg-white rounded-sm shadow-sm border border-gray-100 p-8 md:p-12"
+                  >
                     <h1 className="text-3xl font-bold text-[#0f284f] uppercase tracking-wide mb-8 border-b border-gray-100 pb-4">
                       My Table Reservations
                     </h1>
@@ -613,11 +640,15 @@ export default function DashboardPage() {
                         </button>
                       </div>
                     )}
-                  </div>
+                  </motion.div>
                 )}
 
                 {activeTab === "profile" && (
-                  <div className="bg-white rounded-sm shadow-sm border border-gray-100 p-8 md:p-12">
+                  <motion.div 
+                    key="profile"
+                    initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }}
+                    className="bg-white rounded-sm shadow-sm border border-gray-100 p-8 md:p-12"
+                  >
                     <h1 className="text-3xl font-bold text-[#0f284f] uppercase tracking-wide mb-8 border-b border-gray-100 pb-4">
                       My Profile
                     </h1>
@@ -652,9 +683,9 @@ export default function DashboardPage() {
                         {isUpdatingProfile ? "UPDATING..." : "SAVE CHANGES"}
                       </button>
                     </form>
-                  </div>
+                  </motion.div>
                 )}
-              </>
+              </AnimatePresence>
             )}
           </div>
         </motion.div>

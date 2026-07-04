@@ -7,6 +7,16 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import api from "@/lib/api";
 
+const fadeUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.2 } },
+};
+
 export default function Home() {
   const router = useRouter();
   const [rooms, setRooms] = useState([]);
@@ -91,17 +101,23 @@ export default function Home() {
       </section>
 
       {/* Booking Bar and Room Grid */}
-      <section className="bg-[#f8fafc] py-20 px-4 sm:px-6 lg:px-8 w-full">
+      <motion.section 
+        variants={staggerContainer}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.1 }}
+        className="bg-[#f8fafc] py-20 px-4 sm:px-6 lg:px-8 w-full"
+      >
         <div className="mx-auto max-w-7xl">
           {/* Booking Bar Title */}
-          <div className="text-center mb-10">
+          <motion.div variants={fadeUp} className="text-center mb-10">
             <h2 className="text-[#0f284f] text-3xl md:text-4xl font-bold uppercase tracking-wider">
               Book Your Stay
             </h2>
-          </div>
+          </motion.div>
 
           {/* Booking Bar Form */}
-          <div className="bg-white rounded-lg shadow-lg p-6 mb-20 max-w-5xl mx-auto">
+          <motion.div variants={fadeUp} className="bg-white rounded-lg shadow-lg p-6 mb-20 max-w-5xl mx-auto">
             <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
               <div className="flex flex-col">
                 <label className="text-xs font-semibold text-gray-500 uppercase mb-2">Check-in</label>
@@ -147,10 +163,10 @@ export default function Home() {
                 Search
               </button>
             </form>
-          </div>
+          </motion.div>
 
           {/* Room Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <motion.div variants={staggerContainer} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {loading ? (
               <div className="col-span-4 flex justify-center items-center py-20">
                 <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#0f284f]"></div>
@@ -158,6 +174,7 @@ export default function Home() {
             ) : rooms.map((room) => (
               <Link key={room._id} href={`/rooms/${room._id}`}>
                 <motion.div
+                  variants={fadeUp}
                   whileHover={{ y: -5 }}
                   transition={{ type: "spring", stiffness: 300 }}
                   className="bg-white shadow-sm hover:shadow-xl rounded-lg overflow-hidden group cursor-pointer border border-gray-100 transition-all flex flex-col h-full"
@@ -188,9 +205,9 @@ export default function Home() {
                 </motion.div>
               </Link>
             ))}
-          </div>
+          </motion.div>
         </div>
-      </section>
+      </motion.section>
     </main>
   );
 }

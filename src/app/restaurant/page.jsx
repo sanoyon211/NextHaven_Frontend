@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useState, useEffect } from "react";import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { Clock, CalendarCheck, Phone, ShoppingBag, ArrowRight } from "lucide-react";

@@ -6,6 +6,17 @@ import toast from "react-hot-toast";
 import api from "@/lib/api";
 import SearchBar from "@/components/SearchBar";
 import RoomGrid from "@/components/RoomGrid";
+import { motion } from "framer-motion";
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.2 } },
+};
 
 export default function RoomsPage() {
   const [rooms, setRooms] = useState([]);
@@ -52,10 +63,16 @@ export default function RoomsPage() {
 
   return (
     <main className="min-h-screen bg-[#f8fafc] w-full py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
+      <motion.div 
+        initial="hidden" 
+        whileInView="visible" 
+        viewport={{ once: true, amount: 0.1 }}
+        variants={staggerContainer}
+        className="max-w-7xl mx-auto"
+      >
         
         {/* Mobile Filter Toggle */}
-        <div className="lg:hidden flex justify-between items-center mb-6">
+        <motion.div variants={fadeUp} className="lg:hidden flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold text-[#0f284f] uppercase tracking-wide">Our Rooms</h1>
           <button 
             onClick={() => setIsMobileFiltersOpen(!isMobileFiltersOpen)}
@@ -64,12 +81,12 @@ export default function RoomsPage() {
             <Filter className="w-4 h-4" />
             <span>Filters</span>
           </button>
-        </div>
+        </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           
           {/* Left Column (Filter Sidebar) */}
-          <aside className={`lg:col-span-1 ${isMobileFiltersOpen ? 'block' : 'hidden'} lg:block`}>
+          <motion.aside variants={fadeUp} className={`lg:col-span-1 ${isMobileFiltersOpen ? 'block' : 'hidden'} lg:block`}>
             <SearchBar 
 
               selectedTypes={selectedTypes}
@@ -80,10 +97,10 @@ export default function RoomsPage() {
               setDates={setDates}
               onApply={() => fetchRooms()}
             />
-          </aside>
+          </motion.aside>
 
           {/* Right Column (Main Content) */}
-          <section className="lg:col-span-3">
+          <motion.section variants={fadeUp} className="lg:col-span-3">
             
             {/* Top Bar */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
@@ -110,9 +127,9 @@ export default function RoomsPage() {
             {/* Room Grid */}
             <RoomGrid rooms={rooms} loading={loading} />
 
-          </section>
+          </motion.section>
         </div>
-      </div>
+      </motion.div>
     </main>
   );
 }
