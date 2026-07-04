@@ -60,7 +60,7 @@ export default function AIChatbot() {
             initial={{ opacity: 0, y: 50, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 50, scale: 0.9 }}
-            className="fixed bottom-24 right-6 w-[350px] bg-white rounded-lg shadow-2xl z-50 border border-gray-100 overflow-hidden flex flex-col"
+            className="fixed inset-0 md:inset-auto md:bottom-24 md:right-6 w-full h-full md:w-[350px] md:h-auto bg-white md:rounded-lg shadow-2xl z-[60] md:border border-gray-100 overflow-hidden flex flex-col"
           >
             {/* Header */}
             <div className="bg-[#0f284f] text-white p-4 flex justify-between items-center">
@@ -74,7 +74,7 @@ export default function AIChatbot() {
             </div>
 
             {/* Chat History */}
-            <div className="flex-1 p-4 h-[350px] overflow-y-auto bg-gray-50 flex flex-col space-y-4">
+            <div className="flex-1 p-4 h-0 md:h-[350px] overflow-y-auto bg-gray-50 flex flex-col space-y-4">
               {messages.map((msg, idx) => (
                 <div
                   key={idx}

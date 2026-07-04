@@ -28,7 +28,7 @@ export default function Footer() {
   return (
     <footer className="bg-[#032c28] text-white">
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-12 md:grid-cols-4 lg:gap-8">
+        <div className="flex flex-col gap-6 md:grid md:grid-cols-4 lg:gap-8">
           
           {/* Column 1: Logo, Text, Button */}
           <div className="flex flex-col items-start space-y-6">

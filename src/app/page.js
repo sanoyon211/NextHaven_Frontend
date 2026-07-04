@@ -14,9 +14,9 @@ export default function Home() {
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
-          className="flex flex-col justify-center px-6 py-16 sm:px-12 lg:px-24 xl:px-32"
+          className="flex flex-col justify-center p-4 md:p-8 lg:p-16"
         >
-          <h1 className="text-[#0f284f] text-5xl sm:text-6xl lg:text-7xl font-bold uppercase leading-tight mb-6">
+          <h1 className="text-[#0f284f] text-3xl md:text-5xl lg:text-6xl font-bold uppercase leading-tight mb-6">
             ROOM TO REMEMBER
           </h1>
           <p className="text-gray-600 text-lg leading-relaxed mb-10 max-w-xl">
@@ -97,7 +97,7 @@ export default function Home() {
           </div>
 
           {/* Room Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
               {
                 title: "STANDARD ROOM",
