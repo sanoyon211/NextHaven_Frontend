@@ -13,6 +13,7 @@ export default function CheckoutSuccessPage() {
   useEffect(() => {
     if (sessionId && !cleared) {
       localStorage.removeItem("foodCart");
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setCleared(true);
     }
   }, [sessionId, cleared]);

@@ -21,10 +21,19 @@ export default function DashboardPage() {
   const [foodOrders, setFoodOrders] = useState([]);
   const [loadingData, setLoadingData] = useState(true);
 
+  // Profile update state
+  const [profileName, setProfileName] = useState(user?.name || "");
+  const [profileImage, setProfileImage] = useState(null);
+  const [isUpdatingProfile, setIsUpdatingProfile] = useState(false);
+
   useEffect(() => {
     if (!authLoading && !user) {
       router.push("/login");
+    } else if (user && !profileName) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setProfileName(user.name || "");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, authLoading, router]);
 
   useEffect(() => {
@@ -152,6 +161,33 @@ export default function DashboardPage() {
       } catch (error) {
         toast.error("Failed to cancel booking", { id: toastId });
       }
+    }
+  };
+
+  const handleProfileUpdate = async (e) => {
+    e.preventDefault();
+    setIsUpdatingProfile(true);
+    const toastId = toast.loading("Updating profile...");
+
+    try {
+      const data = new FormData();
+      data.append("name", profileName);
+      if (profileImage) {
+        data.append("avatar", profileImage);
+      }
+
+      const res = await api.put("/auth/profile", data, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      // Update auth context or force a reload if needed. The backend syncs the updated user.
+      // But for immediate feedback, we can reload or if we had a `setUser` we'd call it.
+      toast.success("Profile updated successfully", { id: toastId });
+      window.location.reload(); // Simple way to reflect changes everywhere including Navbar
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to update profile", { id: toastId });
+    } finally {
+      setIsUpdatingProfile(false);
     }
   };
 
@@ -456,7 +492,37 @@ export default function DashboardPage() {
                     <h1 className="text-3xl font-bold text-[#0f284f] uppercase tracking-wide mb-8 border-b border-gray-100 pb-4">
                       My Profile
                     </h1>
-                    <p className="text-gray-500">Profile settings form will go here.</p>
+                    
+                    <form onSubmit={handleProfileUpdate} className="max-w-xl space-y-6">
+                      <div className="space-y-1">
+                        <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">Full Name</label>
+                        <input
+                          type="text"
+                          required
+                          value={profileName}
+                          onChange={(e) => setProfileName(e.target.value)}
+                          className="w-full border border-gray-300 rounded-sm p-4 text-sm focus:outline-none focus:border-[#0f284f] focus:ring-1 focus:ring-[#0f284f] transition-all"
+                        />
+                      </div>
+                      
+                      <div className="space-y-1">
+                        <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">Profile Image</label>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => setProfileImage(e.target.files[0])}
+                          className="w-full border border-gray-300 rounded-sm p-2 text-sm focus:outline-none file:mr-4 file:py-2 file:px-4 file:rounded-sm file:border-0 file:text-sm file:font-semibold file:bg-[#0f284f] file:text-white hover:file:bg-[#1a3d72] transition-all cursor-pointer"
+                        />
+                      </div>
+
+                      <button
+                        type="submit"
+                        disabled={isUpdatingProfile}
+                        className="w-full sm:w-auto bg-[#0f284f] text-white font-bold uppercase tracking-wider px-8 py-4 rounded-sm hover:bg-[#1a3d72] transition-colors disabled:opacity-70"
+                      >
+                        {isUpdatingProfile ? "UPDATING..." : "SAVE CHANGES"}
+                      </button>
+                    </form>
                   </div>
                 )}
               </>

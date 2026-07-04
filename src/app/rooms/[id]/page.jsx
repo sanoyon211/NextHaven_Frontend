@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { BellRing, Wine, Dumbbell, Umbrella, Check, Star } from "lucide-react";
+import Image from "next/image";
 import {
   Accordion,
   AccordionContent,
@@ -178,12 +179,14 @@ export default function RoomPage({ params }) {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="h-[60vh] lg:h-[80vh] w-full"
+            className="h-[60vh] lg:h-[80vh] w-full relative"
           >
-            <img
+            <Image
               src={room.images?.[0] || "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?q=80&w=2000"}
               alt={room.title}
-              className="w-full h-full object-cover rounded-sm shadow-xl"
+              fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="object-cover rounded-sm shadow-xl"
             />
           </motion.div>
         </div>
@@ -198,25 +201,31 @@ export default function RoomPage({ params }) {
           variants={fadeUp}
           className="grid grid-cols-1 md:grid-cols-3 gap-2"
         >
-          <div className="h-80 md:h-[400px]">
-            <img
+          <div className="h-80 md:h-[400px] relative">
+            <Image
               src="https://images.unsplash.com/photo-1590490359683-658d3d23f972?q=80&w=1500"
               alt="Room view 1"
-              className="w-full h-full object-cover"
+              fill
+              sizes="(max-width: 768px) 100vw, 33vw"
+              className="object-cover"
             />
           </div>
-          <div className="h-80 md:h-[400px]">
-            <img
+          <div className="h-80 md:h-[400px] relative">
+            <Image
               src="https://images.unsplash.com/photo-1566665797739-1674de7a421a?q=80&w=1500"
               alt="Room view 2"
-              className="w-full h-full object-cover"
+              fill
+              sizes="(max-width: 768px) 100vw, 33vw"
+              className="object-cover"
             />
           </div>
-          <div className="h-80 md:h-[400px]">
-            <img
+          <div className="h-80 md:h-[400px] relative">
+            <Image
               src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?q=80&w=1500"
               alt="Room view 3"
-              className="w-full h-full object-cover"
+              fill
+              sizes="(max-width: 768px) 100vw, 33vw"
+              className="object-cover"
             />
           </div>
         </motion.div>
@@ -230,12 +239,14 @@ export default function RoomPage({ params }) {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="aspect-square w-full"
+            className="aspect-square w-full relative"
           >
-            <img
+            <Image
               src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=2000"
               alt="Floor plan placeholder"
-              className="w-full h-full object-cover rounded-sm shadow-lg grayscale hover:grayscale-0 transition-all duration-500"
+              fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="object-cover rounded-sm shadow-lg grayscale hover:grayscale-0 transition-all duration-500"
             />
           </motion.div>
           
@@ -335,12 +346,14 @@ export default function RoomPage({ params }) {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="w-full h-[500px] lg:h-full lg:min-h-[600px] sticky top-24"
+            className="w-full h-[500px] lg:h-full lg:min-h-[600px] sticky top-24 relative"
           >
-            <img
+            <Image
               src="https://images.unsplash.com/photo-1514933651103-005eec06c04b?q=80&w=2000"
               alt="Dining Lounge"
-              className="w-full h-full object-cover rounded-sm shadow-xl"
+              fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="object-cover rounded-sm shadow-xl"
             />
           </motion.div>
 
@@ -435,10 +448,12 @@ export default function RoomPage({ params }) {
                 &quot;An absolutely breathtaking experience. The room was pristine, the views were unmatched, and the service was impeccable from start to finish.&quot;
               </p>
               <div className="flex items-center">
-                <img 
+                <Image 
                   src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=faces" 
                   alt="Sarah Jenkins" 
-                  className="w-12 h-12 rounded-full mr-4 object-cover"
+                  width={48}
+                  height={48}
+                  className="rounded-full mr-4 object-cover"
                 />
                 <div>
                   <h4 className="text-[#0f284f] font-bold">Sarah Jenkins</h4>
@@ -460,10 +475,12 @@ export default function RoomPage({ params }) {
                 &quot;NextHaven exceeded all my expectations. The amenities were top-tier, and the staff went out of their way to ensure our anniversary was perfect.&quot;
               </p>
               <div className="flex items-center">
-                <img 
+                <Image 
                   src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=100&h=100&fit=crop&crop=faces" 
                   alt="Michael Chen" 
-                  className="w-12 h-12 rounded-full mr-4 object-cover"
+                  width={48}
+                  height={48}
+                  className="rounded-full mr-4 object-cover"
                 />
                 <div>
                   <h4 className="text-[#0f284f] font-bold">Michael Chen</h4>
@@ -485,10 +502,12 @@ export default function RoomPage({ params }) {
                 &quot;The attention to detail in the room design is stunning. I felt completely relaxed. Highly recommend booking the suite with the ocean view!&quot;
               </p>
               <div className="flex items-center">
-                <img 
+                <Image 
                   src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=faces" 
                   alt="Emma Roberts" 
-                  className="w-12 h-12 rounded-full mr-4 object-cover"
+                  width={48}
+                  height={48}
+                  className="rounded-full mr-4 object-cover"
                 />
                 <div>
                   <h4 className="text-[#0f284f] font-bold">Emma Roberts</h4>

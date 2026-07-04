@@ -5,17 +5,20 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/lib/AuthContext";
-import { Menu, X } from "lucide-react";
+import { Menu, X, LogOut, LayoutDashboard } from "lucide-react";
+import Image from "next/image";
 
 export default function Navbar() {
   const [isRoomsHovered, setIsRoomsHovered] = useState(false);
+  const [isProfileHovered, setIsProfileHovered] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
     
     const handleScroll = () => {
@@ -128,9 +131,59 @@ export default function Navbar() {
           </Link>
           {mounted ? (
             user ? (
-              <Link href="/dashboard" className={`transition-colors ${pathname === "/dashboard" ? "text-[#ffbca8]" : "hover:text-[#ffbca8]"}`}>
-                DASHBOARD
-              </Link>
+              <div 
+                className="relative"
+                onMouseEnter={() => setIsProfileHovered(true)}
+                onMouseLeave={() => setIsProfileHovered(false)}
+              >
+                <button className="flex items-center focus:outline-none">
+                  <div className="h-10 w-10 rounded-full bg-gray-200 overflow-hidden relative flex-shrink-0 border-2 border-transparent hover:border-[#ffbca8] transition-colors">
+                    {user.avatar ? (
+                      <Image src={user.avatar} alt="Profile" fill className="object-cover" sizes="40px" />
+                    ) : (
+                      <div className="h-full w-full flex items-center justify-center bg-[#0f284f] text-white text-lg font-bold">
+                        {user.name?.charAt(0) || user.email?.charAt(0)}
+                      </div>
+                    )}
+                  </div>
+                </button>
+
+                <AnimatePresence>
+                  {isProfileHovered && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 10 }}
+                      transition={{ duration: 0.2 }}
+                      className="absolute right-0 top-full mt-2 w-48 rounded-md bg-white py-2 shadow-lg ring-1 ring-black/5 flex flex-col"
+                    >
+                      <Link
+                        href="/dashboard"
+                        className="flex items-center space-x-2 px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#0f284f] transition-colors"
+                      >
+                        <LayoutDashboard className="w-4 h-4" />
+                        <span>Dashboard</span>
+                      </Link>
+                      {user.role === 'admin' && (
+                        <Link
+                          href="/admin"
+                          className="flex items-center space-x-2 px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#0f284f] transition-colors"
+                        >
+                          <LayoutDashboard className="w-4 h-4" />
+                          <span>Admin Panel</span>
+                        </Link>
+                      )}
+                      <button
+                        onClick={() => logout()}
+                        className="flex items-center space-x-2 px-4 py-3 text-sm text-red-600 hover:bg-red-50 transition-colors w-full text-left"
+                      >
+                        <LogOut className="w-4 h-4" />
+                        <span>Logout</span>
+                      </button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
             ) : (
               <Link href="/login" className={`transition-colors ${pathname === "/login" ? "text-[#ffbca8]" : "hover:text-[#ffbca8]"}`}>
                 LOGIN
@@ -176,9 +229,14 @@ export default function Navbar() {
               <div className="pt-4 border-t border-gray-100 flex flex-col space-y-4">
                 {mounted && (
                   user ? (
-                    <Link onClick={() => setIsMobileMenuOpen(false)} href="/dashboard" className="block py-2 text-center border border-gray-300 rounded-sm hover:bg-gray-50 transition-colors">
-                      DASHBOARD
-                    </Link>
+                    <>
+                      <Link onClick={() => setIsMobileMenuOpen(false)} href="/dashboard" className="block py-2 text-center border border-gray-300 rounded-sm hover:bg-gray-50 transition-colors">
+                        DASHBOARD
+                      </Link>
+                      <button onClick={() => { setIsMobileMenuOpen(false); logout(); }} className="block w-full py-2 text-center border border-red-200 text-red-600 rounded-sm hover:bg-red-50 transition-colors">
+                        LOGOUT
+                      </button>
+                    </>
                   ) : (
                     <Link onClick={() => setIsMobileMenuOpen(false)} href="/login" className="block py-2 text-center border border-gray-300 rounded-sm hover:bg-gray-50 transition-colors">
                       LOGIN

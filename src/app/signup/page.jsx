@@ -7,12 +7,12 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { Eye, EyeOff } from "lucide-react";
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import api from "@/lib/api";
 import { useAuth } from "@/lib/AuthContext";
 
-export default function LoginPage() {
+export default function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -26,7 +26,7 @@ export default function LoginPage() {
       // POST to backend to sync user and receive JWT HTTP-only cookie
       const res = await api.post("/auth/sync", { firebaseToken: idToken });
       setUser(res.data.user || res.data); // Adjust based on your backend response structure
-      toast.success("Successfully authenticated!");
+      toast.success("Account created successfully!");
       router.push("/dashboard");
     } catch (error) {
       toast.error("Failed to sync with backend.");
@@ -39,7 +39,7 @@ export default function LoginPage() {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       await handleAuthSync(userCredential.user);
     } catch (error) {
       setIsLoading(false);
@@ -66,7 +66,7 @@ export default function LoginPage() {
       <div className="relative hidden lg:block w-full h-full min-h-screen">
         <Image
           src="https://images.unsplash.com/photo-1566665797739-1674de7a421a?q=80&w=2000"
-          alt="Luxury Hotel"
+          alt="Luxury Hotel Signup"
           fill
           sizes="50vw"
           className="object-cover"
@@ -79,7 +79,6 @@ export default function LoginPage() {
       {/* Right Column: Auth Form */}
       <div className="flex flex-col justify-center items-center px-4 sm:px-6 lg:px-12 xl:px-24 min-h-screen relative">
         
-        {/* Absolute Link back to home (optional but good practice) */}
         <Link 
           href="/" 
           className="absolute top-8 right-8 text-sm font-semibold text-gray-500 hover:text-[#0f284f] uppercase tracking-wider transition-colors"
@@ -95,10 +94,10 @@ export default function LoginPage() {
         >
           <div className="text-center mb-10">
             <h1 className="text-[#0f284f] text-3xl font-bold uppercase tracking-wide mb-3">
-              WELCOME TO HOTEL SUITES
+              JOIN HOTEL SUITES
             </h1>
             <p className="text-gray-500 text-base">
-              Sign in to your account to continue
+              Create an account to get started
             </p>
           </div>
 
@@ -140,18 +139,12 @@ export default function LoginPage() {
               </div>
             </div>
 
-            <div className="flex justify-end">
-              <a href="#" className="text-xs font-semibold text-[#0f284f] hover:underline">
-                Forgot Password?
-              </a>
-            </div>
-
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-[#0f284f] text-white font-bold uppercase tracking-wider py-4 rounded-sm hover:bg-[#1a3d72] transition-colors disabled:opacity-70"
+              className="w-full bg-[#0f284f] text-white font-bold uppercase tracking-wider py-4 rounded-sm hover:bg-[#1a3d72] transition-colors disabled:opacity-70 mt-4"
             >
-              {isLoading ? "PLEASE WAIT..." : "SIGN IN"}
+              {isLoading ? "PLEASE WAIT..." : "SIGN UP"}
             </button>
           </form>
 
@@ -187,16 +180,16 @@ export default function LoginPage() {
                 fill="#EA4335"
               />
             </svg>
-            <span className="text-sm font-bold text-gray-600">Sign in with Google</span>
+            <span className="text-sm font-bold text-gray-600">Sign up with Google</span>
           </button>
 
           <div className="mt-8 text-center text-sm text-gray-500">
-            Don&apos;t have an account?{" "}
+            Already have an account? 
             <Link
-              href="/signup"
+              href="/login"
               className="font-bold text-[#0f284f] hover:underline transition-colors ml-1"
             >
-              Sign up
+              Sign in
             </Link>
           </div>
         </motion.div>

@@ -45,6 +45,7 @@ export default function RoomsPage() {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchRooms();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sortBy]); // Re-fetch on mount and when sorting changes

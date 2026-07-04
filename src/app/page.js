@@ -163,10 +163,12 @@ export default function Home() {
                   className="bg-white shadow-md rounded-lg overflow-hidden group cursor-pointer"
                 >
                   <div className="h-64 overflow-hidden relative">
-                    <img
+                    <Image
                       src={room.images?.[0] || "https://images.unsplash.com/photo-1590490359683-658d3d23f972?q=80&w=2000"}
                       alt={room.title}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      fill
+                      sizes="(max-width: 768px) 100vw, 25vw"
+                      className="object-cover transition-transform duration-500 group-hover:scale-110"
                     />
                   </div>
                   <div className="p-6">
