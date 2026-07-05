@@ -17,7 +17,10 @@ const playfair = Playfair_Display({
 });
 
 export const metadata = {
-  title: "NextHaven | Premium Hotel Suites",
+  title: {
+    default: "NextHaven | Premium Hotel Suites",
+    template: "%s | NextHaven",
+  },
   description: "Experience luxury and comfort at NextHaven Hotel Suites. Discover premium accommodations, world-class amenities, and breathtaking views for your perfect getaway.",
   keywords: ["Luxury Hotel", "Premium Suites", "NextHaven", "Vacation", "Boutique Hotel"],
   openGraph: {
