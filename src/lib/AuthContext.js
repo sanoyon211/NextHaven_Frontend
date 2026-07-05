@@ -28,6 +28,7 @@ export function AuthProvider({ children }) {
   const logout = async () => {
     try {
       await api.post("/auth/logout");
+      localStorage.removeItem("token");
       toast.success("Logged out successfully");
     } catch (error) {
       console.error("Logout failed:", error);

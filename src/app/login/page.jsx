@@ -32,13 +32,16 @@ export default function LoginPage() {
       const idToken = await user.getIdToken();
       // POST to backend to sync user and receive JWT HTTP-only cookie
       const res = await api.post("/auth/sync", { firebaseToken: idToken });
+      if (res.data.token) {
+        localStorage.setItem("token", res.data.token);
+      }
       setUser(res.data.user || res.data); // Adjust based on your backend response structure
       toast.success("Successfully authenticated!");
 
       // Redirect back to the page the user came from, or dashboard by default
       const searchParams = new URLSearchParams(window.location.search);
       const redirectPath = searchParams.get("redirect") || "/dashboard";
-      router.push(redirectPath);
+      window.location.href = redirectPath;
     } catch (error) {
       toast.error("Failed to sync with backend.");
     } finally {
