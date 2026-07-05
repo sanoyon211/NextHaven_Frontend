@@ -131,7 +131,7 @@ export default function RestaurantPage() {
           variants={fadeUp}
           className="relative z-10 text-center px-4"
         >
-          <h1 className="text-white text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold uppercase tracking-widest mb-8 drop-shadow-lg">
+          <h1 className="text-white text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold uppercase tracking-widest mb-8 drop-shadow-lg">
             Fine Dining At Its Best
           </h1>
           <p className="text-gray-200 text-lg max-w-2xl mx-auto mb-10 drop-shadow-md">
@@ -148,8 +148,8 @@ export default function RestaurantPage() {
       </section>
 
       {/* 1.5 The Dining Experience */}
-      <section className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <section className="mx-auto max-w-7xl px-4 py-12 md:py-24 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-center">
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -181,7 +181,7 @@ export default function RestaurantPage() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="flex flex-col justify-center space-y-6 md:pl-10"
           >
-            <h2 className="text-[#0f284f] text-4xl font-bold uppercase tracking-wider mb-4">
+            <h2 className="text-[#0f284f] text-3xl md:text-4xl font-bold uppercase tracking-wider mb-4">
               A Symphony of Flavors
             </h2>
             <p className="text-gray-500 leading-relaxed text-lg">
@@ -195,15 +195,15 @@ export default function RestaurantPage() {
       </section>
 
       {/* 2. Signature Menu Section */}
-      <section className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
+      <section className="mx-auto max-w-7xl px-4 py-12 md:py-24 sm:px-6 lg:px-8">
+        <div className="text-center mb-8 md:mb-16">
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeUp}
           >
-            <h2 className="text-[#0f284f] text-3xl md:text-4xl font-bold uppercase tracking-wider mb-4">
+            <h2 className="text-[#0f284f] text-2xl md:text-3xl md:text-4xl font-bold uppercase tracking-wider mb-4">
               Our Signature Menu
             </h2>
             <p className="text-gray-500 max-w-2xl mx-auto">
@@ -212,9 +212,9 @@ export default function RestaurantPage() {
           </motion.div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-8 md:mb-16">
           {loading ? (
-            <div className="col-span-full flex justify-center py-20">
+            <div className="col-span-full flex justify-center py-12 md:py-20">
               <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#0f284f]"></div>
             </div>
           ) : signatureMenu.slice(0, 4).map((item, idx) => (
@@ -360,14 +360,14 @@ export default function RestaurantPage() {
       </section>
 
       {/* 4. Hours & Reservations */}
-      <section className="bg-[#f8fafc] py-24 px-4 sm:px-6 lg:px-8 w-full">
+      <section className="bg-[#f8fafc] py-12 md:py-24 px-4 sm:px-6 lg:px-8 w-full">
         <div className="mx-auto max-w-7xl">
           <motion.div
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-12"
+            className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-12"
           >
             {/* Hours */}
             <motion.div variants={fadeUp} className="flex flex-col items-center text-center p-8 bg-white rounded-lg shadow-sm border border-gray-100">

@@ -56,19 +56,19 @@ export default function ContactPage() {
       </section>
 
       {/* Content Section */}
-      <section className="bg-[#f8fafc] py-20 px-4 sm:px-6 lg:px-8">
+      <section className="bg-[#f8fafc] py-12 md:py-20 px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <motion.div
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
-            className="grid grid-cols-1 lg:grid-cols-2 gap-16 bg-white p-8 md:p-12 shadow-sm border border-gray-100 rounded-lg"
+            className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 bg-white p-4 sm:p-8 md:p-12 shadow-sm border border-gray-100 rounded-lg"
           >
             {/* Left Column: Contact Info */}
             <motion.div variants={fadeUp} className="flex flex-col space-y-10">
               <div>
-                <h2 className="text-[#0f284f] text-3xl font-bold uppercase tracking-wider mb-6">
+                <h2 className="text-[#0f284f] text-2xl md:text-3xl font-bold uppercase tracking-wider mb-4 md:mb-6">
                   Contact Information
                 </h2>
                 <p className="text-gray-500 leading-relaxed mb-8">
@@ -76,7 +76,7 @@ export default function ContactPage() {
                 </p>
               </div>
 
-              <div className="space-y-8">
+              <div className="space-y-6 md:space-y-8">
                 <div className="flex items-start">
                   <MapPin className="w-6 h-6 text-[#ffbca8] mt-1 mr-4 shrink-0" />
                   <div>
@@ -117,8 +117,8 @@ export default function ContactPage() {
             </motion.div>
 
             {/* Right Column: Contact Form */}
-            <motion.div variants={fadeUp} className="bg-[#f8fafc] p-8 rounded-lg border border-gray-100">
-              <h3 className="text-[#0f284f] text-2xl font-bold uppercase tracking-wider mb-6">
+            <motion.div variants={fadeUp} className="bg-[#f8fafc] p-5 md:p-8 rounded-lg border border-gray-100">
+              <h3 className="text-[#0f284f] text-xl md:text-2xl font-bold uppercase tracking-wider mb-4 md:mb-6">
                 Send Us A Message
               </h3>
               <form onSubmit={handleSubmit} className="space-y-6">
@@ -130,7 +130,7 @@ export default function ContactPage() {
                     type="text"
                     id="name"
                     required
-                    className="w-full bg-white border border-gray-200 rounded p-4 text-gray-900 focus:outline-none focus:border-[#0f284f] focus:ring-1 focus:ring-[#0f284f] transition-colors"
+                    className="w-full bg-white border border-gray-200 rounded p-3 md:p-4 text-sm md:text-base text-gray-900 focus:outline-none focus:border-[#0f284f] focus:ring-1 focus:ring-[#0f284f] transition-colors"
                     placeholder="Your Full Name"
                   />
                 </div>
@@ -143,7 +143,7 @@ export default function ContactPage() {
                     type="email"
                     id="email"
                     required
-                    className="w-full bg-white border border-gray-200 rounded p-4 text-gray-900 focus:outline-none focus:border-[#0f284f] focus:ring-1 focus:ring-[#0f284f] transition-colors"
+                    className="w-full bg-white border border-gray-200 rounded p-3 md:p-4 text-sm md:text-base text-gray-900 focus:outline-none focus:border-[#0f284f] focus:ring-1 focus:ring-[#0f284f] transition-colors"
                     placeholder="your@email.com"
                   />
                 </div>
@@ -156,7 +156,7 @@ export default function ContactPage() {
                     type="text"
                     id="subject"
                     required
-                    className="w-full bg-white border border-gray-200 rounded p-4 text-gray-900 focus:outline-none focus:border-[#0f284f] focus:ring-1 focus:ring-[#0f284f] transition-colors"
+                    className="w-full bg-white border border-gray-200 rounded p-3 md:p-4 text-sm md:text-base text-gray-900 focus:outline-none focus:border-[#0f284f] focus:ring-1 focus:ring-[#0f284f] transition-colors"
                     placeholder="How can we help?"
                   />
                 </div>
@@ -169,7 +169,7 @@ export default function ContactPage() {
                     id="message"
                     required
                     rows={5}
-                    className="w-full bg-white border border-gray-200 rounded p-4 text-gray-900 focus:outline-none focus:border-[#0f284f] focus:ring-1 focus:ring-[#0f284f] transition-colors resize-none"
+                    className="w-full bg-white border border-gray-200 rounded p-3 md:p-4 text-sm md:text-base text-gray-900 focus:outline-none focus:border-[#0f284f] focus:ring-1 focus:ring-[#0f284f] transition-colors resize-none"
                     placeholder="Write your message here..."
                   ></textarea>
                 </div>

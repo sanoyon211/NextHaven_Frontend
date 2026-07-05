@@ -72,8 +72,8 @@ export default function RoomPage({ params }) {
   if (loading) {
     return (
       <main className="bg-white w-full min-h-screen">
-        <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center animate-pulse">
+        <section className="mx-auto max-w-7xl px-4 py-10 md:py-16 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-center animate-pulse">
             <div className="flex flex-col justify-center">
               <div className="h-14 bg-gray-200 rounded-sm w-3/4 mb-6"></div>
               <div className="h-4 bg-gray-200 rounded w-full mb-2"></div>
@@ -227,7 +227,7 @@ export default function RoomPage({ params }) {
             variants={fadeUp}
             className="flex flex-col justify-center p-4 md:p-8 lg:p-16"
           >
-            <h1 className="text-[#0f284f] text-4xl sm:text-5xl lg:text-6xl font-extrabold uppercase leading-tight mb-6">
+            <h1 className="text-[#0f284f] text-3xl md:text-5xl lg:text-6xl font-extrabold uppercase leading-tight mb-6">
               {room.roomNumber ? `Room ${room.roomNumber} - ${room.title}` : room.title}
             </h1>
             <p className="text-gray-600 text-lg leading-relaxed mb-4">
@@ -365,8 +365,8 @@ export default function RoomPage({ params }) {
       </section>
 
       {/* 3. Amenities & Services Section */}
-      <section className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <section className="mx-auto max-w-7xl px-4 py-12 md:py-24 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-center">
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -421,7 +421,7 @@ export default function RoomPage({ params }) {
       </section>
 
       {/* 4. Hotel Facilities Section */}
-      <section className="bg-[#0f284f] text-white py-24 px-4 sm:px-6 lg:px-8">
+      <section className="bg-[#0f284f] text-white py-12 md:py-24 px-4 sm:px-6 lg:px-8">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -429,13 +429,13 @@ export default function RoomPage({ params }) {
           variants={fadeUp}
           className="mx-auto max-w-7xl"
         >
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold uppercase tracking-wider">
+          <div className="text-center mb-8 md:mb-16">
+            <h2 className="text-2xl md:text-3xl md:text-4xl font-bold uppercase tracking-wider">
               Hotel Services and Facilities Included
             </h2>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 text-center">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-12 text-center">
             <div className="flex flex-col items-center">
               <div className="bg-white/10 p-5 rounded-full mb-6">
                 <BellRing className="w-10 h-10 text-white" />
@@ -472,8 +472,8 @@ export default function RoomPage({ params }) {
       </section>
 
       {/* 5. Practical Information (FAQ) Section */}
-      <section className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+      <section className="mx-auto max-w-7xl px-4 py-12 md:py-24 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-start">
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -553,14 +553,14 @@ export default function RoomPage({ params }) {
       </section>
 
       {/* 6. Guest Reviews & Ratings Section */}
-      <section className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8 border-t border-gray-100">
+      <section className="mx-auto max-w-7xl px-4 py-12 md:py-24 sm:px-6 lg:px-8 border-t border-gray-100">
         <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
           variants={fadeUp}
         >
-          <div className="text-center mb-16">
+          <div className="text-center mb-8 md:mb-16">
             <h2 className="text-[#0f284f] text-3xl font-bold uppercase tracking-wider mb-4">
               Guest Reviews & Ratings
             </h2>

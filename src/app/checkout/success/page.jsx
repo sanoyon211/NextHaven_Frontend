@@ -28,7 +28,7 @@ export default function CheckoutSuccessPage() {
           <CheckCircle className="w-12 h-12 text-green-500" />
         </motion.div>
         
-        <h1 className="text-3xl md:text-4xl font-extrabold text-[#0f284f] uppercase tracking-wider mb-4">
+        <h1 className="text-2xl md:text-4xl font-extrabold text-[#0f284f] uppercase tracking-wider mb-4">
           Booking Confirmed
         </h1>
         

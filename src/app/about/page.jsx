@@ -16,8 +16,8 @@ export default function AboutPage() {
     <main className="w-full bg-white overflow-hidden">
       
       {/* SECTION 1: Intro */}
-      <section className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+      <section className="mx-auto max-w-7xl px-4 py-12 md:py-24 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-24 items-center">
           
           {/* Left Column: Image Collage */}
           <motion.div
@@ -25,28 +25,30 @@ export default function AboutPage() {
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
             variants={fadeUp}
-            className="relative h-[500px] sm:h-[600px] w-full max-w-md mx-auto lg:mx-0"
+            className="relative h-[500px] sm:h-[600px] w-full"
           >
             {/* Main Tall Image */}
-            <div className="absolute top-0 left-0 w-4/5 h-4/5 rounded-sm overflow-hidden shadow-2xl">
-              <Image
-                src="https://images.unsplash.com/photo-1514933651103-005eec06c04b?q=80&w=2000"
-                alt="Dining Area"
-                fill
-                sizes="(max-width: 1024px) 80vw, 40vw"
-                className="object-cover"
-              />
-            </div>
+            <Image
+              src="https://images.unsplash.com/photo-1514933651103-005eec06c04b?q=80&w=2000"
+              alt="Dining Area"
+              fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="object-cover rounded-sm shadow-xl"
+            />
             {/* Overlapping Smaller Image */}
-            <div className="absolute bottom-0 right-0 w-3/5 h-2/5 rounded-sm overflow-hidden shadow-2xl border-4 border-white z-10">
+            <motion.div 
+              animate={{ y: [0, -15, 0] }}
+              transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+              className="absolute -bottom-10 -right-10 w-2/3 h-2/3 border-8 border-white rounded-sm shadow-xl overflow-hidden hidden md:block z-10"
+            >
               <Image
                 src="https://images.unsplash.com/photo-1566665797739-1674de7a421a?q=80&w=2000"
                 alt="Lounge Area"
                 fill
-                sizes="(max-width: 1024px) 60vw, 30vw"
+                sizes="33vw"
                 className="object-cover"
               />
-            </div>
+            </motion.div>
           </motion.div>
 
           {/* Right Column: Text */}
@@ -57,7 +59,7 @@ export default function AboutPage() {
             transition={{ duration: 0.8 }}
             className="flex flex-col justify-center"
           >
-            <h1 className="text-[#0f284f] text-4xl sm:text-5xl lg:text-5xl font-extrabold uppercase leading-[1.15] mb-8 tracking-tight">
+            <h1 className="text-[#0f284f] text-3xl md:text-3xl md:text-5xl font-extrabold uppercase leading-[1.15] mb-8 tracking-tight">
               WHERE EVERY STAY IS A HUG OF HOSPITALITY
             </h1>
             <p className="text-gray-600 text-lg leading-relaxed mb-6">
@@ -74,9 +76,9 @@ export default function AboutPage() {
       </section>
 
       {/* SECTION 2: Rooms Promo */}
-      <section className="bg-[#f8fafc] w-full py-24 px-4 sm:px-6 lg:px-8">
+      <section className="bg-[#f8fafc] w-full py-12 md:py-24 px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-24 items-center">
             
             {/* Left Column: Text */}
             <motion.div
@@ -86,7 +88,7 @@ export default function AboutPage() {
               variants={fadeUp}
               className="flex flex-col justify-center order-2 lg:order-1"
             >
-              <h2 className="text-[#0f284f] text-4xl sm:text-5xl font-extrabold uppercase leading-tight mb-8">
+              <h2 className="text-[#0f284f] text-3xl md:text-3xl md:text-5xl font-extrabold uppercase leading-tight mb-8">
                 CHECKOUT OUR ROOMS
               </h2>
               <p className="text-gray-600 text-lg leading-relaxed mb-10">
@@ -111,36 +113,38 @@ export default function AboutPage() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.8 }}
-              className="relative h-[500px] sm:h-[600px] w-full max-w-md mx-auto lg:mx-0 order-1 lg:order-2"
+              className="relative h-[500px] sm:h-[600px] w-full order-1 lg:order-2"
             >
               {/* Main Tall Image */}
-              <div className="absolute top-0 right-0 w-4/5 h-4/5 rounded-sm overflow-hidden shadow-2xl">
-                <Image
-                  src="https://images.unsplash.com/photo-1590490359683-658d3d23f972?q=80&w=2000"
-                  alt="Premium Bedroom"
-                  fill
-                  sizes="(max-width: 1024px) 80vw, 40vw"
-                  className="object-cover"
-                />
-              </div>
+              <Image
+                src="https://images.unsplash.com/photo-1590490359683-658d3d23f972?q=80&w=2000"
+                alt="Premium Bedroom"
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover rounded-sm shadow-xl"
+              />
               {/* Overlapping Smaller Image */}
-              <div className="absolute bottom-0 left-0 w-3/5 h-2/5 rounded-sm overflow-hidden shadow-2xl border-4 border-[#f8fafc] z-10">
+              <motion.div 
+                animate={{ y: [0, -15, 0] }}
+                transition={{ repeat: Infinity, duration: 4, ease: "easeInOut", delay: 1 }}
+                className="absolute -bottom-10 -left-10 w-2/3 h-2/3 border-8 border-[#f8fafc] rounded-sm shadow-xl overflow-hidden hidden md:block z-10"
+              >
                 <Image
                   src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=2000"
                   alt="Deluxe Room"
                   fill
-                  sizes="(max-width: 1024px) 60vw, 30vw"
+                  sizes="33vw"
                   className="object-cover"
                 />
-              </div>
+              </motion.div>
             </motion.div>
           </div>
         </div>
       </section>
 
       {/* SECTION 3: Location & Directions */}
-      <section className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
+      <section className="mx-auto max-w-7xl px-4 py-12 md:py-24 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-24">
           
           {/* Left Column: Map */}
           <motion.div
@@ -170,7 +174,7 @@ export default function AboutPage() {
             variants={fadeUp}
             className="flex flex-col justify-center"
           >
-            <h2 className="text-[#0f284f] text-4xl sm:text-5xl font-extrabold uppercase leading-tight mb-8">
+            <h2 className="text-[#0f284f] text-3xl md:text-3xl md:text-5xl font-extrabold uppercase leading-tight mb-8">
               HOW TO FIND OUR HOTEL
             </h2>
             <p className="text-gray-600 text-lg leading-relaxed mb-12">

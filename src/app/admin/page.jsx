@@ -433,7 +433,14 @@ export default function AdminDashboard() {
         <div className="max-w-7xl mx-auto">
 
           {/* Mobile Navigation (Scrollable Tabs) */}
-          <div className="md:hidden flex overflow-x-auto gap-2 pb-4 mb-6 scrollbar-hide border-b border-slate-100">
+          <div className="md:hidden flex overflow-x-auto gap-2 pb-4 mb-6 scrollbar-hide border-b border-slate-100 items-center">
+            <button
+              onClick={() => router.push("/")}
+              className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium transition-all rounded-full border border-slate-200 bg-white text-slate-600 shadow-sm"
+            >
+              <Home className="w-4 h-4" /> Home
+            </button>
+            <div className="w-px h-5 bg-slate-200 mx-1 shrink-0"></div>
             {[
               { id: "rooms", icon: BedDouble, label: "Rooms" },
               { id: "bookings", icon: ClipboardList, label: "Bookings" },
@@ -444,7 +451,7 @@ export default function AdminDashboard() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-all rounded-full whitespace-nowrap ${
+                className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-all rounded-full whitespace-nowrap shrink-0 ${
                   activeTab === tab.id
                     ? "bg-[#0f284f] text-white shadow-sm"
                     : "bg-white text-slate-500 border border-slate-200 hover:bg-slate-50"
@@ -494,22 +501,22 @@ export default function AdminDashboard() {
           </motion.div>
 
           {/* Analytics Cards with subtle hover animations */}
-          <motion.div variants={staggerContainer} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+          <motion.div variants={staggerContainer} className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-12">
             {[
               { title: "Total Revenue", value: `$${analytics.totalRevenue.toLocaleString()}`, icon: DollarSign, color: "text-emerald-600", bg: "bg-emerald-50" },
               { title: "Active Bookings", value: analytics.activeBookings, icon: CalendarCheck, color: "text-[#0f284f]", bg: "bg-[#0f284f]/10" },
               { title: "Rooms Available", value: analytics.availableRooms, icon: BedDouble, color: "text-blue-600", bg: "bg-blue-50" },
               { title: "Total Rooms", value: analytics.totalRooms, icon: Home, color: "text-purple-600", bg: "bg-purple-50" }
             ].map((stat, index) => (
-              <motion.div variants={fadeUp} key={index} className="bg-white rounded-2xl shadow-sm border border-slate-200/60 p-4 md:p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-md hover:-translate-y-1 group">
-                <div className="flex items-center justify-between mb-4">
-                  <p className="text-sm font-semibold text-slate-500">{stat.title}</p>
+              <motion.div variants={fadeUp} key={index} className="bg-white rounded-2xl shadow-sm border border-slate-200/60 p-3 md:p-4 flex flex-col justify-between transition-all duration-300 hover:shadow-md hover:-translate-y-1 group">
+                <div className="flex items-center justify-between mb-2 md:mb-3">
+                  <p className="text-xs md:text-sm font-semibold text-slate-500">{stat.title}</p>
                   <div className={`p-2.5 ${stat.bg} rounded-xl ${stat.color} transition-transform group-hover:scale-110`}>
                     <stat.icon className="w-5 h-5" />
                   </div>
                 </div>
                 <div>
-                  <p className="text-3xl font-extrabold text-slate-900 tracking-tight">
+                  <p className="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">
                     {loadingAnalytics ? "..." : stat.value}
                   </p>
                 </div>
@@ -529,7 +536,7 @@ export default function AdminDashboard() {
             ) : (
               <>
                 {activeTab === "rooms" && (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 p-4 md:p-6 bg-slate-50/30">
                     {rooms.length === 0 && <div className="col-span-full p-8 text-center text-slate-500">No rooms found.</div>}
                     {rooms.map((room) => (
                       <div key={room._id || room.id} className="bg-white shadow-sm hover:shadow-xl rounded-lg overflow-hidden group border border-gray-100 transition-all relative">
@@ -567,19 +574,19 @@ export default function AdminDashboard() {
                             )}
                           </div>
                         </div>
-                        <div className="p-4 md:p-6">
-                          <h3 className="text-[#0f284f] font-extrabold uppercase text-lg mb-2 truncate" title={room.title}>
+                        <div className="p-5 md:p-6 flex flex-col flex-1">
+                          <h3 className="text-[#0f284f] font-extrabold uppercase text-base md:text-lg mb-1 md:mb-2 truncate" title={room.title}>
                             {room.title}
                           </h3>
-                          <div className="flex justify-between items-end mt-6">
+                          <div className="flex justify-between items-end mt-4 md:mt-6 pt-4 border-t border-slate-100 mt-auto">
                             <p className="text-gray-500 text-xs w-1/2 leading-relaxed font-medium">
                               {room.capacity ? `${room.capacity} adults` : '2 adults'} / {room.roomType?.toLowerCase() || room.type?.toLowerCase() || 'standard'}
                             </p>
                             <div className="text-right">
-                              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
+                              <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">
                                 From
                               </p>
-                              <p className="text-2xl font-black text-[#0f284f]">
+                              <p className="text-xl md:text-2xl font-black text-[#0f284f]">
                                 ${room.price || room.pricePerNight}
                               </p>
                             </div>
@@ -592,210 +599,191 @@ export default function AdminDashboard() {
 
                 {/* Similar refined styling for Bookings Table */}
                 {activeTab === "bookings" && (
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-left border-collapse whitespace-nowrap">
-                      <thead className="bg-slate-50/80">
-                        <tr className="border-b border-slate-200/80 text-xs font-bold text-slate-500 uppercase tracking-wider">
-                          <th className="px-6 py-4">Booking ID</th>
-                          <th className="px-6 py-4">Guest Name</th>
-                          <th className="px-6 py-4">Room Info</th>
-                          <th className="px-6 py-4">Duration</th>
-                          <th className="px-6 py-4">Total Amount</th>
-                          <th className="px-6 py-4">Payment Status</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-slate-100">
-                        {bookings.length === 0 && <tr><td colSpan="6" className="p-8 text-center text-slate-500">No bookings found.</td></tr>}
-                        {bookings.map((booking) => (
-                          <tr key={booking._id} className="hover:bg-slate-50/50 transition-colors">
-                            <td className="px-6 py-4 font-mono text-sm font-medium text-slate-500">#{booking._id.substring(0, 8).toUpperCase()}</td>
-                            <td className="px-6 py-4 font-semibold text-slate-900">{booking.user?.name || 'Unknown'}</td>
-                            <td className="px-6 py-4 text-sm text-slate-600">
-                              <span className="font-medium text-slate-800">{booking.room?.roomNumber ? `Room ${booking.room.roomNumber}` : 'Unknown'}</span>
-                              <span className="text-slate-400 mx-1">•</span>
-                              {booking.room?.title || 'Unknown Room'}
-                            </td>
-                            <td className="px-6 py-4 text-sm text-slate-500">
-                              {new Date(booking.checkInDate).toLocaleDateString()} <span className="mx-1 text-slate-300">→</span> {new Date(booking.checkOutDate).toLocaleDateString()}
-                            </td>
-                            <td className="px-6 py-4 text-sm font-bold text-slate-900">${booking.totalAmount}</td>
-                            <td className="px-6 py-4">
-                              <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold border ${booking.paymentStatus === 'paid' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-amber-50 text-amber-700 border-amber-200'
-                                }`}>
-                                {booking.paymentStatus}
-                              </span>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6 p-4 md:p-6 bg-slate-50/30">
+                    {bookings.length === 0 && <div className="col-span-full p-8 text-center text-slate-500">No bookings found.</div>}
+                    {bookings.map((booking) => (
+                      <div key={booking._id} className="bg-white rounded-xl shadow-sm border border-slate-200/60 p-5 flex flex-col hover:shadow-md transition-shadow">
+                        <div className="flex justify-between items-center mb-4 border-b border-slate-100 pb-3">
+                          <span className="font-mono text-sm font-bold text-[#0f284f]">#{booking._id.substring(0, 8).toUpperCase()}</span>
+                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border ${booking.paymentStatus === 'paid' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-amber-50 text-amber-700 border-amber-200'}`}>
+                            {booking.paymentStatus}
+                          </span>
+                        </div>
+                        <div className="flex-1 space-y-3 mb-4">
+                          <div>
+                            <p className="text-xs text-slate-500 font-medium mb-1 uppercase tracking-wider">Guest Name</p>
+                            <p className="text-sm font-bold text-slate-900">{booking.user?.name || 'Unknown'}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-slate-500 font-medium mb-1 uppercase tracking-wider">Room Info</p>
+                            <p className="text-sm font-semibold text-slate-800 truncate" title={booking.room?.title}>
+                              {booking.room ? (
+                                <>
+                                  {booking.room.roomNumber ? `Room ${booking.room.roomNumber}` : 'Room'} • <span className="text-slate-600 font-normal">{booking.room.title || 'Unknown Room'}</span>
+                                </>
+                              ) : (
+                                <span className="text-rose-500 italic">Room Deleted</span>
+                              )}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-slate-500 font-medium mb-1 uppercase tracking-wider">Duration</p>
+                            <p className="text-sm font-medium text-slate-700">
+                              {new Date(booking.checkInDate).toLocaleDateString()} <span className="text-slate-400 mx-1">→</span> {new Date(booking.checkOutDate).toLocaleDateString()}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="pt-4 border-t border-slate-100 flex justify-between items-end">
+                          <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Total</span>
+                          <span className="text-lg font-black text-[#0f284f]">${booking.totalAmount}</span>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 )}
 
                 {/* Food Orders Table */}
                 {activeTab === "food_orders" && (
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-left border-collapse whitespace-nowrap">
-                      <thead className="bg-slate-50/80">
-                        <tr className="border-b border-slate-200/80 text-xs font-bold text-slate-500 uppercase tracking-wider">
-                          <th className="px-6 py-4">Order ID</th>
-                          <th className="px-6 py-4">Customer</th>
-                          <th className="px-6 py-4">Ordered Items</th>
-                          <th className="px-6 py-4">Location</th>
-                          <th className="px-6 py-4">Total</th>
-                          <th className="px-6 py-4">Current Status</th>
-                          <th className="px-6 py-4">Update Status</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-slate-100">
-                        {foodOrders.length === 0 && <tr><td colSpan="7" className="p-8 text-center text-slate-500">No food orders found.</td></tr>}
-                        {foodOrders.map((order) => (
-                          <tr key={order._id} className="hover:bg-slate-50/50 transition-colors">
-                            <td className="px-6 py-4 font-mono text-sm font-medium text-slate-500">#{order._id.substring(0, 8).toUpperCase()}</td>
-                            <td className="px-6 py-4 font-semibold text-slate-900">{order.user?.name || 'Unknown'}</td>
-                            <td className="px-6 py-4 text-sm text-slate-600 max-w-xs truncate" title={order.items.map(i => `${i.quantity}x ${i.name}`).join(', ')}>
+                  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6 p-4 md:p-6 bg-slate-50/30">
+                    {foodOrders.length === 0 && <div className="col-span-full p-8 text-center text-slate-500">No food orders found.</div>}
+                    {foodOrders.map((order) => (
+                      <div key={order._id} className="bg-white rounded-xl shadow-sm border border-slate-200/60 p-5 flex flex-col hover:shadow-md transition-shadow">
+                        <div className="flex justify-between items-center mb-4 border-b border-slate-100 pb-3">
+                          <span className="font-mono text-sm font-bold text-[#0f284f]">#{order._id.substring(0, 8).toUpperCase()}</span>
+                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border ${order.orderStatus === 'delivered' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : order.orderStatus === 'cancelled' ? 'bg-rose-50 text-rose-700 border-rose-200' : 'bg-amber-50 text-amber-700 border-amber-200'}`}>
+                            {order.orderStatus}
+                          </span>
+                        </div>
+                        <div className="flex-1 space-y-4 mb-4">
+                          <div>
+                            <p className="text-xs text-slate-500 font-medium mb-1 uppercase tracking-wider">Customer & Location</p>
+                            <p className="text-sm font-bold text-slate-900">{order.user?.name || 'Unknown'}</p>
+                            <p className="text-xs font-medium text-slate-600 mt-1 flex items-start gap-1">
+                              <span className="text-slate-400">📍</span> {order.deliveryLocation || 'N/A'}
+                            </p>
+                            {order.orderNotes && <p className="text-xs text-slate-500 mt-1.5 italic bg-slate-50 p-2 rounded-lg border border-slate-100">📝 {order.orderNotes}</p>}
+                          </div>
+                          <div>
+                            <p className="text-xs text-slate-500 font-medium mb-2 uppercase tracking-wider">Ordered Items</p>
+                            <div className="flex flex-wrap gap-1.5">
                               {order.items.map(i => (
-                                <span key={i._id || i.name} className="inline-block bg-slate-100 text-slate-600 px-2 py-0.5 rounded text-xs mr-1 mb-1">
+                                <span key={i._id || i.name} className="inline-block bg-white text-slate-700 px-2 py-1 rounded text-xs font-medium border border-slate-200 shadow-sm">
                                   {i.quantity}x {i.name}
                                 </span>
                               ))}
-                            </td>
-                            <td className="px-6 py-4 text-sm">
-                              <div className="font-medium text-slate-800">{order.deliveryLocation || 'N/A'}</div>
-                              {order.orderNotes && <div className="text-xs text-slate-400 mt-0.5 italic flex items-center max-w-[150px] truncate" title={order.orderNotes}>📝 {order.orderNotes}</div>}
-                            </td>
-                            <td className="px-6 py-4 text-sm font-bold text-slate-900">${order.totalAmount}</td>
-                            <td className="px-6 py-4">
-                              <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold border ${order.orderStatus === 'delivered' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' :
-                                  order.orderStatus === 'cancelled' ? 'bg-rose-50 text-rose-700 border-rose-200' : 'bg-amber-50 text-amber-700 border-amber-200'
-                                }`}>
-                                {order.orderStatus}
-                              </span>
-                            </td>
-                            <td className="px-6 py-4">
-                              <select
-                                value={order.orderStatus}
-                                onChange={(e) => updateFoodOrderStatus(order._id, e.target.value)}
-                                className="text-sm border border-slate-200 rounded-lg p-2 bg-white text-slate-700 font-medium focus:outline-none focus:border-[#0f284f] focus:ring-1 focus:ring-[#0f284f]/50 cursor-pointer"
-                              >
-                                <option value="preparing">👨‍🍳 Preparing</option>
-                                <option value="ready">🛎️ Ready</option>
-                                <option value="delivered">✅ Delivered</option>
-                                <option value="cancelled">❌ Cancelled</option>
-                              </select>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="pt-4 border-t border-slate-100 flex flex-col space-y-3 mt-auto">
+                          <div className="flex justify-between items-end">
+                            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Total</span>
+                            <span className="text-lg font-black text-[#0f284f]">${order.totalAmount}</span>
+                          </div>
+                          <select
+                            value={order.orderStatus}
+                            onChange={(e) => updateFoodOrderStatus(order._id, e.target.value)}
+                            className="w-full text-sm border border-slate-200 rounded-lg p-2.5 bg-slate-50 text-slate-700 font-semibold focus:outline-none focus:border-[#0f284f] focus:bg-white focus:ring-2 focus:ring-[#0f284f]/10 cursor-pointer transition-all"
+                          >
+                            <option value="preparing">👨‍🍳 Preparing</option>
+                            <option value="ready">🛎️ Ready</option>
+                            <option value="delivered">✅ Delivered</option>
+                            <option value="cancelled">❌ Cancelled</option>
+                          </select>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 )}
 
                 {/* Menus Table */}
                 {activeTab === "menus" && (
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-left border-collapse whitespace-nowrap">
-                      <thead className="bg-slate-50/80">
-                        <tr className="border-b border-slate-200/80 text-xs font-bold text-slate-500 uppercase tracking-wider">
-                          <th className="px-6 py-4">Dish Image</th>
-                          <th className="px-6 py-4">Item Name</th>
-                          <th className="px-6 py-4">Category</th>
-                          <th className="px-6 py-4">Price</th>
-                          <th className="px-6 py-4">Signature</th>
-                          <th className="px-6 py-4 text-right">Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-slate-100">
-                        {menus.length === 0 && <tr><td colSpan="6" className="p-8 text-center text-slate-500">No menu items found.</td></tr>}
-                        {menus.map((item) => (
-                          <tr key={item._id} className="hover:bg-slate-50/50 transition-colors group">
-                            <td className="px-6 py-4">
-                              <div className="relative w-16 h-16 rounded-full overflow-hidden shadow-sm border border-slate-100">
-                                <Image
-                                  src={item.imageUrl || "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80"}
-                                  alt={item.name}
-                                  fill
-                                  sizes="64px"
-                                  className="object-cover transition-transform group-hover:scale-110"
-                                />
-                              </div>
-                            </td>
-                            <td className="px-6 py-4 font-bold text-slate-900">{item.name}</td>
-                            <td className="px-6 py-4">
-                              <span className="bg-slate-100 text-slate-600 px-3 py-1 rounded-full text-xs font-medium">{item.category}</span>
-                            </td>
-                            <td className="px-6 py-4 text-sm font-bold text-emerald-600">${item.price}</td>
-                            <td className="px-6 py-4">
-                              {item.isSignature ? <span className="px-3 py-1 bg-amber-50 text-amber-700 border border-amber-200 text-xs font-bold rounded-full">⭐ Signature</span> : <span className="text-slate-400 text-sm">-</span>}
-                            </td>
-                            <td className="px-6 py-4 text-right">
-                              <div className="flex justify-end gap-2">
-                                <button onClick={() => openMenuModal(item)} className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
-                                  <Edit className="w-4 h-4" />
-                                </button>
-                                <button onClick={() => handleDeleteMenu(item._id)} className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors">
-                                  <Trash2 className="w-4 h-4" />
-                                </button>
-                              </div>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 p-4 md:p-6 bg-slate-50/30">
+                    {menus.length === 0 && <div className="col-span-full p-8 text-center text-slate-500">No menu items found.</div>}
+                    {menus.map((item) => (
+                      <div key={item._id} className="bg-white rounded-xl shadow-sm border border-slate-200/60 overflow-hidden flex flex-col hover:shadow-md transition-all group">
+                        <div className="relative h-32 md:h-40 w-full bg-slate-100 overflow-hidden">
+                          <Image
+                            src={item.imageUrl || "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80"}
+                            alt={item.name}
+                            fill
+                            sizes="(max-width: 768px) 50vw, 33vw"
+                            className="object-cover transition-transform duration-500 group-hover:scale-110"
+                          />
+                          {item.isSignature && (
+                            <div className="absolute top-2 left-2 bg-amber-500/90 backdrop-blur-sm text-white px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider shadow-sm">
+                              Signature
+                            </div>
+                          )}
+                          <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm px-2 py-1 rounded text-[10px] font-bold text-slate-700 shadow-sm">
+                            {item.category}
+                          </div>
+                        </div>
+                        <div className="p-4 flex flex-col flex-1">
+                          <h3 className="font-bold text-slate-900 text-base mb-1 line-clamp-2" title={item.name}>{item.name}</h3>
+                          <div className="flex justify-between items-end mt-auto pt-4">
+                            <span className="text-xl md:text-2xl font-black text-emerald-600">
+                              ${String(item.price).replace('$', '')}
+                            </span>
+                            <div className="flex gap-1.5">
+                              <button onClick={() => openMenuModal(item)} className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors shadow-sm border border-transparent hover:border-blue-100">
+                                <Edit className="w-4 h-4" />
+                              </button>
+                              <button onClick={() => handleDeleteMenu(item._id)} className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded transition-colors shadow-sm border border-transparent hover:border-rose-100">
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 )}
 
                 {/* Reservations Table */}
                 {activeTab === "reservations" && (
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-left border-collapse whitespace-nowrap">
-                      <thead className="bg-slate-50/80">
-                        <tr className="border-b border-slate-200/80 text-xs font-bold text-slate-500 uppercase tracking-wider">
-                          <th className="px-6 py-4">ID</th>
-                          <th className="px-6 py-4">Guest Name</th>
-                          <th className="px-6 py-4">Date & Time</th>
-                          <th className="px-6 py-4">Guests</th>
-                          <th className="px-6 py-4">Status</th>
-                          <th className="px-6 py-4">Update Status</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-slate-100">
-                        {reservations.length === 0 && <tr><td colSpan="6" className="p-8 text-center text-slate-500">No reservations found.</td></tr>}
-                        {reservations.map((res) => (
-                          <tr key={res._id} className="hover:bg-slate-50/50 transition-colors">
-                            <td className="px-6 py-4 font-mono text-sm font-medium text-slate-500">#{res._id.substring(0, 8).toUpperCase()}</td>
-                            <td className="px-6 py-4 font-semibold text-slate-900">
-                                {res.name}
-                                <div className="text-xs text-slate-500 font-normal">{res.email}</div>
-                                <div className="text-xs text-slate-500 font-normal">{res.phone}</div>
-                            </td>
-                            <td className="px-6 py-4 text-sm text-slate-600">
-                              {new Date(res.date).toLocaleDateString()} at {res.time}
-                              {res.specialRequests && <div className="text-xs text-slate-400 mt-0.5 italic flex items-center max-w-[150px] truncate" title={res.specialRequests}>📝 {res.specialRequests}</div>}
-                            </td>
-                            <td className="px-6 py-4 text-sm text-slate-600">{res.guests} people</td>
-                            <td className="px-6 py-4">
-                              <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold border ${res.status === 'confirmed' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' :
-                                  res.status === 'cancelled' ? 'bg-rose-50 text-rose-700 border-rose-200' : 'bg-amber-50 text-amber-700 border-amber-200'
-                                }`}>
-                                {res.status}
-                              </span>
-                            </td>
-                            <td className="px-6 py-4">
-                              <select
-                                value={res.status}
-                                onChange={(e) => updateReservationStatus(res._id, e.target.value)}
-                                className="text-sm border border-slate-200 rounded-lg p-2 bg-white text-slate-700 font-medium focus:outline-none focus:border-[#0f284f] focus:ring-1 focus:ring-[#0f284f]/50 cursor-pointer"
-                              >
-                                <option value="pending">⏳ Pending</option>
-                                <option value="confirmed">✅ Confirmed</option>
-                                <option value="cancelled">❌ Cancelled</option>
-                              </select>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6 p-4 md:p-6 bg-slate-50/30">
+                    {reservations.length === 0 && <div className="col-span-full p-8 text-center text-slate-500">No reservations found.</div>}
+                    {reservations.map((res) => (
+                      <div key={res._id} className="bg-white rounded-xl shadow-sm border border-slate-200/60 p-5 flex flex-col hover:shadow-md transition-shadow">
+                        <div className="flex justify-between items-center mb-4 border-b border-slate-100 pb-3">
+                          <span className="font-mono text-sm font-bold text-[#0f284f]">#{res._id.substring(0, 8).toUpperCase()}</span>
+                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border ${res.status === 'confirmed' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : res.status === 'cancelled' ? 'bg-rose-50 text-rose-700 border-rose-200' : 'bg-amber-50 text-amber-700 border-amber-200'}`}>
+                            {res.status}
+                          </span>
+                        </div>
+                        <div className="flex-1 space-y-4 mb-4">
+                          <div>
+                            <p className="text-xs text-slate-500 font-medium mb-1 uppercase tracking-wider">Guest Details</p>
+                            <p className="text-sm font-bold text-slate-900">{res.name}</p>
+                            <div className="flex flex-col gap-1 mt-1.5">
+                              <span className="text-xs text-slate-600 flex items-center gap-1.5"><span className="text-slate-400">✉️</span> {res.email}</span>
+                              <span className="text-xs text-slate-600 flex items-center gap-1.5"><span className="text-slate-400">📞</span> {res.phone}</span>
+                            </div>
+                          </div>
+                          <div>
+                            <p className="text-xs text-slate-500 font-medium mb-1 uppercase tracking-wider">Reservation Info</p>
+                            <p className="text-sm font-medium text-slate-800 flex items-center gap-1.5">
+                              <span className="text-slate-400">📅</span> {new Date(res.date).toLocaleDateString()} at {res.time}
+                            </p>
+                            <p className="text-sm font-medium text-slate-800 flex items-center gap-1.5 mt-1">
+                              <span className="text-slate-400">👥</span> {res.guests} people
+                            </p>
+                            {res.specialRequests && <p className="text-xs text-slate-500 mt-2 italic bg-slate-50 p-2 rounded-lg border border-slate-100">📝 {res.specialRequests}</p>}
+                          </div>
+                        </div>
+                        <div className="pt-4 border-t border-slate-100 mt-auto">
+                          <select
+                            value={res.status}
+                            onChange={(e) => updateReservationStatus(res._id, e.target.value)}
+                            className="w-full text-sm border border-slate-200 rounded-lg p-2.5 bg-slate-50 text-slate-700 font-semibold focus:outline-none focus:border-[#0f284f] focus:bg-white focus:ring-2 focus:ring-[#0f284f]/10 cursor-pointer transition-all"
+                          >
+                            <option value="pending">⏳ Pending</option>
+                            <option value="confirmed">✅ Confirmed</option>
+                            <option value="cancelled">❌ Cancelled</option>
+                          </select>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 )}
               </>

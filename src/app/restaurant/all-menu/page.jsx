@@ -81,7 +81,7 @@ export default function AllMenuPage() {
   );
 
   return (
-    <main className="bg-[#f8fafc] w-full min-h-screen py-20 px-4 sm:px-6 lg:px-8">
+    <main className="bg-[#f8fafc] w-full min-h-screen py-12 md:py-20 px-4 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         
         {/* Categories Banner */}
@@ -89,7 +89,7 @@ export default function AllMenuPage() {
           initial="hidden"
           animate="visible"
           variants={staggerContainer}
-          className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16"
+          className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8 md:mb-16"
         >
           {[
             { name: "Starters", img: "https://images.unsplash.com/photo-1541529086526-db283c563270?q=80&w=800" },
@@ -112,7 +112,7 @@ export default function AllMenuPage() {
         </motion.div>
 
         {/* Header & Search */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-8 md:mb-16">
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -164,7 +164,7 @@ export default function AllMenuPage() {
                 ))}
               </React.Fragment>
             ) : filteredMenu.length === 0 ? (
-              <div className="col-span-full flex justify-center py-20">
+              <div className="col-span-full flex justify-center py-12 md:py-20">
                 <p className="text-gray-500 text-lg">No menu items found.</p>
               </div>
             ) : (
@@ -272,7 +272,7 @@ export default function AllMenuPage() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="mt-24 grid grid-cols-1 md:grid-cols-2 gap-12 bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden"
+          className="mt-24 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12 bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden"
         >
           <div className="relative h-[400px] md:h-auto">
             <Image

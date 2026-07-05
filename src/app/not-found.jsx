@@ -6,7 +6,7 @@ import { ArrowLeft, Home } from "lucide-react";
 
 export default function NotFound() {
   return (
-    <main className="min-h-[80vh] flex items-center justify-center bg-[#f8fafc] px-4 py-16 sm:px-6 lg:px-8">
+    <main className="min-h-[80vh] flex items-center justify-center bg-[#f8fafc] px-4 py-10 md:py-16 sm:px-6 lg:px-8">
       <div className="max-w-3xl w-full text-center">
         <motion.div
           initial={{ opacity: 0, y: -20 }}

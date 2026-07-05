@@ -64,7 +64,7 @@ export default function DashboardPage() {
 
   if (authLoading) {
     return (
-      <main className="min-h-screen bg-[#f8fafc] py-16 px-4 sm:px-6 lg:px-8">
+      <main className="min-h-screen bg-[#f8fafc] py-10 md:py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 animate-pulse">
             <div className="lg:col-span-1">
@@ -323,7 +323,7 @@ export default function DashboardPage() {
   const displayTier = userTierFromBackend || loyalty.currentTier;
 
   return (
-    <main className="min-h-screen bg-[#f8fafc] py-16 px-4 sm:px-6 lg:px-8">
+    <main className="min-h-screen bg-[#f8fafc] py-10 md:py-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         
         <motion.div

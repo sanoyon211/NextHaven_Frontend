@@ -133,7 +133,7 @@ export default function CheckoutPage() {
           <ArrowLeft className="w-5 h-5" /> Back to Menu
         </motion.button>
 
-        <motion.h1 variants={fadeUp} className="text-3xl md:text-4xl font-extrabold text-[#0f284f] uppercase tracking-wider mb-10">
+        <motion.h1 variants={fadeUp} className="text-2xl md:text-4xl font-extrabold text-[#0f284f] uppercase tracking-wider mb-10">
           Checkout
         </motion.h1>
 

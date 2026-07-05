@@ -54,14 +54,14 @@ export default function Home() {
 
   return (
     <main>
-      <section className="w-full bg-white">
+      <section className="w-full bg-white pt-20 lg:pt-24">
         <div className="grid grid-cols-1 lg:grid-cols-2 w-full min-h-[85vh]">
         {/* Left Column (Text Content) */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
-          className="flex flex-col justify-center p-4 md:p-8 lg:p-16"
+          className="flex flex-col justify-center px-6 py-8 md:p-10 lg:p-16"
         >
           <h1 className="text-[#0f284f] text-3xl md:text-5xl lg:text-6xl font-bold uppercase leading-tight mb-6">
             ROOM TO REMEMBER
@@ -106,12 +106,12 @@ export default function Home() {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.1 }}
-        className="bg-[#f8fafc] py-20 px-4 sm:px-6 lg:px-8 w-full"
+        className="bg-[#f8fafc] py-12 md:py-20 px-4 sm:px-6 lg:px-8 w-full"
       >
         <div className="mx-auto max-w-7xl">
           {/* Booking Bar Title */}
           <motion.div variants={fadeUp} className="text-center mb-10">
-            <h2 className="text-[#0f284f] text-3xl md:text-4xl font-bold uppercase tracking-wider">
+            <h2 className="text-[#0f284f] text-2xl md:text-3xl md:text-4xl font-bold uppercase tracking-wider">
               Book Your Stay
             </h2>
           </motion.div>
@@ -168,11 +168,11 @@ export default function Home() {
           {/* Room Grid */}
           <motion.div variants={staggerContainer} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {loading ? (
-              <div className="col-span-4 flex justify-center items-center py-20">
+              <div className="col-span-4 flex justify-center items-center py-12 md:py-20">
                 <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#0f284f]"></div>
               </div>
             ) : rooms.length === 0 ? (
-              <div className="col-span-full flex flex-col justify-center items-center py-20 bg-white rounded-lg border border-gray-100 shadow-sm w-full">
+              <div className="col-span-full flex flex-col justify-center items-center py-12 md:py-20 bg-white rounded-lg border border-gray-100 shadow-sm w-full">
                 <h3 className="text-[#0f284f] text-2xl font-bold uppercase tracking-wide mb-2">No Rooms Available</h3>
                 <p className="text-gray-500">There are currently no rooms available to display.</p>
               </div>
