@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import api from "@/lib/api";
+import { Star, Coffee, Wifi, Wine, Sparkles, Quote } from "lucide-react";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -53,51 +54,125 @@ export default function Home() {
   };
 
   return (
-    <main>
-      <section className="w-full bg-white pt-20 lg:pt-24">
-        <div className="grid grid-cols-1 lg:grid-cols-2 w-full min-h-[85vh]">
-        {/* Left Column (Text Content) */}
+    <main className="overflow-hidden">
+      {/* Cinematic Hero Section */}
+      <section className="relative w-full h-[90vh] min-h-[600px] flex flex-col justify-center items-center text-center">
+        <Image
+          src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=2000"
+          alt="Luxury Hotel Bedroom"
+          fill
+          sizes="100vw"
+          className="object-cover"
+          priority
+        />
+        <div className="absolute inset-0 bg-black/40" /> {/* Elegant dark overlay */}
+        
         <motion.div
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8 }}
-          className="flex flex-col justify-center px-6 py-8 md:p-10 lg:p-16"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, ease: "easeOut" }}
+          className="relative z-10 px-6 max-w-4xl mx-auto flex flex-col items-center"
         >
-          <h1 className="text-[#0f284f] text-3xl md:text-5xl lg:text-6xl font-bold uppercase leading-tight mb-6">
-            ROOM TO REMEMBER
-          </h1>
-          <p className="text-gray-600 text-lg leading-relaxed mb-10 max-w-xl">
-            Discover a world of comfort, luxury, and unparalleled hospitality at
-            Hoteller. Nestled in the heart of city, our exquisite hotel is your
-            home away from home, where every stay is a memorable experience.
-          </p>
-          <div>
-            <Link
-              href="/rooms"
-              className="inline-flex items-center justify-center bg-[#0f284f] text-white font-bold uppercase tracking-wider px-8 py-4 rounded-sm hover:bg-[#1a3d72] transition-colors"
-            >
-              BOOK YOUR STAY NOW
-            </Link>
+          <div className="flex items-center gap-2 mb-6 text-[#d4af37]">
+            <Star className="w-5 h-5 fill-current" />
+            <Star className="w-5 h-5 fill-current" />
+            <Star className="w-5 h-5 fill-current" />
+            <Star className="w-5 h-5 fill-current" />
+            <Star className="w-5 h-5 fill-current" />
           </div>
+          <h1 className="font-heading text-white text-4xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6 drop-shadow-lg">
+            A Room To Remember
+          </h1>
+          <p className="text-gray-100 text-lg md:text-xl font-sans leading-relaxed mb-10 max-w-2xl drop-shadow-md">
+            Discover a world of comfort, luxury, and unparalleled hospitality at
+            NextHaven. Your exquisite home away from home.
+          </p>
+          <Link
+            href="/rooms"
+            className="inline-flex items-center justify-center bg-[#d4af37] text-[#0f284f] font-bold uppercase tracking-widest px-10 py-5 rounded-none hover:bg-white transition-colors duration-300 shadow-xl"
+          >
+            Book Your Stay
+          </Link>
         </motion.div>
+      </section>
 
-        {/* Right Column (Image) */}
-        <motion.div
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="relative w-full h-[50vh] lg:h-auto min-h-[400px]"
-        >
-          <Image
-            src="https://images.unsplash.com/photo-1590490359683-658d3d23f972?q=80&w=2000"
-            alt="Premium Hotel Bedroom"
-            fill
-            sizes="(max-width: 1024px) 100vw, 50vw"
-            className="object-cover"
-            priority
-          />
-        </motion.div>
-      </div>
+      {/* Experience the Luxury (Amenities) */}
+      <section className="py-20 md:py-32 bg-white w-full px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="mb-16"
+          >
+            <h2 className="font-heading text-[#0f284f] text-3xl md:text-5xl font-bold mb-6">Experience the Luxury</h2>
+            <div className="w-24 h-1 bg-[#d4af37] mx-auto mb-6"></div>
+            <p className="text-gray-500 font-sans text-lg max-w-2xl mx-auto">
+              Indulge in our world-class amenities designed to elevate your stay to an unforgettable experience.
+            </p>
+          </motion.div>
+
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10"
+          >
+            {[
+              { icon: Sparkles, title: "Luxury Spa", desc: "Rejuvenate your senses with our premium spa treatments." },
+              { icon: Wine, title: "Fine Dining", desc: "Experience culinary masterpieces from Michelin-starred chefs." },
+              { icon: Wifi, title: "High-Speed Wifi", desc: "Stay connected with complimentary high-speed internet." },
+              { icon: Coffee, title: "24/7 Concierge", desc: "Our dedicated staff is at your service around the clock." }
+            ].map((item, idx) => (
+              <motion.div 
+                key={idx} 
+                variants={fadeUp} 
+                className="group flex flex-col items-center p-8 bg-[#f8fafc] border border-gray-100 hover:border-[#d4af37] transition-all duration-300"
+              >
+                <div className="w-16 h-16 rounded-full bg-white shadow-sm flex items-center justify-center mb-6 group-hover:-translate-y-2 transition-transform duration-300 text-[#0f284f]">
+                  <item.icon className="w-8 h-8" />
+                </div>
+                <h3 className="font-heading text-xl font-bold text-[#0f284f] mb-3">{item.title}</h3>
+                <p className="font-sans text-gray-500 text-sm leading-relaxed">{item.desc}</p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Testimonials Marquee */}
+      <section className="py-20 bg-[#0f284f] w-full overflow-hidden relative">
+        <div className="absolute top-0 left-0 w-32 h-full bg-gradient-to-r from-[#0f284f] to-transparent z-10 hidden md:block"></div>
+        <div className="absolute top-0 right-0 w-32 h-full bg-gradient-to-l from-[#0f284f] to-transparent z-10 hidden md:block"></div>
+        
+        <div className="text-center mb-16 relative z-20">
+          <h2 className="font-heading text-white text-3xl md:text-5xl font-bold mb-4">Guest Experiences</h2>
+          <p className="text-gray-300 font-sans">What our esteemed guests say about NextHaven.</p>
+        </div>
+
+        <div className="flex w-[200%] animate-[marquee_20s_linear_infinite] hover:[animation-play-state:paused]">
+          {[1, 2, 3, 4, 1, 2, 3, 4].map((num, idx) => (
+            <div key={idx} className="w-1/4 px-4 flex-shrink-0">
+              <div className="bg-white/5 backdrop-blur-sm border border-white/10 p-8 flex flex-col h-full rounded-sm">
+                <Quote className="w-8 h-8 text-[#d4af37] mb-4 opacity-50" />
+                <p className="font-sans text-gray-200 italic mb-6 flex-1">
+                  "Absolutely breathtaking! The attention to detail, the luxurious rooms, and the impeccable service made our anniversary unforgettable."
+                </p>
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 rounded-full bg-gray-400 overflow-hidden">
+                    <Image src={`https://i.pravatar.cc/150?img=${num * 10}`} width={40} height={40} alt="Guest" />
+                  </div>
+                  <div>
+                    <h4 className="font-heading text-white font-bold text-sm">Eleanor Williams</h4>
+                    <p className="font-sans text-[#d4af37] text-xs">New York, USA</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </section>
 
       {/* Booking Bar and Room Grid */}

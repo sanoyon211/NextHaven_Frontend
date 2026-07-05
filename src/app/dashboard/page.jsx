@@ -618,7 +618,7 @@ export default function DashboardPage() {
                               <h3 className="text-xl font-bold text-[#0f284f] uppercase tracking-wide mb-2">Table for {res.guests}</h3>
                               <p className="text-gray-500 text-sm mb-1"><span className="font-semibold text-gray-700">Date:</span> {new Date(res.date).toLocaleDateString()}</p>
                               <p className="text-gray-500 text-sm mb-1"><span className="font-semibold text-gray-700">Time:</span> {res.time}</p>
-                              {res.specialRequests && <p className="text-gray-500 text-sm mt-2 italic">"{res.specialRequests}"</p>}
+                              {res.specialRequests && <p className="text-gray-500 text-sm mt-2 italic">&quot;{res.specialRequests}&quot;</p>}
                             </div>
                             <div className="text-left md:text-right mt-4 md:mt-0">
                                <span className={`inline-block px-3 py-1 text-xs font-bold uppercase tracking-wide rounded-sm mb-4 ${

@@ -1,4 +1,4 @@
-import { Montserrat } from "next/font/google";
+import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -6,8 +6,13 @@ import { Toaster } from "react-hot-toast";
 import { AuthProvider } from "@/lib/AuthContext";
 import AIChatbot from "@/components/AIChatbot";
 
-const montserrat = Montserrat({
-  variable: "--font-montserrat",
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+});
+
+const playfair = Playfair_Display({
+  variable: "--font-playfair",
   subsets: ["latin"],
 });
 
@@ -42,7 +47,7 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${montserrat.variable} h-full antialiased`}
+      className={`${inter.variable} ${playfair.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-sans overflow-x-hidden">
         <AuthProvider>
