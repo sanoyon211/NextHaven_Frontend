@@ -41,7 +41,9 @@ export default function LoginPage() {
       // Redirect back to the page the user came from, or dashboard by default
       const searchParams = new URLSearchParams(window.location.search);
       const redirectPath = searchParams.get("redirect") || "/dashboard";
-      window.location.href = redirectPath;
+      setTimeout(() => {
+        window.location.href = redirectPath;
+      }, 300);
     } catch (error) {
       toast.error("Failed to sync with backend.");
     } finally {
