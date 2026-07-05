@@ -416,6 +416,15 @@ export default function DashboardPage() {
           transition={{ duration: 0.6 }}
           className="grid grid-cols-1 lg:grid-cols-4 gap-8"
         >
+          <div className="lg:col-span-1">
+            <DashboardSidebar
+              user={user}
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
+              logout={logout}
+            />
+          </div>
+          
           <div className="lg:col-span-3">
             <DashboardLoyaltyCard
               displayTier={displayTier}

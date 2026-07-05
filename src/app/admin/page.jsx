@@ -575,8 +575,16 @@ export default function AdminDashboard() {
             className="bg-white rounded-2xl shadow-sm border border-slate-200/60 overflow-hidden min-h-[400px]"
           >
             {loadingData ? (
-              <div className="flex items-center justify-center h-64">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#0f284f]"></div>
+              <div className="p-6">
+                <div className="h-10 bg-slate-100 rounded-xl mb-8 w-48 animate-pulse"></div>
+                <div className="space-y-4">
+                  {[1, 2, 3, 4, 5].map((i) => (
+                    <div
+                      key={i}
+                      className="h-16 bg-slate-50 rounded-xl border border-slate-100 animate-pulse"
+                    ></div>
+                  ))}
+                </div>
               </div>
             ) : (
               <>

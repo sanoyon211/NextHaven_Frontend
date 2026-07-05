@@ -49,7 +49,18 @@ function CheckoutSuccessContent() {
 export default function CheckoutSuccessPage() {
   return (
     <div className="min-h-screen bg-[#f8fafc] pt-32 pb-20 px-4 flex flex-col items-center justify-center">
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={
+        <div className="bg-white p-10 rounded-lg shadow-sm border border-gray-100 max-w-lg w-full text-center animate-pulse">
+          <div className="w-20 h-20 rounded-full bg-gray-200 mx-auto mb-6"></div>
+          <div className="h-8 bg-gray-200 rounded w-3/4 mx-auto mb-4"></div>
+          <div className="h-4 bg-gray-100 rounded w-5/6 mx-auto mb-2"></div>
+          <div className="h-4 bg-gray-100 rounded w-4/6 mx-auto mb-8"></div>
+          <div className="space-y-4">
+            <div className="h-14 bg-gray-200 rounded-sm w-full"></div>
+            <div className="h-14 bg-gray-100 rounded-sm w-full"></div>
+          </div>
+        </div>
+      }>
         <CheckoutSuccessContent />
       </Suspense>
     </div>

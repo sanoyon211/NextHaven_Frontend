@@ -92,11 +92,14 @@ function PaymentPageContent() {
 
   if (!clientSecret) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh]">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#d4af37]"></div>
-        <p className="mt-4 text-gray-500 font-medium">
-          Initializing secure payment...
-        </p>
+      <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center py-12 px-4">
+        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden w-full max-w-md mx-auto p-8 animate-pulse">
+          <div className="h-8 bg-gray-200 rounded w-2/3 mb-2"></div>
+          <div className="h-4 bg-gray-100 rounded w-1/2 mb-8"></div>
+          <div className="h-12 bg-gray-200 rounded mb-8 w-1/3"></div>
+          <div className="h-40 bg-gray-100 rounded mb-6 w-full"></div>
+          <div className="h-14 bg-gray-200 rounded w-full"></div>
+        </div>
       </div>
     );
   }
@@ -165,8 +168,14 @@ export default function PaymentPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#d4af37]"></div>
+        <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center py-12 px-4">
+          <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden w-full max-w-md mx-auto p-8 animate-pulse">
+            <div className="h-8 bg-gray-200 rounded w-2/3 mb-2"></div>
+            <div className="h-4 bg-gray-100 rounded w-1/2 mb-8"></div>
+            <div className="h-12 bg-gray-200 rounded mb-8 w-1/3"></div>
+            <div className="h-40 bg-gray-100 rounded mb-6 w-full"></div>
+            <div className="h-14 bg-gray-200 rounded w-full"></div>
+          </div>
         </div>
       }
     >
