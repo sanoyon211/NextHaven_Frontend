@@ -371,26 +371,31 @@ export default function AdminDashboard() {
           <div className="max-w-7xl mx-auto">
             <div className="flex justify-between items-center mb-10">
               <div>
-                <div className="h-8 bg-gray-200 rounded w-64 mb-2"></div>
-                <div className="h-4 bg-gray-200 rounded w-96"></div>
+                <div className="h-10 bg-gray-200 rounded-lg w-64 mb-3"></div>
+                <div className="h-4 bg-gray-200 rounded-lg w-96"></div>
               </div>
-              <div className="h-10 bg-gray-200 rounded-xl w-32"></div>
+              <div className="h-12 bg-gray-200 rounded-xl w-36"></div>
             </div>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-12">
               {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="h-32 bg-white border border-gray-100 rounded-2xl p-6">
-                  <div className="h-4 bg-gray-200 rounded w-1/2 mb-4"></div>
+                <div key={i} className="bg-white rounded-2xl shadow-sm border border-slate-200/60 p-4 h-32">
+                  <div className="flex justify-between mb-4">
+                    <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                    <div className="h-10 w-10 bg-gray-100 rounded-xl"></div>
+                  </div>
                   <div className="h-8 bg-gray-200 rounded w-3/4"></div>
                 </div>
               ))}
             </div>
             
-            <div className="bg-white rounded-2xl border border-gray-100 min-h-[400px] p-6">
-               <div className="h-10 bg-gray-100 rounded mb-6"></div>
-               {[1, 2, 3, 4, 5].map((i) => (
-                 <div key={i} className="h-16 bg-gray-50 rounded mb-2 border border-gray-100"></div>
-               ))}
+            <div className="bg-white rounded-2xl border border-gray-100 min-h-[500px] p-6">
+               <div className="h-10 bg-gray-100 rounded-xl mb-8 w-48"></div>
+               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+                 {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+                   <div key={i} className="h-64 bg-gray-50 rounded-2xl border border-gray-100"></div>
+                 ))}
+               </div>
             </div>
           </div>
         </main>
@@ -594,7 +599,7 @@ export default function AdminDashboard() {
                         </div>
                         <div className="p-5 md:p-6 flex flex-col flex-1">
                           <h3 className="text-[#0f284f] font-extrabold uppercase text-base md:text-lg mb-1 md:mb-2 truncate" title={room.title}>
-                            {room.title}
+                            {room.roomNumber ? `ROOM ${room.roomNumber} - ${room.title}` : room.title}
                           </h3>
                           <div className="flex justify-between items-end mt-4 md:mt-6 pt-4 border-t border-slate-100 mt-auto">
                             <p className="text-gray-500 text-xs w-1/2 leading-relaxed font-medium">
@@ -617,7 +622,7 @@ export default function AdminDashboard() {
 
                 {/* Similar refined styling for Bookings Table */}
                 {activeTab === "bookings" && (
-                  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6 p-4 md:p-6 bg-slate-50/30">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 p-4 md:p-6 bg-slate-50/30">
                     {bookings.length === 0 && <div className="col-span-full p-8 text-center text-slate-500">No bookings found.</div>}
                     {bookings.map((booking) => (
                       <div key={booking._id} className="bg-white rounded-xl shadow-sm border border-slate-200/60 p-5 flex flex-col hover:shadow-md transition-shadow">
@@ -662,7 +667,7 @@ export default function AdminDashboard() {
 
                 {/* Food Orders Table */}
                 {activeTab === "food_orders" && (
-                  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6 p-4 md:p-6 bg-slate-50/30">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 p-4 md:p-6 bg-slate-50/30">
                     {foodOrders.length === 0 && <div className="col-span-full p-8 text-center text-slate-500">No food orders found.</div>}
                     {foodOrders.map((order) => (
                       <div key={order._id} className="bg-white rounded-xl shadow-sm border border-slate-200/60 p-5 flex flex-col hover:shadow-md transition-shadow">
@@ -759,7 +764,7 @@ export default function AdminDashboard() {
 
                 {/* Reservations Table */}
                 {activeTab === "reservations" && (
-                  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6 p-4 md:p-6 bg-slate-50/30">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 p-4 md:p-6 bg-slate-50/30">
                     {reservations.length === 0 && <div className="col-span-full p-8 text-center text-slate-500">No reservations found.</div>}
                     {reservations.map((res) => (
                       <div key={res._id} className="bg-white rounded-xl shadow-sm border border-slate-200/60 p-5 flex flex-col hover:shadow-md transition-shadow">

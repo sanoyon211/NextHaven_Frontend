@@ -73,26 +73,27 @@ export default function RoomPage({ params }) {
     return (
       <main className="bg-white w-full min-h-screen">
         <section className="mx-auto max-w-7xl px-4 py-10 md:py-16 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-center animate-pulse">
-            <div className="flex flex-col justify-center">
-              <div className="h-14 bg-gray-200 rounded-sm w-3/4 mb-6"></div>
-              <div className="h-4 bg-gray-200 rounded w-full mb-2"></div>
-              <div className="h-4 bg-gray-200 rounded w-5/6 mb-4"></div>
-              <div className="h-8 bg-gray-200 rounded-sm w-1/4 mb-8"></div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-start animate-pulse">
+            <div className="flex flex-col pt-8">
+              <div className="h-12 md:h-16 bg-slate-200 rounded-lg w-3/4 mb-6"></div>
+              <div className="h-4 bg-slate-200/80 rounded-md w-full mb-2"></div>
+              <div className="h-4 bg-slate-200/80 rounded-md w-5/6 mb-6"></div>
+              <div className="h-10 bg-slate-200 rounded-lg w-1/3 mb-10"></div>
               
-              <div className="space-y-4 mb-10">
+              <div className="h-6 bg-slate-200 rounded-md w-1/4 mb-6"></div>
+              <div className="grid grid-cols-2 gap-4 mb-10 border-y border-slate-100 py-6">
                 {[1, 2, 3, 4].map((i) => (
                   <div key={i} className="flex items-center">
-                    <div className="h-5 w-5 bg-gray-200 rounded-full mr-3"></div>
-                    <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                    <div className="h-6 w-6 bg-slate-200 rounded-full mr-3"></div>
+                    <div className="h-4 bg-slate-200/80 rounded w-1/2"></div>
                   </div>
                 ))}
               </div>
 
-              <div className="bg-gray-50 p-6 rounded-lg border border-gray-100 h-80"></div>
+              <div className="bg-slate-50 p-6 md:p-8 rounded-2xl border border-slate-100 h-[400px]"></div>
             </div>
 
-            <div className="h-[60vh] lg:h-[80vh] w-full bg-gray-200 rounded-sm"></div>
+            <div className="h-[50vh] lg:h-[85vh] w-full bg-slate-200/60 rounded-2xl"></div>
           </div>
         </section>
       </main>

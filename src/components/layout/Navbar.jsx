@@ -234,6 +234,11 @@ export default function Navbar() {
                       <Link onClick={() => setIsMobileMenuOpen(false)} href="/dashboard" className="block py-2 text-center border border-gray-300 rounded-sm hover:bg-gray-50 transition-colors">
                         DASHBOARD
                       </Link>
+                      {user.role === 'admin' && (
+                        <Link onClick={() => setIsMobileMenuOpen(false)} href="/admin" className="block py-2 text-center border border-[#0f284f] text-[#0f284f] rounded-sm hover:bg-gray-50 transition-colors font-bold">
+                          ADMIN PANEL
+                        </Link>
+                      )}
                       <button onClick={() => { setIsMobileMenuOpen(false); logout(); }} className="block w-full py-2 text-center border border-red-200 text-red-600 rounded-sm hover:bg-red-50 transition-colors">
                         LOGOUT
                       </button>

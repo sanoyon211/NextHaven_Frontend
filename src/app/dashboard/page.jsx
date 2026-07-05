@@ -64,19 +64,39 @@ export default function DashboardPage() {
 
   if (authLoading) {
     return (
-      <main className="min-h-screen bg-[#f8fafc] py-10 md:py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 animate-pulse">
-            <div className="lg:col-span-1">
-              <div className="bg-white rounded-sm shadow-sm border border-gray-100 p-6 h-96"></div>
+      <div className="flex min-h-screen bg-slate-50/50">
+        {/* Sidebar Skeleton */}
+        <aside className="w-64 bg-white border-r border-slate-200/60 hidden md:flex flex-col h-screen sticky top-0 animate-pulse">
+          <div className="px-8 py-10 border-b border-slate-100/80">
+            <div className="h-8 bg-gray-200 rounded-lg w-3/4 mb-3"></div>
+            <div className="h-4 bg-gray-200 rounded-lg w-1/2"></div>
+          </div>
+          <nav className="p-4 space-y-2 mt-4">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="w-full h-12 bg-gray-100 rounded-xl"></div>
+            ))}
+          </nav>
+        </aside>
+        
+        {/* Main Content Skeleton */}
+        <main className="flex-1 w-full py-10 px-4 sm:px-8 lg:px-12 animate-pulse">
+          <div className="max-w-7xl mx-auto">
+            <div className="flex flex-col mb-10">
+              <div className="h-10 bg-gray-200 rounded-lg w-64 mb-3"></div>
+              <div className="h-4 bg-gray-200 rounded-lg w-96"></div>
             </div>
-            <div className="lg:col-span-3 space-y-8">
-              <div className="h-40 bg-[#0f284f]/10 rounded-sm shadow-sm border border-gray-100 p-8"></div>
-              <div className="h-96 bg-white rounded-sm shadow-sm border border-gray-100 p-8"></div>
+            
+            <div className="bg-white rounded-2xl border border-gray-100 min-h-[500px] p-6">
+               <div className="h-10 bg-gray-100 rounded-xl mb-8 w-48"></div>
+               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                 {[1, 2, 3, 4, 5, 6].map((i) => (
+                   <div key={i} className="h-48 bg-gray-50 rounded-2xl border border-gray-100"></div>
+                 ))}
+               </div>
             </div>
           </div>
-        </div>
-      </main>
+        </main>
+      </div>
     );
   }
 

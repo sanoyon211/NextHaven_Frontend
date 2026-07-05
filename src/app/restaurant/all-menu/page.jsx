@@ -151,14 +151,16 @@ export default function AllMenuPage() {
               <React.Fragment>
                 {[...Array(8)].map((_, i) => (
                   <div key={i} className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden animate-pulse">
-                    <div className="h-64 bg-gray-200"></div>
-                    <div className="p-6">
-                      <div className="flex justify-between items-start mb-4">
-                        <div className="h-6 bg-gray-200 rounded w-1/2"></div>
-                        <div className="h-8 bg-gray-200 rounded w-1/4"></div>
+                    <div className="relative h-48 md:h-64 w-full bg-slate-200/60">
+                      <div className="absolute top-4 left-4 bg-white/80 h-6 w-16 rounded-sm"></div>
+                    </div>
+                    <div className="p-4 md:p-6">
+                      <div className="flex justify-between items-start mb-4 gap-2">
+                        <div className="h-6 md:h-7 bg-slate-200 rounded w-2/3"></div>
+                        <div className="h-7 md:h-8 bg-slate-200 rounded w-1/4"></div>
                       </div>
-                      <div className="h-4 bg-gray-200 rounded w-full mb-2"></div>
-                      <div className="h-4 bg-gray-200 rounded w-4/5"></div>
+                      <div className="h-4 bg-slate-200/80 rounded w-full mb-2"></div>
+                      <div className="h-4 bg-slate-200/80 rounded w-4/5"></div>
                     </div>
                   </div>
                 ))}

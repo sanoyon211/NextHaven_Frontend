@@ -152,9 +152,9 @@ export default function Home() {
           <p className="text-gray-300 font-sans">What our esteemed guests say about NextHaven.</p>
         </div>
 
-        <div className="flex w-[200%] animate-[marquee_20s_linear_infinite] hover:[animation-play-state:paused]">
+        <div className="flex w-max animate-marquee hover:[animation-play-state:paused]">
           {[1, 2, 3, 4, 1, 2, 3, 4].map((num, idx) => (
-            <div key={idx} className="w-1/4 px-4 flex-shrink-0">
+            <div key={idx} className="w-[85vw] sm:w-[400px] md:w-[450px] px-4 flex-shrink-0">
               <div className="bg-white/5 backdrop-blur-sm border border-white/10 p-8 flex flex-col h-full rounded-sm">
                 <Quote className="w-8 h-8 text-[#d4af37] mb-4 opacity-50" />
                 <p className="font-sans text-gray-200 italic mb-6 flex-1">

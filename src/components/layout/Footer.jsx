@@ -41,16 +41,13 @@ export default function Footer() {
   if (pathname && pathname.startsWith("/admin")) return null;
 
   return (
-    <footer 
-      className="bg-[#032c28] text-white"
-      style={{ backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(0,0,0,0.15) 40px, rgba(0,0,0,0.15) 80px)' }}
-    >
+    <footer className="bg-[#0f284f] text-white">
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="flex flex-col gap-6 md:grid md:grid-cols-4 lg:gap-8">
           
           {/* Column 1: Logo, Text, Button */}
           <div className="flex flex-col items-start space-y-6">
-            <h2 className="text-2xl font-extrabold tracking-widest">
+            <h2 className="font-heading text-2xl font-extrabold tracking-widest">
               NEXT HAVEN
             </h2>
             <p className="text-sm leading-relaxed text-gray-300">
@@ -59,7 +56,7 @@ export default function Footer() {
             </p>
             <Link
               href="/rooms"
-              className="bg-[#cb5d49] px-8 py-3 text-sm font-bold tracking-widest text-white uppercase transition-colors hover:bg-[#cb5d49]/80 rounded-sm"
+              className="bg-[#d4af37] px-8 py-3 text-sm font-bold tracking-widest text-[#0f284f] uppercase transition-colors hover:bg-white hover:text-[#0f284f] shadow-md inline-block w-fit"
             >
               BOOK NOW
             </Link>
@@ -105,28 +102,28 @@ export default function Footer() {
             <div className="flex space-x-4">
               <a
                 href="#"
-                className="text-gray-300 hover:text-[#cb5d49] transition-colors"
+                className="text-gray-300 hover:text-[#d4af37] transition-colors"
                 aria-label="Facebook"
               >
                 <Facebook className="h-5 w-5" />
               </a>
               <a
                 href="#"
-                className="text-gray-300 hover:text-[#cb5d49] transition-colors"
+                className="text-gray-300 hover:text-[#d4af37] transition-colors"
                 aria-label="Twitter"
               >
                 <Twitter className="h-5 w-5" />
               </a>
               <a
                 href="#"
-                className="text-gray-300 hover:text-[#cb5d49] transition-colors"
+                className="text-gray-300 hover:text-[#d4af37] transition-colors"
                 aria-label="Youtube"
               >
                 <Youtube className="h-5 w-5" />
               </a>
               <a
                 href="#"
-                className="text-gray-300 hover:text-[#cb5d49] transition-colors"
+                className="text-gray-300 hover:text-[#d4af37] transition-colors"
                 aria-label="Instagram"
               >
                 <Instagram className="h-5 w-5" />
@@ -137,7 +134,7 @@ export default function Footer() {
       </div>
 
       {/* Bottom: Copyright */}
-      <div className="border-t border-white/10 bg-[#021f1c]">
+      <div className="border-t border-white/10 bg-[#0a1c38]">
         <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 text-center sm:text-left">
           <p className="text-xs text-gray-400">
             © 2023 All Rights Reserved

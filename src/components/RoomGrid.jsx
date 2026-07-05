@@ -8,17 +8,17 @@ export default function RoomGrid({ rooms, loading }) {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {[...Array(6)].map((_, i) => (
           <div key={i} className="bg-white shadow-sm rounded-lg overflow-hidden border border-gray-100 animate-pulse">
-            <div className="h-48 md:h-60 bg-gray-200"></div>
-            <div className="p-4 md:p-6">
-              <div className="h-6 bg-gray-200 rounded w-3/4 mb-4"></div>
-              <div className="flex justify-between items-end mt-4 md:mt-6">
-                <div className="space-y-2 w-1/2">
-                  <div className="h-3 bg-gray-200 rounded"></div>
-                  <div className="h-3 bg-gray-200 rounded w-5/6"></div>
+            <div className="h-48 md:h-60 bg-slate-200/60"></div>
+            <div className="p-4 md:p-6 flex flex-col">
+              <div className="h-6 bg-slate-200 rounded-md w-3/4 mb-2"></div>
+              <div className="flex justify-between items-end mt-4 md:mt-6 pt-4 border-t border-slate-100">
+                <div className="w-1/2">
+                  <div className="h-3 bg-slate-200 rounded w-full mb-1"></div>
+                  <div className="h-3 bg-slate-200 rounded w-4/5"></div>
                 </div>
-                <div className="text-right">
-                  <div className="h-3 bg-gray-200 rounded w-12 ml-auto mb-2"></div>
-                  <div className="h-8 bg-gray-200 rounded w-20 ml-auto"></div>
+                <div className="text-right flex flex-col items-end">
+                  <div className="h-3 bg-slate-200 rounded w-10 mb-2"></div>
+                  <div className="h-7 md:h-8 bg-slate-200 rounded w-16"></div>
                 </div>
               </div>
             </div>
