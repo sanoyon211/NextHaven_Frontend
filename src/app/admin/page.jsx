@@ -10,6 +10,15 @@ import { useAuth } from "@/lib/AuthContext";
 import Swal from "sweetalert2";
 import { motion, AnimatePresence } from "framer-motion";
 
+import AdminSidebar from "@/components/sections/admin/AdminSidebar";
+import AdminOverview from "@/components/sections/admin/AdminOverview";
+import AdminRoomsTab from "@/components/sections/admin/AdminRoomsTab";
+import AdminBookingsTab from "@/components/sections/admin/AdminBookingsTab";
+import AdminFoodOrdersTab from "@/components/sections/admin/AdminFoodOrdersTab";
+import AdminMenusTab from "@/components/sections/admin/AdminMenusTab";
+import AdminReservationsTab from "@/components/sections/admin/AdminReservationsTab";
+import AdminUsersTab from "@/components/sections/admin/AdminUsersTab";
+
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
@@ -406,49 +415,7 @@ export default function AdminDashboard() {
   return (
     <div className="flex min-h-screen bg-slate-50/50">
       {/* Sidebar - Premium Soft Design */}
-      <motion.aside 
-        initial="hidden" animate="visible" variants={fadeRight}
-        className="w-64 bg-white border-r border-slate-200/60 flex flex-col justify-between hidden md:flex sticky top-0 h-screen overflow-y-auto"
-      >
-        <div>
-          <div className="px-8 py-10 border-b border-slate-100/80">
-            <h1 className="text-2xl font-extrabold tracking-tight text-slate-900">
-              NextHaven<span className="text-[#0f284f]">.</span>
-            </h1>
-            <p className="text-xs font-semibold text-slate-400 mt-1 uppercase tracking-wider">Admin Workspace</p>
-          </div>
-          <nav className="p-4 space-y-1.5">
-            {[
-              { id: "rooms", icon: BedDouble, label: "Rooms" },
-              { id: "bookings", icon: ClipboardList, label: "Bookings" },
-              { id: "food_orders", icon: Utensils, label: "Food Orders" },
-              { id: "menus", icon: ClipboardList, label: "Menu Items" },
-              { id: "reservations", icon: CalendarCheck, label: "Reservations" },
-              { id: "users", icon: Users, label: "Users" }
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`w-full flex items-center gap-3 px-4 py-3 text-sm font-medium transition-all duration-300 rounded-xl ${activeTab === tab.id
-                    ? "bg-[#0f284f] text-white shadow-md shadow-[#0f284f]/20"
-                    : "text-slate-500 hover:text-slate-900 hover:bg-slate-100/80"
-                  }`}
-              >
-                <tab.icon className={`w-4 h-4 ${activeTab === tab.id ? "text-white" : "text-slate-400"}`} />
-                {tab.label}
-              </button>
-            ))}
-          </nav>
-        </div>
-        <div className="p-6 border-t border-slate-100/80">
-          <button
-            onClick={() => router.push("/")}
-            className="w-full flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium transition-all rounded-xl border border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-50 hover:shadow-sm"
-          >
-            <Home className="w-4 h-4 text-slate-400" /> Back to Website
-          </button>
-        </div>
-      </motion.aside>
+      <AdminSidebar activeTab={activeTab} setActiveTab={setActiveTab} router={router} />
 
       {/* Main Content */}
       <main className="flex-1 w-full py-10 px-4 sm:px-8 lg:px-12 relative overflow-x-hidden">
@@ -524,28 +491,7 @@ export default function AdminDashboard() {
           </motion.div>
 
           {/* Analytics Cards with subtle hover animations */}
-          <motion.div variants={staggerContainer} className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-12">
-            {[
-              { title: "Total Revenue", value: `$${analytics.totalRevenue.toLocaleString()}`, icon: DollarSign, color: "text-emerald-600", bg: "bg-emerald-50" },
-              { title: "Active Bookings", value: analytics.activeBookings, icon: CalendarCheck, color: "text-[#0f284f]", bg: "bg-[#0f284f]/10" },
-              { title: "Rooms Available", value: analytics.availableRooms, icon: BedDouble, color: "text-blue-600", bg: "bg-blue-50" },
-              { title: "Total Rooms", value: analytics.totalRooms, icon: Home, color: "text-purple-600", bg: "bg-purple-50" }
-            ].map((stat, index) => (
-              <motion.div variants={fadeUp} key={index} className="bg-white rounded-2xl shadow-sm border border-slate-200/60 p-3 md:p-4 flex flex-col justify-between transition-all duration-300 hover:shadow-md hover:-translate-y-1 group">
-                <div className="flex items-center justify-between mb-2 md:mb-3">
-                  <p className="text-xs md:text-sm font-semibold text-slate-500">{stat.title}</p>
-                  <div className={`p-2.5 ${stat.bg} rounded-xl ${stat.color} transition-transform group-hover:scale-110`}>
-                    <stat.icon className="w-5 h-5" />
-                  </div>
-                </div>
-                <div>
-                  <p className="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">
-                    {loadingAnalytics ? "..." : stat.value}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
+          <AdminOverview analytics={analytics} loadingAnalytics={loadingAnalytics} />
 
           {/* Tab Content Table Wrapper */}
           <motion.div variants={fadeUp} className="bg-white rounded-2xl shadow-sm border border-slate-200/60 overflow-hidden min-h-[400px]">
@@ -559,305 +505,41 @@ export default function AdminDashboard() {
             ) : (
               <>
                 {activeTab === "rooms" && (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 p-4 md:p-6 bg-slate-50/30">
-                    {rooms.length === 0 && <div className="col-span-full p-8 text-center text-slate-500">No rooms found.</div>}
-                    {rooms.map((room) => (
-                      <div key={room._id || room.id} className="bg-white shadow-sm hover:shadow-xl rounded-lg overflow-hidden group border border-gray-100 transition-all relative">
-                        <div className="h-48 md:h-60 overflow-hidden relative bg-gray-100">
-                          <Image
-                            src={(room.images && room.images.length > 0) ? room.images[0] : (room.image || room.imageUrl || "https://images.unsplash.com/photo-1590490359683-658d3d23f972?q=80&w=2000")}
-                            alt={room.title}
-                            fill
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                            className="object-cover transition-transform duration-700 group-hover:scale-110"
-                          />
-                          <div className="absolute top-4 right-4 flex gap-2">
-                            <button onClick={() => openEditRoomModal(room)} className="p-2 bg-white/90 backdrop-blur-sm text-slate-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg shadow-sm transition-colors">
-                              <Edit className="w-4 h-4" />
-                            </button>
-                            <button onClick={() => handleDeleteRoom(room._id || room.id)} className="p-2 bg-white/90 backdrop-blur-sm text-slate-600 hover:text-rose-600 hover:bg-rose-50 rounded-lg shadow-sm transition-colors">
-                              <Trash2 className="w-4 h-4" />
-                            </button>
-                          </div>
-                          <div className="absolute bottom-4 right-4">
-                            {room.isOccupiedToday ? (
-                              <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-blue-50/90 backdrop-blur-sm text-blue-700 border border-blue-200">
-                                Booked
-                              </span>
-                            ) : (
-                              <button
-                                onClick={() => toggleStatus(room._id || room.id)}
-                                className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold transition-all border backdrop-blur-sm ${room.status?.toLowerCase() === "available"
-                                    ? "bg-emerald-50/90 text-emerald-700 border-emerald-200 hover:bg-emerald-100"
-                                    : "bg-rose-50/90 text-rose-700 border-rose-200 hover:bg-rose-100"
-                                  }`}
-                              >
-                                {room.status}
-                              </button>
-                            )}
-                          </div>
-                        </div>
-                        <div className="p-5 md:p-6 flex flex-col flex-1">
-                          <h3 className="text-[#0f284f] font-extrabold uppercase text-base md:text-lg mb-1 md:mb-2 truncate" title={room.title}>
-                            {room.roomNumber ? `ROOM ${room.roomNumber} - ${room.title}` : room.title}
-                          </h3>
-                          <div className="flex justify-between items-end mt-4 md:mt-6 pt-4 border-t border-slate-100 mt-auto">
-                            <p className="text-gray-500 text-xs w-1/2 leading-relaxed font-medium">
-                              {room.capacity ? `${room.capacity} adults` : '2 adults'} / {room.roomType?.toLowerCase() || room.type?.toLowerCase() || 'standard'}
-                            </p>
-                            <div className="text-right">
-                              <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">
-                                From
-                              </p>
-                              <p className="text-xl md:text-2xl font-black text-[#0f284f]">
-                                ${room.price || room.pricePerNight}
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+                  <AdminRoomsTab 
+                    rooms={rooms} 
+                    openEditRoomModal={openEditRoomModal} 
+                    handleDeleteRoom={handleDeleteRoom} 
+                    toggleStatus={toggleStatus} 
+                  />
                 )}
-
-                {/* Similar refined styling for Bookings Table */}
                 {activeTab === "bookings" && (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 p-4 md:p-6 bg-slate-50/30">
-                    {bookings.length === 0 && <div className="col-span-full p-8 text-center text-slate-500">No bookings found.</div>}
-                    {bookings.map((booking) => (
-                      <div key={booking._id} className="bg-white rounded-xl shadow-sm border border-slate-200/60 p-5 flex flex-col hover:shadow-md transition-shadow">
-                        <div className="flex justify-between items-center mb-4 border-b border-slate-100 pb-3">
-                          <span className="font-mono text-sm font-bold text-[#0f284f]">#{booking._id.substring(0, 8).toUpperCase()}</span>
-                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border ${booking.paymentStatus === 'paid' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-amber-50 text-amber-700 border-amber-200'}`}>
-                            {booking.paymentStatus}
-                          </span>
-                        </div>
-                        <div className="flex-1 space-y-3 mb-4">
-                          <div>
-                            <p className="text-xs text-slate-500 font-medium mb-1 uppercase tracking-wider">Guest Name</p>
-                            <p className="text-sm font-bold text-slate-900">{booking.user?.name || 'Unknown'}</p>
-                          </div>
-                          <div>
-                            <p className="text-xs text-slate-500 font-medium mb-1 uppercase tracking-wider">Room Info</p>
-                            <p className="text-sm font-semibold text-slate-800 truncate" title={booking.room?.title}>
-                              {booking.room ? (
-                                <>
-                                  {booking.room.roomNumber ? `Room ${booking.room.roomNumber}` : 'Room'} • <span className="text-slate-600 font-normal">{booking.room.title || 'Unknown Room'}</span>
-                                </>
-                              ) : (
-                                <span className="text-rose-500 italic">Room Deleted</span>
-                              )}
-                            </p>
-                          </div>
-                          <div>
-                            <p className="text-xs text-slate-500 font-medium mb-1 uppercase tracking-wider">Duration</p>
-                            <p className="text-sm font-medium text-slate-700">
-                              {new Date(booking.checkInDate).toLocaleDateString()} <span className="text-slate-400 mx-1">→</span> {new Date(booking.checkOutDate).toLocaleDateString()}
-                            </p>
-                          </div>
-                        </div>
-                        <div className="pt-4 border-t border-slate-100 flex justify-between items-end">
-                          <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Total</span>
-                          <span className="text-lg font-black text-[#0f284f]">${booking.totalAmount}</span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+                  <AdminBookingsTab bookings={bookings} />
                 )}
-
-                {/* Food Orders Table */}
                 {activeTab === "food_orders" && (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 p-4 md:p-6 bg-slate-50/30">
-                    {foodOrders.length === 0 && <div className="col-span-full p-8 text-center text-slate-500">No food orders found.</div>}
-                    {foodOrders.map((order) => (
-                      <div key={order._id} className="bg-white rounded-xl shadow-sm border border-slate-200/60 p-5 flex flex-col hover:shadow-md transition-shadow">
-                        <div className="flex justify-between items-center mb-4 border-b border-slate-100 pb-3">
-                          <span className="font-mono text-sm font-bold text-[#0f284f]">#{order._id.substring(0, 8).toUpperCase()}</span>
-                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border ${order.orderStatus === 'delivered' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : order.orderStatus === 'cancelled' ? 'bg-rose-50 text-rose-700 border-rose-200' : 'bg-amber-50 text-amber-700 border-amber-200'}`}>
-                            {order.orderStatus}
-                          </span>
-                        </div>
-                        <div className="flex-1 space-y-4 mb-4">
-                          <div>
-                            <p className="text-xs text-slate-500 font-medium mb-1 uppercase tracking-wider">Customer & Location</p>
-                            <p className="text-sm font-bold text-slate-900">{order.user?.name || 'Unknown'}</p>
-                            <p className="text-xs font-medium text-slate-600 mt-1 flex items-start gap-1">
-                              <span className="text-slate-400">📍</span> {order.deliveryLocation || 'N/A'}
-                            </p>
-                            {order.orderNotes && <p className="text-xs text-slate-500 mt-1.5 italic bg-slate-50 p-2 rounded-lg border border-slate-100">📝 {order.orderNotes}</p>}
-                          </div>
-                          <div>
-                            <p className="text-xs text-slate-500 font-medium mb-2 uppercase tracking-wider">Ordered Items</p>
-                            <div className="flex flex-wrap gap-1.5">
-                              {order.items.map(i => (
-                                <span key={i._id || i.name} className="inline-block bg-white text-slate-700 px-2 py-1 rounded text-xs font-medium border border-slate-200 shadow-sm">
-                                  {i.quantity}x {i.name}
-                                </span>
-                              ))}
-                            </div>
-                          </div>
-                        </div>
-                        <div className="pt-4 border-t border-slate-100 flex flex-col space-y-3 mt-auto">
-                          <div className="flex justify-between items-end">
-                            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Total</span>
-                            <span className="text-lg font-black text-[#0f284f]">${order.totalAmount}</span>
-                          </div>
-                          <select
-                            value={order.orderStatus}
-                            onChange={(e) => updateFoodOrderStatus(order._id, e.target.value)}
-                            className="w-full text-sm border border-slate-200 rounded-lg p-2.5 bg-slate-50 text-slate-700 font-semibold focus:outline-none focus:border-[#0f284f] focus:bg-white focus:ring-2 focus:ring-[#0f284f]/10 cursor-pointer transition-all"
-                          >
-                            <option value="preparing">👨‍🍳 Preparing</option>
-                            <option value="ready">🛎️ Ready</option>
-                            <option value="delivered">✅ Delivered</option>
-                            <option value="cancelled">❌ Cancelled</option>
-                          </select>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+                  <AdminFoodOrdersTab 
+                    foodOrders={foodOrders} 
+                    updateFoodOrderStatus={updateFoodOrderStatus} 
+                  />
                 )}
-
-                {/* Menus Table */}
                 {activeTab === "menus" && (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 p-4 md:p-6 bg-slate-50/30">
-                    {menus.length === 0 && <div className="col-span-full p-8 text-center text-slate-500">No menu items found.</div>}
-                    {menus.map((item) => (
-                      <div key={item._id} className="bg-white rounded-xl shadow-sm border border-slate-200/60 overflow-hidden flex flex-col hover:shadow-md transition-all group">
-                        <div className="relative h-32 md:h-40 w-full bg-slate-100 overflow-hidden">
-                          <Image
-                            src={item.imageUrl || "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80"}
-                            alt={item.name}
-                            fill
-                            sizes="(max-width: 768px) 50vw, 33vw"
-                            className="object-cover transition-transform duration-500 group-hover:scale-110"
-                          />
-                          {item.isSignature && (
-                            <div className="absolute top-2 left-2 bg-amber-500/90 backdrop-blur-sm text-white px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider shadow-sm">
-                              Signature
-                            </div>
-                          )}
-                          <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm px-2 py-1 rounded text-[10px] font-bold text-slate-700 shadow-sm">
-                            {item.category}
-                          </div>
-                        </div>
-                        <div className="p-4 flex flex-col flex-1">
-                          <h3 className="font-bold text-slate-900 text-base mb-1 line-clamp-2" title={item.name}>{item.name}</h3>
-                          <div className="flex justify-between items-end mt-auto pt-4">
-                            <span className="text-xl md:text-2xl font-black text-emerald-600">
-                              ${String(item.price).replace('$', '')}
-                            </span>
-                            <div className="flex gap-1.5">
-                              <button onClick={() => openMenuModal(item)} className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors shadow-sm border border-transparent hover:border-blue-100">
-                                <Edit className="w-4 h-4" />
-                              </button>
-                              <button onClick={() => handleDeleteMenu(item._id)} className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded transition-colors shadow-sm border border-transparent hover:border-rose-100">
-                                <Trash2 className="w-4 h-4" />
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+                  <AdminMenusTab 
+                    menus={menus} 
+                    openEditMenuModal={openMenuModal} 
+                    handleDeleteMenu={handleDeleteMenu} 
+                    toggleMenuStatus={(id) => {}} 
+                  />
                 )}
-
-                {/* Reservations Table */}
                 {activeTab === "reservations" && (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 p-4 md:p-6 bg-slate-50/30">
-                    {reservations.length === 0 && <div className="col-span-full p-8 text-center text-slate-500">No reservations found.</div>}
-                    {reservations.map((res) => (
-                      <div key={res._id} className="bg-white rounded-xl shadow-sm border border-slate-200/60 p-5 flex flex-col hover:shadow-md transition-shadow">
-                        <div className="flex justify-between items-center mb-4 border-b border-slate-100 pb-3">
-                          <span className="font-mono text-sm font-bold text-[#0f284f]">#{res._id.substring(0, 8).toUpperCase()}</span>
-                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border ${res.status === 'confirmed' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : res.status === 'cancelled' ? 'bg-rose-50 text-rose-700 border-rose-200' : 'bg-amber-50 text-amber-700 border-amber-200'}`}>
-                            {res.status}
-                          </span>
-                        </div>
-                        <div className="flex-1 space-y-4 mb-4">
-                          <div>
-                            <p className="text-xs text-slate-500 font-medium mb-1 uppercase tracking-wider">Guest Details</p>
-                            <p className="text-sm font-bold text-slate-900">{res.name}</p>
-                            <div className="flex flex-col gap-1 mt-1.5">
-                              <span className="text-xs text-slate-600 flex items-center gap-1.5"><span className="text-slate-400">✉️</span> {res.email}</span>
-                              <span className="text-xs text-slate-600 flex items-center gap-1.5"><span className="text-slate-400">📞</span> {res.phone}</span>
-                            </div>
-                          </div>
-                          <div>
-                            <p className="text-xs text-slate-500 font-medium mb-1 uppercase tracking-wider">Reservation Info</p>
-                            <p className="text-sm font-medium text-slate-800 flex items-center gap-1.5">
-                              <span className="text-slate-400">📅</span> {new Date(res.date).toLocaleDateString()} at {res.time}
-                            </p>
-                            <p className="text-sm font-medium text-slate-800 flex items-center gap-1.5 mt-1">
-                              <span className="text-slate-400">👥</span> {res.guests} people
-                            </p>
-                            {res.specialRequests && <p className="text-xs text-slate-500 mt-2 italic bg-slate-50 p-2 rounded-lg border border-slate-100">📝 {res.specialRequests}</p>}
-                          </div>
-                        </div>
-                        <div className="pt-4 border-t border-slate-100 mt-auto">
-                          <select
-                            value={res.status}
-                            onChange={(e) => updateReservationStatus(res._id, e.target.value)}
-                            className="w-full text-sm border border-slate-200 rounded-lg p-2.5 bg-slate-50 text-slate-700 font-semibold focus:outline-none focus:border-[#0f284f] focus:bg-white focus:ring-2 focus:ring-[#0f284f]/10 cursor-pointer transition-all"
-                          >
-                            <option value="pending">⏳ Pending</option>
-                            <option value="confirmed">✅ Confirmed</option>
-                            <option value="cancelled">❌ Cancelled</option>
-                          </select>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+                  <AdminReservationsTab 
+                    reservations={reservations} 
+                    updateReservationStatus={updateReservationStatus} 
+                  />
                 )}
-
-                {/* Users UI Grid */}
                 {activeTab === "users" && (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 p-4 md:p-6 bg-slate-50/30">
-                    {users.length === 0 && <div className="col-span-full p-8 text-center text-slate-500">No users found.</div>}
-                    {users.map((u) => (
-                      <div key={u._id} className="bg-white rounded-xl shadow-sm border border-slate-200/60 p-5 flex flex-col hover:shadow-md transition-shadow relative overflow-hidden group">
-                        <div className={`absolute top-0 left-0 w-1 h-full transition-colors ${u.role === 'admin' ? 'bg-purple-500' : 'bg-slate-200 group-hover:bg-[#0f284f]'}`}></div>
-                        <div className="flex items-start gap-4 mb-4 pl-1">
-                          <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center overflow-hidden shrink-0 border border-slate-200">
-                            {u.avatar ? (
-                              <Image src={u.avatar} alt={u.name} width={48} height={48} className="object-cover" />
-                            ) : (
-                              <span className="text-[#0f284f] font-bold text-lg">{u.name ? u.name.charAt(0).toUpperCase() : '?'}</span>
-                            )}
-                          </div>
-                          <div className="flex-1 overflow-hidden">
-                            <h3 className="text-sm font-bold text-slate-900 truncate" title={u.name}>{u.name}</h3>
-                            <p className="text-xs text-slate-500 truncate" title={u.email}>{u.email}</p>
-                          </div>
-                        </div>
-                        
-                        <div className="flex items-center gap-2 mb-4 pl-1">
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-slate-100 text-slate-600">
-                            {u.tier || 'Silver'}
-                          </span>
-                          <span className="text-xs font-semibold text-slate-500 flex items-center gap-1">
-                            <span className="text-[#ffbca8]">★</span> {u.points || 0} pts
-                          </span>
-                        </div>
-
-                        <div className="pt-4 border-t border-slate-100 mt-auto pl-1">
-                          <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5 block">Role Access</label>
-                          <select
-                            value={u.role || 'guest'}
-                            onChange={(e) => handleRoleChange(u._id, e.target.value)}
-                            className={`w-full text-sm border rounded-lg p-2.5 font-semibold focus:outline-none cursor-pointer transition-all ${
-                              u.role === 'admin' 
-                                ? 'bg-purple-50 text-purple-700 border-purple-200 focus:ring-2 focus:ring-purple-500/20' 
-                                : 'bg-slate-50 text-slate-700 border-slate-200 focus:ring-2 focus:ring-[#0f284f]/10'
-                            }`}
-                          >
-                            <option value="guest">Guest / Customer</option>
-                            <option value="admin">Administrator</option>
-                          </select>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+                  <AdminUsersTab 
+                    users={users} 
+                    handleRoleChange={handleRoleChange} 
+                  />
                 )}
               </>
             )}
