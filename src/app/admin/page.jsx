@@ -432,6 +432,30 @@ export default function AdminDashboard() {
       <main className="flex-1 w-full py-10 px-4 sm:px-8 lg:px-12 relative overflow-x-hidden">
         <div className="max-w-7xl mx-auto">
 
+          {/* Mobile Navigation (Scrollable Tabs) */}
+          <div className="md:hidden flex overflow-x-auto gap-2 pb-4 mb-6 scrollbar-hide border-b border-slate-100">
+            {[
+              { id: "rooms", icon: BedDouble, label: "Rooms" },
+              { id: "bookings", icon: ClipboardList, label: "Bookings" },
+              { id: "food_orders", icon: Utensils, label: "Food Orders" },
+              { id: "menus", icon: ClipboardList, label: "Menu Items" },
+              { id: "reservations", icon: CalendarCheck, label: "Reservations" }
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-all rounded-full whitespace-nowrap ${
+                  activeTab === tab.id
+                    ? "bg-[#0f284f] text-white shadow-sm"
+                    : "bg-white text-slate-500 border border-slate-200 hover:bg-slate-50"
+                }`}
+              >
+                <tab.icon className="w-4 h-4" />
+                {tab.label}
+              </button>
+            ))}
+          </div>
+
           {/* Header Section */}
           <motion.div variants={fadeUp} className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4">
             <div>
@@ -477,7 +501,7 @@ export default function AdminDashboard() {
               { title: "Rooms Available", value: analytics.availableRooms, icon: BedDouble, color: "text-blue-600", bg: "bg-blue-50" },
               { title: "Total Rooms", value: analytics.totalRooms, icon: Home, color: "text-purple-600", bg: "bg-purple-50" }
             ].map((stat, index) => (
-              <motion.div variants={fadeUp} key={index} className="bg-white rounded-2xl shadow-sm border border-slate-200/60 p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-md hover:-translate-y-1 group">
+              <motion.div variants={fadeUp} key={index} className="bg-white rounded-2xl shadow-sm border border-slate-200/60 p-4 md:p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-md hover:-translate-y-1 group">
                 <div className="flex items-center justify-between mb-4">
                   <p className="text-sm font-semibold text-slate-500">{stat.title}</p>
                   <div className={`p-2.5 ${stat.bg} rounded-xl ${stat.color} transition-transform group-hover:scale-110`}>
@@ -509,7 +533,7 @@ export default function AdminDashboard() {
                     {rooms.length === 0 && <div className="col-span-full p-8 text-center text-slate-500">No rooms found.</div>}
                     {rooms.map((room) => (
                       <div key={room._id || room.id} className="bg-white shadow-sm hover:shadow-xl rounded-lg overflow-hidden group border border-gray-100 transition-all relative">
-                        <div className="h-60 overflow-hidden relative bg-gray-100">
+                        <div className="h-48 md:h-60 overflow-hidden relative bg-gray-100">
                           <Image
                             src={(room.images && room.images.length > 0) ? room.images[0] : (room.image || room.imageUrl || "https://images.unsplash.com/photo-1590490359683-658d3d23f972?q=80&w=2000")}
                             alt={room.title}
@@ -543,7 +567,7 @@ export default function AdminDashboard() {
                             )}
                           </div>
                         </div>
-                        <div className="p-6">
+                        <div className="p-4 md:p-6">
                           <h3 className="text-[#0f284f] font-extrabold uppercase text-lg mb-2 truncate" title={room.title}>
                             {room.title}
                           </h3>

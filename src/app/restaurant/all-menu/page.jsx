@@ -180,7 +180,7 @@ export default function AllMenuPage() {
                       />
                     }
                   >
-                    <div className="relative h-64 w-full overflow-hidden">
+                    <div className="relative h-48 md:h-64 w-full overflow-hidden">
                       <Image
                         src={item.imageUrl}
                         alt={item.name}
@@ -194,12 +194,12 @@ export default function AllMenuPage() {
                         </span>
                       </div>
                     </div>
-                    <div className="p-6">
-                      <div className="flex justify-between items-start mb-4">
-                        <h3 className="text-[#0f284f] text-xl font-bold uppercase tracking-wide pr-4">
+                    <div className="p-4 md:p-6">
+                      <div className="flex justify-between items-start mb-4 gap-2">
+                        <h3 className="text-[#0f284f] text-base md:text-xl font-bold uppercase tracking-wide pr-2 md:pr-4">
                           {item.name}
                         </h3>
-                        <p className="text-2xl font-black text-[#0f284f]">{item.price}</p>
+                        <p className="text-xl md:text-2xl font-black text-[#0f284f]">{item.price}</p>
                       </div>
                       <p className="text-gray-500 text-sm line-clamp-2">
                         {item.description}

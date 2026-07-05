@@ -452,7 +452,7 @@ export default function DashboardPage() {
                   <motion.div 
                     key="bookings"
                     initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }}
-                    className="bg-white rounded-sm shadow-sm border border-gray-100 p-8 md:p-12"
+                    className="bg-white rounded-sm shadow-sm border border-gray-100 p-4 md:p-12"
                   >
                     <h1 className="text-3xl font-bold text-[#0f284f] uppercase tracking-wide mb-8 border-b border-gray-100 pb-4">
                       Personal Booking History
@@ -531,7 +531,7 @@ export default function DashboardPage() {
                   <motion.div 
                     key="food_orders"
                     initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }}
-                    className="bg-white rounded-sm shadow-sm border border-gray-100 p-8 md:p-12"
+                    className="bg-white rounded-sm shadow-sm border border-gray-100 p-4 md:p-12"
                   >
                     <h1 className="text-3xl font-bold text-[#0f284f] uppercase tracking-wide mb-8 border-b border-gray-100 pb-4">
                       My Food Orders
@@ -540,7 +540,7 @@ export default function DashboardPage() {
                     {foodOrders.length > 0 ? (
                       <div className="space-y-6">
                         {foodOrders.map((order) => (
-                          <div key={order._id} className="flex flex-col md:flex-row items-center border border-gray-100 rounded-sm p-6 hover:shadow-md transition-shadow group">
+                          <div key={order._id} className="flex flex-col md:flex-row items-center border border-gray-100 rounded-sm p-4 md:p-6 hover:shadow-md transition-shadow group">
                             <div className="flex-1 w-full">
                               <div className="flex flex-col md:flex-row md:items-start justify-between">
                                 <div>
@@ -603,7 +603,7 @@ export default function DashboardPage() {
                   <motion.div 
                     key="reservations"
                     initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }}
-                    className="bg-white rounded-sm shadow-sm border border-gray-100 p-8 md:p-12"
+                    className="bg-white rounded-sm shadow-sm border border-gray-100 p-4 md:p-12"
                   >
                     <h1 className="text-3xl font-bold text-[#0f284f] uppercase tracking-wide mb-8 border-b border-gray-100 pb-4">
                       My Table Reservations
@@ -612,7 +612,7 @@ export default function DashboardPage() {
                     {reservations.length > 0 ? (
                       <div className="space-y-6">
                         {reservations.map((res) => (
-                          <div key={res._id} className="flex flex-col md:flex-row md:items-start justify-between border border-gray-100 rounded-sm p-6 hover:shadow-md transition-shadow">
+                          <div key={res._id} className="flex flex-col md:flex-row md:items-start justify-between border border-gray-100 rounded-sm p-4 md:p-6 hover:shadow-md transition-shadow">
                             <div>
                               <span className="text-xs font-bold text-gray-400 uppercase tracking-widest block mb-1">Reservation #{res._id.substring(0,8).toUpperCase()}</span>
                               <h3 className="text-xl font-bold text-[#0f284f] uppercase tracking-wide mb-2">Table for {res.guests}</h3>
@@ -647,7 +647,7 @@ export default function DashboardPage() {
                   <motion.div 
                     key="profile"
                     initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }}
-                    className="bg-white rounded-sm shadow-sm border border-gray-100 p-8 md:p-12"
+                    className="bg-white rounded-sm shadow-sm border border-gray-100 p-4 md:p-12"
                   >
                     <h1 className="text-3xl font-bold text-[#0f284f] uppercase tracking-wide mb-8 border-b border-gray-100 pb-4">
                       My Profile

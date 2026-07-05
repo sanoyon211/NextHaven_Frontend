@@ -218,14 +218,14 @@ export default function RoomPage({ params }) {
   return (
     <main className="bg-white w-full overflow-hidden">
       {/* 1. Hero / Top Section */}
-      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <section className="w-full bg-white">
+        <div className="grid grid-cols-1 lg:grid-cols-2 w-full min-h-[85vh]">
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
             variants={fadeUp}
-            className="flex flex-col justify-center"
+            className="flex flex-col justify-center p-4 md:p-8 lg:p-16"
           >
             <h1 className="text-[#0f284f] text-4xl sm:text-5xl lg:text-6xl font-extrabold uppercase leading-tight mb-6">
               {room.roomNumber ? `Room ${room.roomNumber} - ${room.title}` : room.title}
@@ -311,15 +311,16 @@ export default function RoomPage({ params }) {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="h-[60vh] lg:h-[80vh] w-full relative"
+            className="relative w-full h-[50vh] lg:h-auto min-h-[400px]"
           >
             <Image
               src={room.images?.[0] || "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?q=80&w=2000"}
               alt={room.title}
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"
-              className="object-cover rounded-sm shadow-xl"
+              className="object-cover"
             />
+            <div className="absolute inset-0 bg-black/10 z-10"></div>
           </motion.div>
         </div>
       </section>

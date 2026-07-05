@@ -12,10 +12,14 @@ export default function AIChatbot() {
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
-  const messagesEndRef = useRef(null);
+  const chatContainerRef = useRef(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    setTimeout(() => {
+      if (chatContainerRef.current) {
+        chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+      }
+    }, 100);
   };
 
   useEffect(() => {
@@ -48,9 +52,9 @@ export default function AIChatbot() {
       {/* Floating Chat Button */}
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 p-4 bg-[#0f284f] text-white rounded-full shadow-2xl hover:bg-[#1a3d72] transition-transform hover:scale-105 z-50 flex items-center justify-center"
+        className="fixed bottom-4 right-4 md:bottom-6 md:right-6 p-3 md:p-4 bg-[#0f284f] text-white rounded-full shadow-2xl hover:bg-[#1a3d72] transition-transform hover:scale-105 z-[100] flex items-center justify-center"
       >
-        <MessageCircle className="w-7 h-7" />
+        <MessageCircle className="w-5 h-5 md:w-7 md:h-7" />
       </button>
 
       {/* Chat Window */}
@@ -60,7 +64,7 @@ export default function AIChatbot() {
             initial={{ opacity: 0, y: 50, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 50, scale: 0.9 }}
-            className="fixed inset-0 md:inset-auto md:bottom-24 md:right-6 w-full h-full md:w-[350px] md:h-auto bg-white md:rounded-lg shadow-2xl z-[60] md:border border-gray-100 overflow-hidden flex flex-col"
+            className="fixed inset-0 md:inset-auto md:bottom-24 md:right-6 w-full h-full md:w-[350px] md:h-[500px] max-h-[80vh] bg-white md:rounded-lg shadow-2xl z-[60] md:border border-gray-100 overflow-hidden flex flex-col"
           >
             {/* Header */}
             <div className="bg-[#0f284f] text-white p-4 flex justify-between items-center">
@@ -74,7 +78,7 @@ export default function AIChatbot() {
             </div>
 
             {/* Chat History */}
-            <div className="flex-1 p-4 h-0 md:h-[350px] overflow-y-auto bg-gray-50 flex flex-col space-y-4">
+            <div ref={chatContainerRef} className="flex-1 p-4 min-h-0 overflow-y-auto bg-gray-50 flex flex-col space-y-4">
               {messages.map((msg, idx) => (
                 <div
                   key={idx}
@@ -94,7 +98,6 @@ export default function AIChatbot() {
                   <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                 </div>
               )}
-              <div ref={messagesEndRef} />
             </div>
 
             {/* Input Area */}

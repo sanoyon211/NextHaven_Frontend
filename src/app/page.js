@@ -118,7 +118,7 @@ export default function Home() {
 
           {/* Booking Bar Form */}
           <motion.div variants={fadeUp} className="bg-white rounded-lg shadow-lg p-6 mb-20 max-w-5xl mx-auto">
-            <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
+            <form onSubmit={handleSearch} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 items-end">
               <div className="flex flex-col">
                 <label className="text-xs font-semibold text-gray-500 uppercase mb-2">Check-in</label>
                 <input 
@@ -171,15 +171,22 @@ export default function Home() {
               <div className="col-span-4 flex justify-center items-center py-20">
                 <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#0f284f]"></div>
               </div>
+            ) : rooms.length === 0 ? (
+              <div className="col-span-full flex flex-col justify-center items-center py-20 bg-white rounded-lg border border-gray-100 shadow-sm w-full">
+                <h3 className="text-[#0f284f] text-2xl font-bold uppercase tracking-wide mb-2">No Rooms Available</h3>
+                <p className="text-gray-500">There are currently no rooms available to display.</p>
+              </div>
             ) : rooms.map((room) => (
               <Link key={room._id} href={`/rooms/${room._id}`}>
                 <motion.div
-                  variants={fadeUp}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: 0.1 }}
                   whileHover={{ y: -5 }}
-                  transition={{ type: "spring", stiffness: 300 }}
                   className="bg-white shadow-sm hover:shadow-xl rounded-lg overflow-hidden group cursor-pointer border border-gray-100 transition-all flex flex-col h-full"
                 >
-                  <div className="h-60 overflow-hidden relative bg-gray-100">
+                  <div className="h-48 md:h-60 overflow-hidden relative bg-gray-100">
                     <Image
                       src={room.images?.[0] || "https://images.unsplash.com/photo-1590490359683-658d3d23f972?q=80&w=2000"}
                       alt={room.title}
@@ -188,17 +195,17 @@ export default function Home() {
                       className="object-cover transition-transform duration-700 group-hover:scale-110"
                     />
                   </div>
-                  <div className="p-6 flex-1 flex flex-col">
-                    <h3 className="text-[#0f284f] font-extrabold uppercase text-lg mb-6 leading-snug">
+                  <div className="p-4 md:p-6 flex-1 flex flex-col">
+                    <h3 className="text-[#0f284f] font-extrabold uppercase text-base md:text-lg mb-4 md:mb-6 leading-snug">
                       {room.roomNumber ? `ROOM ${room.roomNumber} - ${room.title}` : room.title}
                     </h3>
                     <div className="flex justify-between items-end mt-auto flex-1 gap-2">
-                      <p className="text-gray-500 text-sm leading-relaxed w-[60%]">
+                      <p className="text-gray-500 text-xs md:text-sm leading-relaxed w-[60%]">
                         {room.description || "Experience comfort and luxury in our beautifully appointed rooms, designed to provide you with the perfect retreat during your stay."}
                       </p>
                       <div className="text-right w-[40%]">
                         <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">FROM</p>
-                        <p className="text-3xl font-black text-[#0f284f]">${room.price || room.pricePerNight}</p>
+                        <p className="text-xl md:text-3xl font-black text-[#0f284f]">${room.price || room.pricePerNight}</p>
                       </div>
                     </div>
                   </div>

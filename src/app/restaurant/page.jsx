@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { Clock, CalendarCheck, Phone, ShoppingBag, ArrowRight } from "lucide-react";
@@ -130,7 +131,7 @@ export default function RestaurantPage() {
           variants={fadeUp}
           className="relative z-10 text-center px-4"
         >
-          <h1 className="text-white text-5xl md:text-6xl lg:text-7xl font-bold uppercase tracking-widest mb-8 drop-shadow-lg">
+          <h1 className="text-white text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold uppercase tracking-widest mb-8 drop-shadow-lg">
             Fine Dining At Its Best
           </h1>
           <p className="text-gray-200 text-lg max-w-2xl mx-auto mb-10 drop-shadow-md">
@@ -231,7 +232,7 @@ export default function RestaurantPage() {
                   />
                 }
               >
-                <div className="relative h-64 w-full overflow-hidden shrink-0">
+                <div className="relative h-48 md:h-64 w-full overflow-hidden shrink-0">
                   <Image
                     src={item.imageUrl || "https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1500"}
                     alt={item.name}
@@ -245,12 +246,12 @@ export default function RestaurantPage() {
                     </span>
                   </div>
                 </div>
-                <div className="p-6 flex-1 flex flex-col">
+                <div className="p-4 md:p-6 flex-1 flex flex-col">
                   <div className="flex justify-between items-start mb-4 gap-2">
-                    <h3 className="text-[#0f284f] text-xl font-bold uppercase tracking-wide pr-4">
+                    <h3 className="text-[#0f284f] text-base md:text-xl font-bold uppercase tracking-wide pr-2 md:pr-4">
                       {item.name}
                     </h3>
-                    <p className="text-2xl font-black text-[#0f284f]">${item.price}</p>
+                    <p className="text-xl md:text-2xl font-black text-[#0f284f]">${item.price}</p>
                   </div>
                   <p className="text-gray-500 text-sm line-clamp-2 flex-1">
                     {item.description || item.ingredients}
