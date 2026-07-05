@@ -109,7 +109,7 @@ export default function RoomsPage() {
               </h1>
               <div className="flex items-center justify-between w-full lg:w-auto">
                 <span className="text-sm text-gray-500 font-medium mr-4">
-                  {loading ? "Loading..." : `Showing ${rooms.length} available rooms`}
+                  {loading ? <div className="h-4 w-32 bg-slate-200 animate-pulse rounded"></div> : `Showing ${rooms.length} available rooms`}
                 </span>
                 <select 
                   className="border border-gray-300 rounded-sm px-4 py-2 text-sm text-gray-700 bg-white focus:outline-none focus:border-[#0f284f] cursor-pointer"

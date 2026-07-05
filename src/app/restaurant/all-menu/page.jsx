@@ -148,23 +148,23 @@ export default function AllMenuPage() {
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
         >
             {loading ? (
-              <React.Fragment>
-                {[...Array(8)].map((_, i) => (
-                  <div key={i} className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden animate-pulse">
-                    <div className="relative h-48 md:h-64 w-full bg-slate-200/60">
-                      <div className="absolute top-4 left-4 bg-white/80 h-6 w-16 rounded-sm"></div>
-                    </div>
-                    <div className="p-4 md:p-6">
-                      <div className="flex justify-between items-start mb-4 gap-2">
-                        <div className="h-6 md:h-7 bg-slate-200 rounded w-2/3"></div>
-                        <div className="h-7 md:h-8 bg-slate-200 rounded w-1/4"></div>
-                      </div>
-                      <div className="h-4 bg-slate-200/80 rounded w-full mb-2"></div>
-                      <div className="h-4 bg-slate-200/80 rounded w-4/5"></div>
-                    </div>
+            <>
+              {[...Array(8)].map((_, i) => (
+                <div key={i} className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden animate-pulse">
+                  <div className="relative h-48 md:h-64 w-full bg-slate-200/60">
+                    <div className="absolute top-4 left-4 bg-white/80 h-6 w-16 rounded-sm"></div>
                   </div>
-                ))}
-              </React.Fragment>
+                  <div className="p-4 md:p-6">
+                    <div className="flex justify-between items-start mb-4 gap-2">
+                      <div className="h-6 md:h-7 bg-slate-200 rounded w-2/3"></div>
+                      <div className="h-7 md:h-8 bg-slate-200 rounded w-1/4"></div>
+                    </div>
+                    <div className="h-4 bg-slate-200/80 rounded w-full mb-2"></div>
+                    <div className="h-4 bg-slate-200/80 rounded w-4/5"></div>
+                  </div>
+                </div>
+              ))}
+            </>
             ) : filteredMenu.length === 0 ? (
               <div className="col-span-full flex justify-center py-12 md:py-20">
                 <p className="text-gray-500 text-lg">No menu items found.</p>

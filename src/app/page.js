@@ -243,9 +243,26 @@ export default function Home() {
           {/* Room Grid */}
           <motion.div variants={staggerContainer} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {loading ? (
-              <div className="col-span-4 flex justify-center items-center py-12 md:py-20">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#0f284f]"></div>
-              </div>
+              <>
+                {[1, 2, 3, 4].map((i) => (
+                  <div key={i} className="bg-white shadow-sm rounded-lg overflow-hidden border border-gray-100 animate-pulse flex flex-col h-[400px]">
+                    <div className="h-48 md:h-60 bg-slate-200/60 w-full"></div>
+                    <div className="p-4 md:p-6 flex flex-col flex-1">
+                      <div className="h-6 md:h-8 bg-slate-200 rounded-md w-3/4 mb-4 md:mb-6"></div>
+                      <div className="flex justify-between items-end mt-auto gap-2">
+                        <div className="w-[60%]">
+                          <div className="h-3 bg-slate-200 rounded w-full mb-1.5"></div>
+                          <div className="h-3 bg-slate-200 rounded w-4/5"></div>
+                        </div>
+                        <div className="text-right w-[40%] flex flex-col items-end">
+                          <div className="h-3 bg-slate-200 rounded w-10 mb-2"></div>
+                          <div className="h-7 md:h-9 bg-slate-200 rounded w-16"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </>
             ) : rooms.length === 0 ? (
               <div className="col-span-full flex flex-col justify-center items-center py-12 md:py-20 bg-white rounded-lg border border-gray-100 shadow-sm w-full">
                 <h3 className="text-[#0f284f] text-2xl font-bold uppercase tracking-wide mb-2">No Rooms Available</h3>
