@@ -1,9 +1,11 @@
 "use client";
 
 import HomeHeroSection from "@/components/sections/home/HomeHeroSection";
-import HomeAmenitiesSection from "@/components/sections/home/HomeAmenitiesSection";
-import HomeTestimonialsSection from "@/components/sections/home/HomeTestimonialsSection";
-import HomeBookingSection from "@/components/sections/home/HomeBookingSection";
+import dynamic from "next/dynamic";
+
+const HomeAmenitiesSection = dynamic(() => import("@/components/sections/home/HomeAmenitiesSection"));
+const HomeTestimonialsSection = dynamic(() => import("@/components/sections/home/HomeTestimonialsSection"));
+const HomeBookingSection = dynamic(() => import("@/components/sections/home/HomeBookingSection"));
 
 export default function Home() {
   return (

@@ -1,10 +1,12 @@
 import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
 import { Toaster } from "react-hot-toast";
 import { AuthProvider } from "@/lib/AuthContext";
-import AIChatbot from "@/components/AIChatbot";
+import dynamic from "next/dynamic";
+
+const Footer = dynamic(() => import("@/components/layout/Footer"));
+const AIChatbot = dynamic(() => import("@/components/AIChatbot"));
 
 const inter = Inter({
   variable: "--font-inter",
