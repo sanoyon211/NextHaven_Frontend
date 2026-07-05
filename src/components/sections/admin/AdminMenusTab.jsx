@@ -22,7 +22,7 @@ export default function AdminMenusTab({
           <div className="h-40 overflow-hidden relative bg-gray-100">
             <Image
               src={
-                menu.image ||
+                menu.imageUrl ||
                 "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80"
               }
               alt={menu.name}
