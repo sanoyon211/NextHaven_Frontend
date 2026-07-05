@@ -15,7 +15,7 @@ export default function HomeHeroSection() {
         priority
       />
       <div className="absolute inset-0 bg-black/40" />
-      
+
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}

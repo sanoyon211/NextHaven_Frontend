@@ -1,5 +1,12 @@
 import { motion } from "framer-motion";
-import { BedDouble, ClipboardList, Utensils, CalendarCheck, Users, Home } from "lucide-react";
+import {
+  BedDouble,
+  ClipboardList,
+  Utensils,
+  CalendarCheck,
+  Users,
+  Home,
+} from "lucide-react";
 
 const fadeRight = {
   hidden: { opacity: 0, x: -30 },
@@ -13,13 +20,15 @@ export default function AdminSidebar({ activeTab, setActiveTab, router }) {
     { id: "food_orders", icon: Utensils, label: "Food Orders" },
     { id: "menus", icon: ClipboardList, label: "Menu Items" },
     { id: "reservations", icon: CalendarCheck, label: "Reservations" },
-    { id: "users", icon: Users, label: "Users" }
+    { id: "users", icon: Users, label: "Users" },
   ];
 
   return (
     <>
-      <motion.aside 
-        initial="hidden" animate="visible" variants={fadeRight}
+      <motion.aside
+        initial="hidden"
+        animate="visible"
+        variants={fadeRight}
         className="w-64 bg-white border-r border-slate-200/60 flex flex-col justify-between hidden md:flex sticky top-0 h-screen overflow-y-auto"
       >
         <div>
@@ -27,19 +36,24 @@ export default function AdminSidebar({ activeTab, setActiveTab, router }) {
             <h1 className="text-2xl font-extrabold tracking-tight text-slate-900">
               NextHaven<span className="text-[#0f284f]">.</span>
             </h1>
-            <p className="text-xs font-semibold text-slate-400 mt-1 uppercase tracking-wider">Admin Workspace</p>
+            <p className="text-xs font-semibold text-slate-400 mt-1 uppercase tracking-wider">
+              Admin Workspace
+            </p>
           </div>
           <nav className="p-4 space-y-1.5">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`w-full flex items-center gap-3 px-4 py-3 text-sm font-medium transition-all duration-300 rounded-xl ${activeTab === tab.id
+                className={`w-full flex items-center gap-3 px-4 py-3 text-sm font-medium transition-all duration-300 rounded-xl ${
+                  activeTab === tab.id
                     ? "bg-[#0f284f] text-white shadow-md shadow-[#0f284f]/20"
                     : "text-slate-500 hover:text-slate-900 hover:bg-slate-100/80"
-                  }`}
+                }`}
               >
-                <tab.icon className={`w-4 h-4 ${activeTab === tab.id ? "text-white" : "text-slate-400"}`} />
+                <tab.icon
+                  className={`w-4 h-4 ${activeTab === tab.id ? "text-white" : "text-slate-400"}`}
+                />
                 {tab.label}
               </button>
             ))}

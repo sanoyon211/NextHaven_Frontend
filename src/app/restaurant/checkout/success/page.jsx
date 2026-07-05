@@ -25,7 +25,8 @@ function CheckoutSuccessContent() {
         Payment Successful
       </h1>
       <p className="text-gray-500 mb-8 leading-relaxed">
-        Thank you for your order! Your payment has been processed successfully. Your food is now being prepared.
+        Thank you for your order! Your payment has been processed successfully.
+        Your food is now being prepared.
       </p>
       <div className="space-y-4">
         <button

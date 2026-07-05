@@ -29,16 +29,26 @@ export default function RestaurantPage() {
   const [loading, setLoading] = useState(true);
   const [cart, setCart] = useState([]);
   const router = useRouter();
-  
+
   const [showReservationDialog, setShowReservationDialog] = useState(false);
   const [isReserving, setIsReserving] = useState(false);
   const [reservationForm, setReservationForm] = useState({
-    name: "", email: "", phone: "", date: "", time: "", guests: 2, specialRequests: ""
+    name: "",
+    email: "",
+    phone: "",
+    date: "",
+    time: "",
+    guests: 2,
+    specialRequests: "",
   });
 
   useEffect(() => {
     if (user) {
-      setReservationForm(prev => ({ ...prev, name: user.name || "", email: user.email || "" }));
+      setReservationForm((prev) => ({
+        ...prev,
+        name: user.name || "",
+        email: user.email || "",
+      }));
     }
   }, [user]);
 
@@ -46,7 +56,7 @@ export default function RestaurantPage() {
     e.preventDefault();
     if (!user) {
       toast.error("Please login to make a reservation");
-      router.push("/login");
+      router.push("/login?redirect=/restaurant");
       return;
     }
     setIsReserving(true);
@@ -54,9 +64,18 @@ export default function RestaurantPage() {
       await api.post("/reservations", reservationForm);
       toast.success("Reservation submitted successfully!");
       setShowReservationDialog(false);
-      setReservationForm(prev => ({ ...prev, phone: "", date: "", time: "", guests: 2, specialRequests: "" }));
+      setReservationForm((prev) => ({
+        ...prev,
+        phone: "",
+        date: "",
+        time: "",
+        guests: 2,
+        specialRequests: "",
+      }));
     } catch (error) {
-      toast.error(error.response?.data?.message || "Failed to submit reservation");
+      toast.error(
+        error.response?.data?.message || "Failed to submit reservation",
+      );
     } finally {
       setIsReserving(false);
     }
@@ -89,7 +108,7 @@ export default function RestaurantPage() {
   useEffect(() => {
     const fetchSignatureMenu = async () => {
       try {
-        const res = await api.get('/menu?isSignature=true');
+        const res = await api.get("/menu?isSignature=true");
         setSignatureMenu(res.data.menuItems || res.data);
       } catch (error) {
         console.error("Failed to fetch signature menu:", error);
@@ -102,23 +121,26 @@ export default function RestaurantPage() {
 
   return (
     <main className="bg-white w-full overflow-hidden">
-      
-      <RestaurantHeroSection setShowReservationDialog={setShowReservationDialog} />
-      
+      <RestaurantHeroSection
+        setShowReservationDialog={setShowReservationDialog}
+      />
+
       <RestaurantDiningExperienceSection />
-      
+
       <RestaurantChefSection />
-      
-      <RestaurantSignatureMenuSection 
+
+      <RestaurantSignatureMenuSection
         signatureMenu={signatureMenu}
         loading={loading}
         addToCart={addToCart}
         handleOrderNow={handleOrderNow}
       />
-      
+
       <RestaurantAmbianceSection />
-      
-      <RestaurantHoursReservationsSection setShowReservationDialog={setShowReservationDialog} />
+
+      <RestaurantHoursReservationsSection
+        setShowReservationDialog={setShowReservationDialog}
+      />
 
       {/* Floating Cart Button */}
       {cart.length > 0 && (
@@ -144,47 +166,146 @@ export default function RestaurantPage() {
       )}
 
       {/* Reservation Dialog */}
-      <Dialog open={showReservationDialog} onOpenChange={setShowReservationDialog}>
+      <Dialog
+        open={showReservationDialog}
+        onOpenChange={setShowReservationDialog}
+      >
         <DialogContent className="sm:max-w-[500px]">
           <DialogHeader>
-            <DialogTitle className="text-2xl font-bold uppercase tracking-wider text-[#0f284f]">Book a Table</DialogTitle>
+            <DialogTitle className="text-2xl font-bold uppercase tracking-wider text-[#0f284f]">
+              Book a Table
+            </DialogTitle>
           </DialogHeader>
           <form onSubmit={handleReservationSubmit} className="space-y-4 mt-4">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1">
-                <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">Name</label>
-                <input required value={reservationForm.name} onChange={e => setReservationForm({...reservationForm, name: e.target.value})} className="w-full border border-gray-300 p-3 rounded-sm focus:outline-none focus:border-[#0f284f]" />
+                <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">
+                  Name
+                </label>
+                <input
+                  required
+                  value={reservationForm.name}
+                  onChange={(e) =>
+                    setReservationForm({
+                      ...reservationForm,
+                      name: e.target.value,
+                    })
+                  }
+                  className="w-full border border-gray-300 p-3 rounded-sm focus:outline-none focus:border-[#0f284f]"
+                />
               </div>
               <div className="space-y-1">
-                <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">Email</label>
-                <input required type="email" value={reservationForm.email} onChange={e => setReservationForm({...reservationForm, email: e.target.value})} className="w-full border border-gray-300 p-3 rounded-sm focus:outline-none focus:border-[#0f284f]" />
+                <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">
+                  Email
+                </label>
+                <input
+                  required
+                  type="email"
+                  value={reservationForm.email}
+                  onChange={(e) =>
+                    setReservationForm({
+                      ...reservationForm,
+                      email: e.target.value,
+                    })
+                  }
+                  className="w-full border border-gray-300 p-3 rounded-sm focus:outline-none focus:border-[#0f284f]"
+                />
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1">
-                <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">Phone</label>
-                <input required value={reservationForm.phone} onChange={e => setReservationForm({...reservationForm, phone: e.target.value})} className="w-full border border-gray-300 p-3 rounded-sm focus:outline-none focus:border-[#0f284f]" />
+                <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">
+                  Phone
+                </label>
+                <input
+                  required
+                  value={reservationForm.phone}
+                  onChange={(e) =>
+                    setReservationForm({
+                      ...reservationForm,
+                      phone: e.target.value,
+                    })
+                  }
+                  className="w-full border border-gray-300 p-3 rounded-sm focus:outline-none focus:border-[#0f284f]"
+                />
               </div>
               <div className="space-y-1">
-                <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">Guests</label>
-                <input required type="number" min="1" value={reservationForm.guests} onChange={e => setReservationForm({...reservationForm, guests: e.target.value})} className="w-full border border-gray-300 p-3 rounded-sm focus:outline-none focus:border-[#0f284f]" />
+                <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">
+                  Guests
+                </label>
+                <input
+                  required
+                  type="number"
+                  min="1"
+                  value={reservationForm.guests}
+                  onChange={(e) =>
+                    setReservationForm({
+                      ...reservationForm,
+                      guests: e.target.value,
+                    })
+                  }
+                  className="w-full border border-gray-300 p-3 rounded-sm focus:outline-none focus:border-[#0f284f]"
+                />
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1">
-                <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">Date</label>
-                <input required type="date" value={reservationForm.date} onChange={e => setReservationForm({...reservationForm, date: e.target.value})} className="w-full border border-gray-300 p-3 rounded-sm focus:outline-none focus:border-[#0f284f]" />
+                <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">
+                  Date
+                </label>
+                <input
+                  required
+                  type="date"
+                  value={reservationForm.date}
+                  onChange={(e) =>
+                    setReservationForm({
+                      ...reservationForm,
+                      date: e.target.value,
+                    })
+                  }
+                  className="w-full border border-gray-300 p-3 rounded-sm focus:outline-none focus:border-[#0f284f]"
+                />
               </div>
               <div className="space-y-1">
-                <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">Time</label>
-                <input required type="time" value={reservationForm.time} onChange={e => setReservationForm({...reservationForm, time: e.target.value})} className="w-full border border-gray-300 p-3 rounded-sm focus:outline-none focus:border-[#0f284f]" />
+                <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">
+                  Time
+                </label>
+                <input
+                  required
+                  type="time"
+                  value={reservationForm.time}
+                  onChange={(e) =>
+                    setReservationForm({
+                      ...reservationForm,
+                      time: e.target.value,
+                    })
+                  }
+                  className="w-full border border-gray-300 p-3 rounded-sm focus:outline-none focus:border-[#0f284f]"
+                />
               </div>
             </div>
             <div className="space-y-1">
-              <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">Special Requests</label>
-              <textarea value={reservationForm.specialRequests} onChange={e => setReservationForm({...reservationForm, specialRequests: e.target.value})} className="w-full border border-gray-300 p-3 rounded-sm resize-none focus:outline-none focus:border-[#0f284f]" rows="2" placeholder="Optional" />
+              <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">
+                Special Requests
+              </label>
+              <textarea
+                value={reservationForm.specialRequests}
+                onChange={(e) =>
+                  setReservationForm({
+                    ...reservationForm,
+                    specialRequests: e.target.value,
+                  })
+                }
+                className="w-full border border-gray-300 p-3 rounded-sm resize-none focus:outline-none focus:border-[#0f284f]"
+                rows="2"
+                placeholder="Optional"
+              />
             </div>
-            <button type="submit" disabled={isReserving} className="w-full bg-[#0f284f] text-white font-bold uppercase tracking-wider py-4 rounded-sm hover:bg-[#1a3d72] transition-colors disabled:opacity-70 mt-4">
+            <button
+              type="submit"
+              disabled={isReserving}
+              className="w-full bg-[#0f284f] text-white font-bold uppercase tracking-wider py-4 rounded-sm hover:bg-[#1a3d72] transition-colors disabled:opacity-70 mt-4"
+            >
               {isReserving ? "Submitting..." : "Confirm Reservation"}
             </button>
           </form>

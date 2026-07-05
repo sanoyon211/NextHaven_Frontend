@@ -14,7 +14,9 @@ import { toast } from "react-hot-toast";
 import api from "@/lib/api";
 
 // Initialize Stripe outside of component to avoid recreating it
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
+const stripePromise = loadStripe(
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
+);
 
 function CheckoutForm({ amount }) {
   const stripe = useStripe();
@@ -47,7 +49,9 @@ function CheckoutForm({ amount }) {
     } else if (paymentIntent && paymentIntent.status === "succeeded") {
       // Manually verify payment to bypass webhook requirement for local development
       try {
-        await api.post("/bookings/verify-payment", { paymentIntentId: paymentIntent.id });
+        await api.post("/bookings/verify-payment", {
+          paymentIntentId: paymentIntent.id,
+        });
         toast.success("Payment successful!");
         window.location.href = "/checkout/success";
       } catch (err) {
@@ -68,7 +72,7 @@ function CheckoutForm({ amount }) {
       <button
         disabled={isProcessing || !stripe || !elements}
         type="submit"
-        className="w-full bg-gradient-to-r from-pink-500 to-rose-500 text-white font-bold py-4 px-4 rounded-xl shadow-md hover:shadow-lg hover:from-pink-600 hover:to-rose-600 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full bg-[#0f284f] text-white font-bold py-4 px-4 rounded-xl shadow-md hover:shadow-lg hover:bg-[#1a3d72] focus:outline-none focus:ring-2 focus:ring-[#0f284f] focus:ring-offset-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {isProcessing ? "Processing..." : `Pay $${amount || "0.00"} Now`}
       </button>
@@ -89,22 +93,24 @@ function PaymentPageContent() {
   if (!clientSecret) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh]">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-pink-500"></div>
-        <p className="mt-4 text-gray-500 font-medium">Initializing secure payment...</p>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#d4af37]"></div>
+        <p className="mt-4 text-gray-500 font-medium">
+          Initializing secure payment...
+        </p>
       </div>
     );
   }
 
   const appearance = {
-    theme: 'stripe',
+    theme: "stripe",
     variables: {
-      colorPrimary: '#ec4899', // pink-500
-      colorBackground: '#ffffff',
-      colorText: '#1f2937',
-      colorDanger: '#ef4444',
-      fontFamily: 'system-ui, sans-serif',
-      spacingUnit: '4px',
-      borderRadius: '8px',
+      colorPrimary: "#0f284f", // navy
+      colorBackground: "#ffffff",
+      colorText: "#1f2937",
+      colorDanger: "#ef4444",
+      fontFamily: "system-ui, sans-serif",
+      spacingUnit: "4px",
+      borderRadius: "8px",
     },
   };
 
@@ -113,9 +119,7 @@ function PaymentPageContent() {
       <div className="max-w-md w-full">
         {/* Custom Card UI */}
         <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden relative">
-          
-          {/* Badge */}
-          <div className="absolute top-0 right-0 bg-gradient-to-r from-indigo-500 to-purple-500 text-white text-xs font-bold px-4 py-2 rounded-bl-lg uppercase tracking-wider">
+          <div className="absolute top-0 right-0 bg-[#d4af37] text-[#0f284f] text-xs font-bold px-4 py-2 rounded-bl-lg uppercase tracking-wider">
             Secure Checkout
           </div>
 
@@ -128,12 +132,19 @@ function PaymentPageContent() {
             </p>
 
             <div className="mt-6 flex items-baseline">
-              <span className="text-5xl font-black text-gray-900">${amount || "0"}</span>
-              <span className="ml-2 text-sm font-bold text-gray-500 tracking-wide">/ TOTAL</span>
+              <span className="text-5xl font-black text-gray-900">
+                ${amount || "0"}
+              </span>
+              <span className="ml-2 text-sm font-bold text-gray-500 tracking-wide">
+                / TOTAL
+              </span>
             </div>
 
             <div className="mt-6 border-t border-gray-100 pt-6">
-              <Elements stripe={stripePromise} options={{ clientSecret, appearance }}>
+              <Elements
+                stripe={stripePromise}
+                options={{ clientSecret, appearance }}
+              >
                 <CheckoutForm amount={amount} />
               </Elements>
             </div>
@@ -152,11 +163,13 @@ function PaymentPageContent() {
 
 export default function PaymentPage() {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-pink-500"></div>
-      </div>
-    }>
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#d4af37]"></div>
+        </div>
+      }
+    >
       <PaymentPageContent />
     </Suspense>
   );

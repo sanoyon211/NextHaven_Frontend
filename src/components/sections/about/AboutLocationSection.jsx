@@ -10,7 +10,6 @@ export default function AboutLocationSection() {
   return (
     <section className="mx-auto max-w-7xl px-4 py-12 md:py-24 sm:px-6 lg:px-8">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-24">
-        
         {/* Left Column: Map */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
@@ -43,13 +42,12 @@ export default function AboutLocationSection() {
             HOW TO FIND OUR HOTEL
           </h2>
           <p className="text-gray-600 text-lg leading-relaxed mb-12">
-            Let us be your hosts in the heart of the city. We are centrally located, 
-            making it effortless to explore major attractions, business centers, 
-            and premium shopping districts during your stay.
+            Let us be your hosts in the heart of the city. We are centrally
+            located, making it effortless to explore major attractions, business
+            centers, and premium shopping districts during your stay.
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
-            
             {/* Mini Column 1: Airport */}
             <div>
               <Plane className="w-10 h-10 text-[#ffbca8] mb-4" />
@@ -57,8 +55,9 @@ export default function AboutLocationSection() {
                 31 KILOMETRES FROM AIRPORT
               </h3>
               <p className="text-gray-500 text-sm leading-relaxed">
-                A short, scenic drive from the international airport. Our concierge 
-                can arrange private transfers to ensure a seamless arrival experience.
+                A short, scenic drive from the international airport. Our
+                concierge can arrange private transfers to ensure a seamless
+                arrival experience.
               </p>
             </div>
 
@@ -69,11 +68,11 @@ export default function AboutLocationSection() {
                 1.3 KILOMETRES FROM City Center
               </h3>
               <p className="text-gray-500 text-sm leading-relaxed">
-                Located just steps away from the vibrant city center, you&apos;ll have 
-                immediate access to the best dining, entertainment, and cultural landmarks.
+                Located just steps away from the vibrant city center,
+                you&apos;ll have immediate access to the best dining,
+                entertainment, and cultural landmarks.
               </p>
             </div>
-            
           </div>
         </motion.div>
       </div>

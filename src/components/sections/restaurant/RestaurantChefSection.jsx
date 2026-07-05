@@ -23,7 +23,9 @@ export default function RestaurantChefSection() {
           />
           <div className="absolute -bottom-6 -right-6 bg-[#d4af37] text-[#0f284f] p-6 shadow-xl hidden md:block">
             <p className="font-heading text-4xl font-bold">25+</p>
-            <p className="font-sans text-sm font-bold uppercase tracking-wider">Years of Excellence</p>
+            <p className="font-sans text-sm font-bold uppercase tracking-wider">
+              Years of Excellence
+            </p>
           </div>
         </motion.div>
         <motion.div
@@ -33,14 +35,22 @@ export default function RestaurantChefSection() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="flex flex-col justify-center lg:pl-12"
         >
-          <h2 className="font-heading text-[#d4af37] text-3xl md:text-5xl font-bold mb-6">Meet the Maestro</h2>
+          <h2 className="font-heading text-[#d4af37] text-3xl md:text-5xl font-bold mb-6">
+            Meet the Maestro
+          </h2>
           <div className="w-16 h-1 bg-white mb-8"></div>
           <Quote className="w-10 h-10 text-white/20 mb-4" />
           <p className="text-gray-200 text-xl font-sans italic leading-relaxed mb-8">
-            &quot;Cooking is not just about combining ingredients; it is an art of storytelling. Every dish we serve at NextHaven is a chapter of passion, crafted to evoke memories and create new ones.&quot;
+            &quot;Cooking is not just about combining ingredients; it is an art
+            of storytelling. Every dish we serve at NextHaven is a chapter of
+            passion, crafted to evoke memories and create new ones.&quot;
           </p>
-          <h3 className="font-heading text-2xl font-bold mb-1">Alessandro Rossi</h3>
-          <p className="font-sans text-[#d4af37] uppercase tracking-widest text-sm font-bold mb-8">Executive Chef</p>
+          <h3 className="font-heading text-2xl font-bold mb-1">
+            Alessandro Rossi
+          </h3>
+          <p className="font-sans text-[#d4af37] uppercase tracking-widest text-sm font-bold mb-8">
+            Executive Chef
+          </p>
           <Link href="#signature-menu">
             <button className="self-start border border-[#d4af37] text-[#d4af37] font-bold uppercase tracking-widest px-8 py-4 hover:bg-[#d4af37] hover:text-[#0f284f] transition-colors duration-300">
               Taste His Creations

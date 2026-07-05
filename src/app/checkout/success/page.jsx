@@ -27,16 +27,18 @@ export default function CheckoutSuccessPage() {
         >
           <CheckCircle className="w-12 h-12 text-green-500" />
         </motion.div>
-        
+
         <h1 className="text-2xl md:text-4xl font-extrabold text-[#0f284f] uppercase tracking-wider mb-4">
           Booking Confirmed
         </h1>
-        
+
         <p className="text-gray-600 text-lg mb-10 leading-relaxed">
-          Thank you for choosing NextHaven. Your payment was successful, and your premium suite has been reserved. A confirmation email is on its way.
+          Thank you for choosing NextHaven. Your payment was successful, and
+          your premium suite has been reserved. A confirmation email is on its
+          way.
         </p>
-        
-        <Link 
+
+        <Link
           href="/dashboard"
           className="inline-block w-full sm:w-auto bg-[#0f284f] text-white font-bold uppercase tracking-wider px-10 py-4 rounded-sm hover:bg-[#1a3d72] transition-colors"
         >

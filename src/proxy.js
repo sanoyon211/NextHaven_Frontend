@@ -1,14 +1,14 @@
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 
 export function proxy(request) {
   // Check if the user has a "jwt" cookie
-  const token = request.cookies.get('jwt')?.value;
+  const token = request.cookies.get("jwt")?.value;
 
   const url = request.nextUrl.clone();
-  
+
   // If no token is found, redirect to /login
   if (!token) {
-    url.pathname = '/login';
+    url.pathname = "/login";
     return NextResponse.redirect(url);
   }
 
@@ -18,8 +18,5 @@ export function proxy(request) {
 
 // See "Matching Paths" below to learn more
 export const config = {
-  matcher: [
-    '/dashboard/:path*',
-    '/admin/:path*',
-  ],
+  matcher: ["/dashboard/:path*", "/admin/:path*"],
 };

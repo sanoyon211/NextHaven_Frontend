@@ -21,19 +21,20 @@ export default function NotFound() {
             Lost in Luxury
           </h2>
           <p className="text-gray-500 text-lg sm:text-xl max-w-2xl mx-auto leading-relaxed mb-12">
-            The page you are looking for has checked out, or perhaps never existed. Let us guide you back to the comfort of our main lobby.
+            The page you are looking for has checked out, or perhaps never
+            existed. Let us guide you back to the comfort of our main lobby.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link 
+            <Link
               href="/"
               className="w-full sm:w-auto bg-[#0f284f] text-white px-8 py-4 rounded-sm font-bold uppercase tracking-widest hover:bg-[#1a3d72] transition-colors flex items-center justify-center gap-3 group"
             >
               <Home className="w-5 h-5 group-hover:-translate-y-1 transition-transform" />
               <span>Back to Home</span>
             </Link>
-            
-            <button 
+
+            <button
               onClick={() => window.history.back()}
               className="w-full sm:w-auto bg-white border border-gray-300 text-gray-700 px-8 py-4 rounded-sm font-bold uppercase tracking-widest hover:bg-gray-50 hover:text-[#0f284f] transition-all flex items-center justify-center gap-3 group"
             >

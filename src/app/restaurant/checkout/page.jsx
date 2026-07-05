@@ -81,23 +81,26 @@ export default function CheckoutPage() {
     setIsProcessing(true);
     try {
       // Prepare items for backend
-      const items = cart.map(item => ({
+      const items = cart.map((item) => ({
         menuItem: item._id,
-        quantity: item.quantity
+        quantity: item.quantity,
       }));
 
-      const res = await api.post("/food-orders/checkout", { 
+      const res = await api.post("/food-orders/checkout", {
         items,
         deliveryLocation,
-        orderNotes
+        orderNotes,
       });
-      
+
       if (res.data?.clientSecret) {
-        router.push(`/payment?clientSecret=${res.data.clientSecret}&amount=${res.data.amount}`);
+        router.push(
+          `/payment?clientSecret=${res.data.clientSecret}&amount=${res.data.amount}`,
+        );
       }
     } catch (error) {
       console.error(error);
-      const errorMsg = error.response?.data?.message || "Failed to proceed to checkout";
+      const errorMsg =
+        error.response?.data?.message || "Failed to proceed to checkout";
       toast.error(errorMsg);
       setIsProcessing(false);
     }
@@ -105,11 +108,14 @@ export default function CheckoutPage() {
 
   if (cart.length === 0) {
     return (
-      <motion.div 
-        initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
         className="min-h-screen bg-[#f8fafc] pt-32 pb-20 px-4 flex flex-col items-center justify-center"
       >
-        <h2 className="text-2xl font-bold text-[#0f284f] mb-4 uppercase tracking-wide">Your Cart is Empty</h2>
+        <h2 className="text-2xl font-bold text-[#0f284f] mb-4 uppercase tracking-wide">
+          Your Cart is Empty
+        </h2>
         <button
           onClick={() => router.push("/restaurant/all-menu")}
           className="flex items-center gap-2 text-[#0f284f] font-bold hover:underline"
@@ -122,8 +128,10 @@ export default function CheckoutPage() {
 
   return (
     <div className="min-h-screen bg-[#f8fafc] pt-32 pb-20 px-4 sm:px-6 lg:px-8">
-      <motion.div 
-        variants={staggerContainer} initial="hidden" animate="visible"
+      <motion.div
+        variants={staggerContainer}
+        initial="hidden"
+        animate="visible"
         className="max-w-4xl mx-auto"
       >
         <motion.button
@@ -134,11 +142,17 @@ export default function CheckoutPage() {
           <ArrowLeft className="w-5 h-5" /> Back to Menu
         </motion.button>
 
-        <motion.h1 variants={fadeUp} className="text-2xl md:text-4xl font-extrabold text-[#0f284f] uppercase tracking-wider mb-10">
+        <motion.h1
+          variants={fadeUp}
+          className="text-2xl md:text-4xl font-extrabold text-[#0f284f] uppercase tracking-wider mb-10"
+        >
           Checkout
         </motion.h1>
 
-        <motion.div variants={fadeUp} className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+        <motion.div
+          variants={fadeUp}
+          className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden"
+        >
           <div className="p-6 md:p-8">
             <h2 className="text-xl font-bold text-gray-900 uppercase tracking-wide mb-6 border-b border-gray-100 pb-4">
               Order Summary
@@ -150,32 +164,47 @@ export default function CheckoutPage() {
                 if (typeof price === "string") {
                   price = parseFloat(price.replace(/[^0-9.-]+/g, ""));
                 }
-                
+
                 return (
-                  <div key={index} className="flex flex-col sm:flex-row items-center justify-between border-b border-gray-50 pb-6 last:border-0 last:pb-0">
+                  <div
+                    key={index}
+                    className="flex flex-col sm:flex-row items-center justify-between border-b border-gray-50 pb-6 last:border-0 last:pb-0"
+                  >
                     <div className="flex-1 w-full">
-                      <h3 className="font-bold text-[#0f284f] text-lg uppercase tracking-wide">{item.name}</h3>
-                      <p className="text-gray-500 text-sm mt-1">{item.category}</p>
+                      <h3 className="font-bold text-[#0f284f] text-lg uppercase tracking-wide">
+                        {item.name}
+                      </h3>
+                      <p className="text-gray-500 text-sm mt-1">
+                        {item.category}
+                      </p>
                     </div>
-                    
+
                     <div className="flex items-center justify-between w-full sm:w-auto mt-4 sm:mt-0 gap-8">
                       <div className="flex items-center border border-gray-200 rounded-sm">
-                        <button 
+                        <button
                           onClick={() => updateQuantity(index, -1)}
                           className="px-3 py-1 hover:bg-gray-100 font-bold text-gray-600"
-                        >-</button>
-                        <span className="px-4 font-semibold">{item.quantity}</span>
-                        <button 
+                        >
+                          -
+                        </button>
+                        <span className="px-4 font-semibold">
+                          {item.quantity}
+                        </span>
+                        <button
                           onClick={() => updateQuantity(index, 1)}
                           className="px-3 py-1 hover:bg-gray-100 font-bold text-gray-600"
-                        >+</button>
+                        >
+                          +
+                        </button>
                       </div>
-                      
+
                       <div className="text-right min-w-[80px]">
-                        <span className="font-black text-[#0f284f] text-lg">${(price * item.quantity).toFixed(2)}</span>
+                        <span className="font-black text-[#0f284f] text-lg">
+                          ${(price * item.quantity).toFixed(2)}
+                        </span>
                       </div>
-                      
-                      <button 
+
+                      <button
                         onClick={() => removeItem(index)}
                         className="text-red-400 hover:text-red-600 transition-colors"
                       >
@@ -186,7 +215,7 @@ export default function CheckoutPage() {
                 );
               })}
             </div>
-            
+
             <div className="mt-8 pt-6 border-t border-gray-100 space-y-4">
               <div>
                 <label className="block text-sm font-bold text-gray-700 uppercase tracking-wide mb-2">
@@ -218,17 +247,23 @@ export default function CheckoutPage() {
 
           <div className="bg-[#fcfdfd] p-6 md:p-8 border-t border-gray-100">
             <div className="flex justify-between items-center mb-6">
-              <span className="text-gray-600 font-semibold uppercase tracking-wider text-sm">Total Amount</span>
-              <span className="text-3xl font-black text-[#0f284f]">${totalAmount.toFixed(2)}</span>
+              <span className="text-gray-600 font-semibold uppercase tracking-wider text-sm">
+                Total Amount
+              </span>
+              <span className="text-3xl font-black text-[#0f284f]">
+                ${totalAmount.toFixed(2)}
+              </span>
             </div>
-            
+
             <button
               onClick={handleCheckout}
               disabled={isProcessing}
               className="w-full bg-[#0f284f] text-white font-bold uppercase tracking-widest py-4 rounded-sm hover:bg-[#1a3d72] transition-colors flex justify-center items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
             >
               {isProcessing ? (
-                <><Loader2 className="w-5 h-5 animate-spin" /> Processing...</>
+                <>
+                  <Loader2 className="w-5 h-5 animate-spin" /> Processing...
+                </>
               ) : (
                 "Pay with Stripe"
               )}

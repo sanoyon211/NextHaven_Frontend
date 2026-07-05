@@ -19,11 +19,13 @@ import DashboardReservationsTab from "@/components/sections/dashboard/DashboardR
 import DashboardProfileTab from "@/components/sections/dashboard/DashboardProfileTab";
 
 export default function DashboardPage() {
+  // Authentication state and user profile
   const { user, loading: authLoading, logout } = useAuth();
   const router = useRouter();
-  
+
+  // Tab navigation state
   const [activeTab, setActiveTab] = useState("bookings");
-  
+
   const [bookings, setBookings] = useState([]);
   const [foodOrders, setFoodOrders] = useState([]);
   const [reservations, setReservations] = useState([]);
@@ -34,9 +36,10 @@ export default function DashboardPage() {
   const [profileImage, setProfileImage] = useState(null);
   const [isUpdatingProfile, setIsUpdatingProfile] = useState(false);
 
+  // Enforce authentication: Redirect to login if user is unauthenticated
   useEffect(() => {
     if (!authLoading && !user) {
-      router.push("/login");
+      router.push("/login?redirect=/dashboard");
     } else if (user && !profileName) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setProfileName(user.name || "");
@@ -44,6 +47,7 @@ export default function DashboardPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, authLoading, router]);
 
+  // Fetch all user-related data (bookings, orders, reservations)
   useEffect(() => {
     const fetchData = async () => {
       if (!user) return;
@@ -83,7 +87,7 @@ export default function DashboardPage() {
             ))}
           </nav>
         </aside>
-        
+
         {/* Main Content Skeleton */}
         <main className="flex-1 w-full py-10 px-4 sm:px-8 lg:px-12 animate-pulse">
           <div className="max-w-7xl mx-auto">
@@ -91,14 +95,17 @@ export default function DashboardPage() {
               <div className="h-10 bg-gray-200 rounded-lg w-64 mb-3"></div>
               <div className="h-4 bg-gray-200 rounded-lg w-96"></div>
             </div>
-            
+
             <div className="bg-white rounded-2xl border border-gray-100 min-h-[500px] p-6">
-               <div className="h-10 bg-gray-100 rounded-xl mb-8 w-48"></div>
-               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                 {[1, 2, 3, 4, 5, 6].map((i) => (
-                   <div key={i} className="h-48 bg-gray-50 rounded-2xl border border-gray-100"></div>
-                 ))}
-               </div>
+              <div className="h-10 bg-gray-100 rounded-xl mb-8 w-48"></div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {[1, 2, 3, 4, 5, 6].map((i) => (
+                  <div
+                    key={i}
+                    className="h-48 bg-gray-50 rounded-2xl border border-gray-100"
+                  ></div>
+                ))}
+              </div>
             </div>
           </div>
         </main>
@@ -110,17 +117,17 @@ export default function DashboardPage() {
 
   const generatePDF = (booking) => {
     const doc = new jsPDF();
-    
+
     // Header Background
     doc.setFillColor(15, 40, 79);
-    doc.rect(0, 0, 210, 40, 'F');
+    doc.rect(0, 0, 210, 40, "F");
 
     // Header Text
     doc.setFontSize(24);
     doc.setTextColor(255, 255, 255);
     doc.setFont("helvetica", "bold");
     doc.text("NEXT HAVEN", 14, 25);
-    
+
     doc.setFontSize(10);
     doc.setFont("helvetica", "normal");
     doc.setTextColor(200, 200, 200);
@@ -136,34 +143,50 @@ export default function DashboardPage() {
     doc.setFont("helvetica", "bold");
     doc.text("BILLED TO:", 14, 55);
     doc.setFont("helvetica", "normal");
-    doc.text(`${user?.name || 'Guest'}`, 14, 62);
-    doc.text(`${user?.email || ''}`, 14, 67);
+    doc.text(`${user?.name || "Guest"}`, 14, 62);
+    doc.text(`${user?.email || ""}`, 14, 67);
 
     // Invoice Details
     doc.setFont("helvetica", "bold");
     doc.text("INVOICE DETAILS:", 130, 55);
     doc.setFont("helvetica", "normal");
-    doc.text(`Invoice No: INV-${booking._id.substring(0, 8).toUpperCase()}`, 130, 62);
+    doc.text(
+      `Invoice No: INV-${booking._id.substring(0, 8).toUpperCase()}`,
+      130,
+      62,
+    );
     doc.text(`Date: ${new Date().toLocaleDateString()}`, 130, 67);
     doc.text(`Status: PAID`, 130, 72);
 
     // Table
     autoTable(doc, {
       startY: 85,
-      head: [['Description', 'Check-in', 'Check-out', 'Total']],
+      head: [["Description", "Check-in", "Check-out", "Total"]],
       body: [
-        [booking.room?.roomNumber ? `Room ${booking.room.roomNumber} - ${booking.room.title}` : (booking.room?.title || "Room"), new Date(booking.checkInDate).toLocaleDateString(), new Date(booking.checkOutDate).toLocaleDateString(), `$${Number(booking.totalAmount).toFixed(2)}`]
+        [
+          booking.room?.roomNumber
+            ? `Room ${booking.room.roomNumber} - ${booking.room.title}`
+            : booking.room?.title || "Room",
+          new Date(booking.checkInDate).toLocaleDateString(),
+          new Date(booking.checkOutDate).toLocaleDateString(),
+          `$${Number(booking.totalAmount).toFixed(2)}`,
+        ],
       ],
-      theme: 'striped',
-      headStyles: { fillColor: [15, 40, 79], textColor: 255, fontStyle: 'bold', halign: 'center' },
-      styles: { fontSize: 10, cellPadding: 6, halign: 'center' },
-      columnStyles: { 0: { halign: 'left' } },
+      theme: "striped",
+      headStyles: {
+        fillColor: [15, 40, 79],
+        textColor: 255,
+        fontStyle: "bold",
+        halign: "center",
+      },
+      styles: { fontSize: 10, cellPadding: 6, halign: "center" },
+      columnStyles: { 0: { halign: "left" } },
       alternateRowStyles: { fillColor: [245, 247, 250] },
     });
 
     // Summary
     const finalY = doc.lastAutoTable.finalY || 120;
-    
+
     doc.setDrawColor(220, 220, 220);
     doc.line(130, finalY + 5, 196, finalY + 5);
 
@@ -171,7 +194,9 @@ export default function DashboardPage() {
     doc.setTextColor(15, 40, 79);
     doc.setFont("helvetica", "bold");
     doc.text("Total Paid:", 130, finalY + 15);
-    doc.text(`$${Number(booking.totalAmount).toFixed(2)}`, 196, finalY + 15, { align: "right" });
+    doc.text(`$${Number(booking.totalAmount).toFixed(2)}`, 196, finalY + 15, {
+      align: "right",
+    });
 
     // Footer
     doc.setDrawColor(200, 200, 200);
@@ -179,24 +204,29 @@ export default function DashboardPage() {
     doc.setFontSize(9);
     doc.setTextColor(150, 150, 150);
     doc.setFont("helvetica", "normal");
-    doc.text("Thank you for choosing Next Haven. We hope you enjoy your stay!", 105, 287, { align: "center" });
-    
+    doc.text(
+      "Thank you for choosing Next Haven. We hope you enjoy your stay!",
+      105,
+      287,
+      { align: "center" },
+    );
+
     doc.save(`NextHaven_Invoice_${booking._id.substring(0, 8)}.pdf`);
   };
 
   const generateFoodOrderPDF = (order) => {
     const doc = new jsPDF();
-    
+
     // Header Background
     doc.setFillColor(236, 72, 153); // Pink for food orders
-    doc.rect(0, 0, 210, 40, 'F');
+    doc.rect(0, 0, 210, 40, "F");
 
     // Header Text
     doc.setFontSize(24);
     doc.setTextColor(255, 255, 255);
     doc.setFont("helvetica", "bold");
     doc.text("NEXT HAVEN", 14, 25);
-    
+
     doc.setFontSize(10);
     doc.setFont("helvetica", "normal");
     doc.setTextColor(250, 200, 220);
@@ -212,27 +242,45 @@ export default function DashboardPage() {
     doc.setFont("helvetica", "bold");
     doc.text("BILLED TO:", 14, 55);
     doc.setFont("helvetica", "normal");
-    doc.text(`${user?.name || 'Guest'}`, 14, 62);
-    doc.text(`${user?.email || ''}`, 14, 67);
+    doc.text(`${user?.name || "Guest"}`, 14, 62);
+    doc.text(`${user?.email || ""}`, 14, 67);
 
     // Order Details
     doc.setFont("helvetica", "bold");
     doc.text("ORDER DETAILS:", 130, 55);
     doc.setFont("helvetica", "normal");
-    doc.text(`Order No: FD-${order._id.substring(0, 8).toUpperCase()}`, 130, 62);
-    doc.text(`Date: ${new Date(order.createdAt).toLocaleDateString()}`, 130, 67);
+    doc.text(
+      `Order No: FD-${order._id.substring(0, 8).toUpperCase()}`,
+      130,
+      62,
+    );
+    doc.text(
+      `Date: ${new Date(order.createdAt).toLocaleDateString()}`,
+      130,
+      67,
+    );
     doc.text(`Status: PAID`, 130, 72);
 
-    const bodyData = order.items.map(item => [item.name, item.quantity, `$${Number(item.price).toFixed(2)}`, `$${(item.quantity * item.price).toFixed(2)}`]);
+    const bodyData = order.items.map((item) => [
+      item.name,
+      item.quantity,
+      `$${Number(item.price).toFixed(2)}`,
+      `$${(item.quantity * item.price).toFixed(2)}`,
+    ]);
 
     autoTable(doc, {
       startY: 85,
-      head: [['Item', 'Qty', 'Price', 'Subtotal']],
+      head: [["Item", "Qty", "Price", "Subtotal"]],
       body: bodyData,
-      theme: 'striped',
-      headStyles: { fillColor: [236, 72, 153], textColor: 255, fontStyle: 'bold', halign: 'center' },
-      styles: { fontSize: 10, cellPadding: 6, halign: 'center' },
-      columnStyles: { 0: { halign: 'left' } },
+      theme: "striped",
+      headStyles: {
+        fillColor: [236, 72, 153],
+        textColor: 255,
+        fontStyle: "bold",
+        halign: "center",
+      },
+      styles: { fontSize: 10, cellPadding: 6, halign: "center" },
+      columnStyles: { 0: { halign: "left" } },
       alternateRowStyles: { fillColor: [253, 242, 248] },
     });
 
@@ -240,21 +288,28 @@ export default function DashboardPage() {
 
     doc.setDrawColor(220, 220, 220);
     doc.line(130, finalY + 5, 196, finalY + 5);
-    
+
     doc.setFontSize(12);
     doc.setTextColor(236, 72, 153);
     doc.setFont("helvetica", "bold");
     doc.text("Total Paid:", 130, finalY + 15);
-    doc.text(`$${Number(order.totalAmount).toFixed(2)}`, 196, finalY + 15, { align: "right" });
-    
+    doc.text(`$${Number(order.totalAmount).toFixed(2)}`, 196, finalY + 15, {
+      align: "right",
+    });
+
     // Footer
     doc.setDrawColor(200, 200, 200);
     doc.line(14, 280, 196, 280);
     doc.setFontSize(9);
     doc.setTextColor(150, 150, 150);
     doc.setFont("helvetica", "normal");
-    doc.text("Thank you for dining with Next Haven. We hope you enjoyed your meal!", 105, 287, { align: "center" });
-    
+    doc.text(
+      "Thank you for dining with Next Haven. We hope you enjoyed your meal!",
+      105,
+      287,
+      { align: "center" },
+    );
+
     doc.save(`NextHaven_Receipt_${order._id.substring(0, 8)}.pdf`);
   };
 
@@ -266,15 +321,17 @@ export default function DashboardPage() {
       showCancelButton: true,
       confirmButtonColor: "#0f284f",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, cancel it!"
+      confirmButtonText: "Yes, cancel it!",
     });
     if (result.isConfirmed) {
       const toastId = toast.loading("Cancelling booking...");
       try {
         await api.put(`/bookings/${booking._id}/cancel`);
         toast.success("Booking cancelled successfully", { id: toastId });
-        setBookings(prev => 
-          prev.map(b => b._id === booking._id ? { ...b, paymentStatus: "refunded" } : b)
+        setBookings((prev) =>
+          prev.map((b) =>
+            b._id === booking._id ? { ...b, paymentStatus: "refunded" } : b,
+          ),
         );
       } catch (error) {
         toast.error("Failed to cancel booking", { id: toastId });
@@ -299,9 +356,11 @@ export default function DashboardPage() {
       });
 
       toast.success("Profile updated successfully", { id: toastId });
-      window.location.reload(); 
+      window.location.reload();
     } catch (error) {
-      toast.error(error.response?.data?.message || "Failed to update profile", { id: toastId });
+      toast.error(error.response?.data?.message || "Failed to update profile", {
+        id: toastId,
+      });
     } finally {
       setIsUpdatingProfile(false);
     }
@@ -328,7 +387,9 @@ export default function DashboardPage() {
       nextTierPoints = 1000;
       currentTierPoints = 500;
       pointsNeeded = nextTierPoints - points;
-      progress = ((points - currentTierPoints) / (nextTierPoints - currentTierPoints)) * 100;
+      progress =
+        ((points - currentTierPoints) / (nextTierPoints - currentTierPoints)) *
+        100;
     } else {
       currentTier = "Silver";
       nextTier = "Gold";
@@ -349,30 +410,17 @@ export default function DashboardPage() {
   return (
     <main className="min-h-screen bg-[#f8fafc] py-10 md:py-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-        
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           className="grid grid-cols-1 lg:grid-cols-4 gap-8"
         >
-          {/* Left Sidebar */}
-          <div className="lg:col-span-1">
-            <DashboardSidebar 
-              user={user} 
-              activeTab={activeTab} 
-              setActiveTab={setActiveTab} 
-              logout={logout} 
-            />
-          </div>
-
-          {/* Right Main Content */}
           <div className="lg:col-span-3">
-            
-            <DashboardLoyaltyCard 
-              displayTier={displayTier} 
-              userPoints={userPoints} 
-              loyalty={loyalty} 
+            <DashboardLoyaltyCard
+              displayTier={displayTier}
+              userPoints={userPoints}
+              loyalty={loyalty}
             />
 
             {loadingData && activeTab !== "profile" ? (
@@ -380,43 +428,46 @@ export default function DashboardPage() {
                 <div className="h-10 bg-gray-200 rounded w-1/3 mb-8"></div>
                 <div className="space-y-6">
                   {[1, 2, 3].map((i) => (
-                    <div key={i} className="h-32 bg-gray-50 border border-gray-100 rounded-sm"></div>
+                    <div
+                      key={i}
+                      className="h-32 bg-gray-50 border border-gray-100 rounded-sm"
+                    ></div>
                   ))}
                 </div>
               </div>
             ) : (
               <AnimatePresence mode="wait">
                 {activeTab === "bookings" && (
-                  <DashboardBookingsTab 
-                    bookings={bookings} 
-                    generatePDF={generatePDF} 
-                    handleCancelBooking={handleCancelBooking} 
-                    router={router} 
+                  <DashboardBookingsTab
+                    bookings={bookings}
+                    generatePDF={generatePDF}
+                    handleCancelBooking={handleCancelBooking}
+                    router={router}
                   />
                 )}
 
                 {activeTab === "food_orders" && (
-                  <DashboardFoodOrdersTab 
-                    foodOrders={foodOrders} 
-                    generateFoodOrderPDF={generateFoodOrderPDF} 
-                    router={router} 
+                  <DashboardFoodOrdersTab
+                    foodOrders={foodOrders}
+                    generateFoodOrderPDF={generateFoodOrderPDF}
+                    router={router}
                   />
                 )}
 
                 {activeTab === "reservations" && (
-                  <DashboardReservationsTab 
-                    reservations={reservations} 
-                    router={router} 
+                  <DashboardReservationsTab
+                    reservations={reservations}
+                    router={router}
                   />
                 )}
 
                 {activeTab === "profile" && (
-                  <DashboardProfileTab 
-                    profileName={profileName} 
-                    setProfileName={setProfileName} 
-                    setProfileImage={setProfileImage} 
-                    handleProfileUpdate={handleProfileUpdate} 
-                    isUpdatingProfile={isUpdatingProfile} 
+                  <DashboardProfileTab
+                    profileName={profileName}
+                    setProfileName={setProfileName}
+                    setProfileImage={setProfileImage}
+                    handleProfileUpdate={handleProfileUpdate}
+                    isUpdatingProfile={isUpdatingProfile}
                   />
                 )}
               </AnimatePresence>

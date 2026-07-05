@@ -34,7 +34,7 @@ const staggerContainer = {
 export default function RoomPage({ params }) {
   const resolvedParams = use(params);
   const rawId = resolvedParams?.id;
-  
+
   const router = useRouter();
   const { user } = useAuth();
   const [isBooking, setIsBooking] = useState(false);
@@ -54,7 +54,9 @@ export default function RoomPage({ params }) {
       try {
         const [roomRes, datesRes] = await Promise.all([
           api.get(`/rooms/${rawId}`),
-          api.get(`/bookings/room/${rawId}/dates`).catch(() => ({ data: { data: [] } }))
+          api
+            .get(`/bookings/room/${rawId}/dates`)
+            .catch(() => ({ data: { data: [] } })),
         ]);
         setRoom(roomRes.data.room || roomRes.data);
         setBookedDates(datesRes.data.data || []);
@@ -79,7 +81,7 @@ export default function RoomPage({ params }) {
               <div className="h-4 bg-slate-200/80 rounded-md w-full mb-2"></div>
               <div className="h-4 bg-slate-200/80 rounded-md w-5/6 mb-6"></div>
               <div className="h-10 bg-slate-200 rounded-lg w-1/3 mb-10"></div>
-              
+
               <div className="h-6 bg-slate-200 rounded-md w-1/4 mb-6"></div>
               <div className="grid grid-cols-2 gap-4 mb-10 border-y border-slate-100 py-6">
                 {[1, 2, 3, 4].map((i) => (
@@ -103,8 +105,13 @@ export default function RoomPage({ params }) {
   if (!room) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white flex-col">
-        <h1 className="text-3xl font-bold text-[#0f284f] uppercase tracking-wide mb-4">Room Not Found</h1>
-        <button onClick={() => router.push("/rooms")} className="bg-[#0f284f] text-white px-6 py-2 rounded">
+        <h1 className="text-3xl font-bold text-[#0f284f] uppercase tracking-wide mb-4">
+          Room Not Found
+        </h1>
+        <button
+          onClick={() => router.push("/rooms")}
+          className="bg-[#0f284f] text-white px-6 py-2 rounded"
+        >
           Back to Rooms
         </button>
       </div>
@@ -114,9 +121,9 @@ export default function RoomPage({ params }) {
   const handleCheckInChange = (e) => {
     const selectedDate = e.target.value;
     const selectedDateObj = new Date(selectedDate);
-    
+
     // Check if selected check-in date falls inside any existing booking
-    const isBooked = bookedDates.some(booking => {
+    const isBooked = bookedDates.some((booking) => {
       const inDate = new Date(booking.checkInDate);
       const outDate = new Date(booking.checkOutDate);
       // It's occupied if it's >= checkIn and < checkOut
@@ -124,14 +131,16 @@ export default function RoomPage({ params }) {
     });
 
     if (isBooked) {
-      toast.error("This date is already booked. Please select an available date.");
+      toast.error(
+        "This date is already booked. Please select an available date.",
+      );
       setCheckIn("");
       setCheckOut("");
       return;
     }
 
     setCheckIn(selectedDate);
-    
+
     // Reset checkout if it's before or equal to checkin
     if (checkOut && new Date(checkOut) <= selectedDateObj) {
       setCheckOut("");
@@ -141,32 +150,34 @@ export default function RoomPage({ params }) {
   const getMaxCheckOutDate = () => {
     if (!checkIn) return undefined;
     const checkInDateObj = new Date(checkIn);
-    
+
     // Find the next booking that starts AFTER the selected check-in
     const upcomingBookings = bookedDates
-      .map(b => new Date(b.checkInDate))
-      .filter(date => date > checkInDateObj)
+      .map((b) => new Date(b.checkInDate))
+      .filter((date) => date > checkInDateObj)
       .sort((a, b) => a - b);
-      
+
     if (upcomingBookings.length > 0) {
       // The max check-out date is the checkIn date of the next booking
-      return upcomingBookings[0].toISOString().split('T')[0];
+      return upcomingBookings[0].toISOString().split("T")[0];
     }
     return undefined; // No future bookings, they can book as long as they want
   };
 
-  const todayStr = new Date().toISOString().split('T')[0];
+  const todayStr = new Date().toISOString().split("T")[0];
   let minCheckOutStr = todayStr;
   if (checkIn) {
     const minCheckOutDate = new Date(checkIn);
     minCheckOutDate.setDate(minCheckOutDate.getDate() + 1);
-    minCheckOutStr = minCheckOutDate.toISOString().split('T')[0];
+    minCheckOutStr = minCheckOutDate.toISOString().split("T")[0];
   }
 
   const handleBooking = async () => {
     if (!user) {
       toast.error("Please login to book a room");
-      router.push("/login");
+      router.push(
+        "/login?redirect=" + encodeURIComponent(window.location.pathname),
+      );
       return;
     }
 
@@ -174,7 +185,7 @@ export default function RoomPage({ params }) {
       toast.error("Please select check-in and check-out dates");
       return;
     }
-    
+
     if (new Date(checkIn) >= new Date(checkOut)) {
       toast.error("Check-out date must be after check-in date");
       return;
@@ -194,12 +205,16 @@ export default function RoomPage({ params }) {
       });
 
       if (response.data?.clientSecret) {
-        router.push(`/payment?clientSecret=${response.data.clientSecret}&amount=${response.data.amount}`);
+        router.push(
+          `/payment?clientSecret=${response.data.clientSecret}&amount=${response.data.amount}`,
+        );
       } else {
         throw new Error("No client secret returned");
       }
     } catch (error) {
-      const errorMsg = error.response?.data?.message || "Failed to initiate booking. Please try again.";
+      const errorMsg =
+        error.response?.data?.message ||
+        "Failed to initiate booking. Please try again.";
       toast.error(errorMsg, { id: toastId });
       setIsBooking(false);
     }
@@ -229,18 +244,34 @@ export default function RoomPage({ params }) {
             className="flex flex-col justify-center p-4 md:p-8 lg:p-16"
           >
             <h1 className="text-[#0f284f] text-3xl md:text-5xl lg:text-6xl font-extrabold uppercase leading-tight mb-6">
-              {room.roomNumber ? `Room ${room.roomNumber} - ${room.title}` : room.title}
+              {room.roomNumber
+                ? `Room ${room.roomNumber} - ${room.title}`
+                : room.title}
             </h1>
             <p className="text-gray-600 text-lg leading-relaxed mb-4">
               {room.description}
             </p>
             <p className="text-[#0f284f] text-2xl font-black mb-8">
-              ${room.pricePerNight} <span className="text-sm text-gray-500 font-medium uppercase tracking-widest">/ Night</span>
+              ${room.pricePerNight}{" "}
+              <span className="text-sm text-gray-500 font-medium uppercase tracking-widest">
+                / Night
+              </span>
             </p>
-            
+
             <ul className="space-y-4 mb-10">
-              {(room.amenities && room.amenities.length > 0 ? room.amenities.slice(0, 4) : ["Master Bedroom with King-Size Bed", "Fully Equipped Kitchenette", "Modern En-suite Bathroom", "Spacious Private Balcony"]).map((feature, idx) => (
-                <li key={idx} className="flex items-center text-gray-700 font-medium">
+              {(room.amenities && room.amenities.length > 0
+                ? room.amenities.slice(0, 4)
+                : [
+                    "Master Bedroom with King-Size Bed",
+                    "Fully Equipped Kitchenette",
+                    "Modern En-suite Bathroom",
+                    "Spacious Private Balcony",
+                  ]
+              ).map((feature, idx) => (
+                <li
+                  key={idx}
+                  className="flex items-center text-gray-700 font-medium"
+                >
                   <Check className="h-5 w-5 text-[#0f284f] mr-3" />
                   {feature}
                 </li>
@@ -248,56 +279,89 @@ export default function RoomPage({ params }) {
             </ul>
 
             <div className="bg-gray-50 p-6 rounded-lg mb-8 border border-gray-100">
-              <h3 className="text-[#0f284f] font-bold uppercase tracking-wider mb-4">Book Your Stay</h3>
+              <h3 className="text-[#0f284f] font-bold uppercase tracking-wider mb-4">
+                Book Your Stay
+              </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                 <div>
-                  <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Check-in Date</label>
-                  <input 
-                    type="date" 
-                    value={checkIn} 
+                  <label className="block text-xs font-bold text-gray-500 uppercase mb-1">
+                    Check-in Date
+                  </label>
+                  <input
+                    type="date"
+                    value={checkIn}
                     onChange={handleCheckInChange}
                     min={todayStr}
-                    className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-[#0f284f]" 
-                    required 
+                    className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-[#0f284f]"
+                    required
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Check-out Date</label>
-                  <input 
-                    type="date" 
-                    value={checkOut} 
-                    onChange={(e) => setCheckOut(e.target.value)} 
+                  <label className="block text-xs font-bold text-gray-500 uppercase mb-1">
+                    Check-out Date
+                  </label>
+                  <input
+                    type="date"
+                    value={checkOut}
+                    onChange={(e) => setCheckOut(e.target.value)}
                     min={minCheckOutStr}
                     max={getMaxCheckOutDate()}
                     disabled={!checkIn}
-                    className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-[#0f284f] disabled:bg-gray-100 disabled:cursor-not-allowed" 
-                    required 
+                    className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-[#0f284f] disabled:bg-gray-100 disabled:cursor-not-allowed"
+                    required
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Adults</label>
-                  <input type="number" min="1" value={adults} onChange={(e) => setAdults(Number(e.target.value))} className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-[#0f284f]" required />
+                  <label className="block text-xs font-bold text-gray-500 uppercase mb-1">
+                    Adults
+                  </label>
+                  <input
+                    type="number"
+                    min="1"
+                    value={adults}
+                    onChange={(e) => setAdults(Number(e.target.value))}
+                    className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-[#0f284f]"
+                    required
+                  />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Children</label>
-                  <input type="number" min="0" value={children} onChange={(e) => setChildren(Number(e.target.value))} className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-[#0f284f]" />
+                  <label className="block text-xs font-bold text-gray-500 uppercase mb-1">
+                    Children
+                  </label>
+                  <input
+                    type="number"
+                    min="0"
+                    value={children}
+                    onChange={(e) => setChildren(Number(e.target.value))}
+                    className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-[#0f284f]"
+                  />
                 </div>
               </div>
               <div className="mb-6">
-                <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Special Requests (Optional)</label>
-                <textarea value={specialRequests} onChange={(e) => setSpecialRequests(e.target.value)} rows="2" className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-[#0f284f] resize-none" placeholder="e.g. Late check-in, extra pillows..." />
+                <label className="block text-xs font-bold text-gray-500 uppercase mb-1">
+                  Special Requests (Optional)
+                </label>
+                <textarea
+                  value={specialRequests}
+                  onChange={(e) => setSpecialRequests(e.target.value)}
+                  rows="2"
+                  className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-[#0f284f] resize-none"
+                  placeholder="e.g. Late check-in, extra pillows..."
+                />
               </div>
-              
+
               {totalNights > 0 && (
                 <div className="mb-6 p-4 bg-white border border-gray-200 rounded-sm flex justify-between items-center shadow-sm">
                   <span className="text-gray-600 font-semibold uppercase tracking-wider text-sm">
                     {totalNights} {totalNights > 1 ? "Nights" : "Night"}
                   </span>
-                  <span className="text-2xl font-black text-[#0f284f]">${totalCost.toFixed(2)}</span>
+                  <span className="text-2xl font-black text-[#0f284f]">
+                    ${totalCost.toFixed(2)}
+                  </span>
                 </div>
               )}
 
-              <button 
+              <button
                 onClick={handleBooking}
                 disabled={isBooking}
                 className="w-full bg-[#0f284f] text-white font-bold uppercase tracking-wider px-8 py-4 rounded hover:bg-[#1a3d72] transition-colors disabled:opacity-70"
@@ -315,7 +379,10 @@ export default function RoomPage({ params }) {
             className="relative w-full h-[50vh] lg:h-auto min-h-[400px]"
           >
             <Image
-              src={room.images?.[0] || "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?q=80&w=2000"}
+              src={
+                room.images?.[0] ||
+                "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?q=80&w=2000"
+              }
               alt={room.title}
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"
@@ -328,7 +395,7 @@ export default function RoomPage({ params }) {
 
       {/* 2. Gallery Section */}
       <section className="w-full">
-        <motion.div 
+        <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
@@ -383,7 +450,7 @@ export default function RoomPage({ params }) {
               className="object-cover rounded-sm shadow-lg grayscale hover:grayscale-0 transition-all duration-500"
             />
           </motion.div>
-          
+
           <motion.div
             initial="hidden"
             whileInView="visible"
@@ -395,7 +462,9 @@ export default function RoomPage({ params }) {
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
               <div>
-                <h3 className="text-xl font-bold text-gray-900 uppercase mb-4">Amenities</h3>
+                <h3 className="text-xl font-bold text-gray-900 uppercase mb-4">
+                  Amenities
+                </h3>
                 <ul className="space-y-3 text-gray-600">
                   <li>40-inch LED TV</li>
                   <li>Mini Bar & Refrigerator</li>
@@ -406,7 +475,9 @@ export default function RoomPage({ params }) {
                 </ul>
               </div>
               <div>
-                <h3 className="text-xl font-bold text-gray-900 uppercase mb-4">Services</h3>
+                <h3 className="text-xl font-bold text-gray-900 uppercase mb-4">
+                  Services
+                </h3>
                 <ul className="space-y-3 text-gray-600">
                   <li>24-hour Room Service</li>
                   <li>Free High-Speed Wi-Fi</li>
@@ -435,38 +506,54 @@ export default function RoomPage({ params }) {
               Hotel Services and Facilities Included
             </h2>
           </div>
-          
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-12 text-center">
             <div className="flex flex-col items-center">
               <div className="bg-white/10 p-5 rounded-full mb-6">
                 <BellRing className="w-10 h-10 text-white" />
               </div>
-              <h3 className="text-lg font-bold uppercase tracking-wide mb-3">Reception Service</h3>
-              <p className="text-gray-300 text-sm leading-relaxed">24/7 dedicated concierge at your service for any arrangements.</p>
+              <h3 className="text-lg font-bold uppercase tracking-wide mb-3">
+                Reception Service
+              </h3>
+              <p className="text-gray-300 text-sm leading-relaxed">
+                24/7 dedicated concierge at your service for any arrangements.
+              </p>
             </div>
-            
+
             <div className="flex flex-col items-center">
               <div className="bg-white/10 p-5 rounded-full mb-6">
                 <Wine className="w-10 h-10 text-white" />
               </div>
-              <h3 className="text-lg font-bold uppercase tracking-wide mb-3">Bar & Lounge</h3>
-              <p className="text-gray-300 text-sm leading-relaxed">Exclusive access to our premium selection of spirits and wines.</p>
+              <h3 className="text-lg font-bold uppercase tracking-wide mb-3">
+                Bar & Lounge
+              </h3>
+              <p className="text-gray-300 text-sm leading-relaxed">
+                Exclusive access to our premium selection of spirits and wines.
+              </p>
             </div>
-            
+
             <div className="flex flex-col items-center">
               <div className="bg-white/10 p-5 rounded-full mb-6">
                 <Dumbbell className="w-10 h-10 text-white" />
               </div>
-              <h3 className="text-lg font-bold uppercase tracking-wide mb-3">Fitness Facilities</h3>
-              <p className="text-gray-300 text-sm leading-relaxed">State-of-the-art gym equipment available around the clock.</p>
+              <h3 className="text-lg font-bold uppercase tracking-wide mb-3">
+                Fitness Facilities
+              </h3>
+              <p className="text-gray-300 text-sm leading-relaxed">
+                State-of-the-art gym equipment available around the clock.
+              </p>
             </div>
-            
+
             <div className="flex flex-col items-center">
               <div className="bg-white/10 p-5 rounded-full mb-6">
                 <Umbrella className="w-10 h-10 text-white" />
               </div>
-              <h3 className="text-lg font-bold uppercase tracking-wide mb-3">Roof Terrace</h3>
-              <p className="text-gray-300 text-sm leading-relaxed">Relax by the rooftop pool with panoramic city and ocean views.</p>
+              <h3 className="text-lg font-bold uppercase tracking-wide mb-3">
+                Roof Terrace
+              </h3>
+              <p className="text-gray-300 text-sm leading-relaxed">
+                Relax by the rooftop pool with panoramic city and ocean views.
+              </p>
             </div>
           </div>
         </motion.div>
@@ -502,50 +589,76 @@ export default function RoomPage({ params }) {
             <h2 className="text-[#0f284f] text-3xl font-bold uppercase mb-10 tracking-wide">
               Practical Information
             </h2>
-            
+
             <Accordion type="single" className="w-full space-y-4">
-              <AccordionItem value="item-1" className="bg-white border border-gray-100 rounded-lg px-6 py-2 shadow-sm hover:shadow-md transition-all">
+              <AccordionItem
+                value="item-1"
+                className="bg-white border border-gray-100 rounded-lg px-6 py-2 shadow-sm hover:shadow-md transition-all"
+              >
                 <AccordionTrigger className="text-left font-bold text-[#0f284f] uppercase tracking-wide hover:no-underline hover:text-[#ffbca8] transition-colors">
                   How do I make a reservation?
                 </AccordionTrigger>
                 <AccordionContent className="text-gray-500 leading-relaxed text-base pt-2 pb-4">
-                  You can securely book your stay through our website by clicking the &quot;Book Now&quot; button, or by contacting our reservations team directly via phone or email. We require a valid credit card to guarantee your room.
+                  You can securely book your stay through our website by
+                  clicking the &quot;Book Now&quot; button, or by contacting our
+                  reservations team directly via phone or email. We require a
+                  valid credit card to guarantee your room.
                 </AccordionContent>
               </AccordionItem>
-              
-              <AccordionItem value="item-2" className="bg-white border border-gray-100 rounded-lg px-6 py-2 shadow-sm hover:shadow-md transition-all">
+
+              <AccordionItem
+                value="item-2"
+                className="bg-white border border-gray-100 rounded-lg px-6 py-2 shadow-sm hover:shadow-md transition-all"
+              >
                 <AccordionTrigger className="text-left font-bold text-[#0f284f] uppercase tracking-wide hover:no-underline hover:text-[#ffbca8] transition-colors">
                   What is the check-in/check-out policy?
                 </AccordionTrigger>
                 <AccordionContent className="text-gray-500 leading-relaxed text-base pt-2 pb-4">
-                  Standard check-in time is from 3:00 PM, and check-out is until 11:00 AM. Early check-in or late check-out can be arranged subject to availability and may incur an additional fee.
+                  Standard check-in time is from 3:00 PM, and check-out is until
+                  11:00 AM. Early check-in or late check-out can be arranged
+                  subject to availability and may incur an additional fee.
                 </AccordionContent>
               </AccordionItem>
-              
-              <AccordionItem value="item-3" className="bg-white border border-gray-100 rounded-lg px-6 py-2 shadow-sm hover:shadow-md transition-all">
+
+              <AccordionItem
+                value="item-3"
+                className="bg-white border border-gray-100 rounded-lg px-6 py-2 shadow-sm hover:shadow-md transition-all"
+              >
                 <AccordionTrigger className="text-left font-bold text-[#0f284f] uppercase tracking-wide hover:no-underline hover:text-[#ffbca8] transition-colors">
                   Do you offer airport shuttle service?
                 </AccordionTrigger>
                 <AccordionContent className="text-gray-500 leading-relaxed text-base pt-2 pb-4">
-                  Yes, we provide complimentary luxury airport transfers for guests staying in Executive Suites and above. For other room types, transfers can be arranged for an additional charge.
+                  Yes, we provide complimentary luxury airport transfers for
+                  guests staying in Executive Suites and above. For other room
+                  types, transfers can be arranged for an additional charge.
                 </AccordionContent>
               </AccordionItem>
-              
-              <AccordionItem value="item-4" className="bg-white border border-gray-100 rounded-lg px-6 py-2 shadow-sm hover:shadow-md transition-all">
+
+              <AccordionItem
+                value="item-4"
+                className="bg-white border border-gray-100 rounded-lg px-6 py-2 shadow-sm hover:shadow-md transition-all"
+              >
                 <AccordionTrigger className="text-left font-bold text-[#0f284f] uppercase tracking-wide hover:no-underline hover:text-[#ffbca8] transition-colors">
                   Is breakfast included in the room rate?
                 </AccordionTrigger>
                 <AccordionContent className="text-gray-500 leading-relaxed text-base pt-2 pb-4">
-                  Our standard rates are room-only, but you can easily add our award-winning buffet breakfast during the booking process or upon arrival at the hotel.
+                  Our standard rates are room-only, but you can easily add our
+                  award-winning buffet breakfast during the booking process or
+                  upon arrival at the hotel.
                 </AccordionContent>
               </AccordionItem>
-              
-              <AccordionItem value="item-5" className="bg-white border border-gray-100 rounded-lg px-6 py-2 shadow-sm hover:shadow-md transition-all">
+
+              <AccordionItem
+                value="item-5"
+                className="bg-white border border-gray-100 rounded-lg px-6 py-2 shadow-sm hover:shadow-md transition-all"
+              >
                 <AccordionTrigger className="text-left font-bold text-[#0f284f] uppercase tracking-wide hover:no-underline hover:text-[#ffbca8] transition-colors">
                   Are pets allowed in the hotel?
                 </AccordionTrigger>
                 <AccordionContent className="text-gray-500 leading-relaxed text-base pt-2 pb-4">
-                  We welcome small pets up to 15lbs in our designated pet-friendly rooms for a non-refundable cleaning fee. Please notify us in advance if you plan to bring your furry friend.
+                  We welcome small pets up to 15lbs in our designated
+                  pet-friendly rooms for a non-refundable cleaning fee. Please
+                  notify us in advance if you plan to bring your furry friend.
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
@@ -566,16 +679,23 @@ export default function RoomPage({ params }) {
               Guest Reviews & Ratings
             </h2>
             <p className="text-gray-500 max-w-2xl mx-auto">
-              Discover what our guests have to say about their unforgettable stays.
+              Discover what our guests have to say about their unforgettable
+              stays.
             </p>
           </div>
-          
-          <motion.div 
-            variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true }}
+
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
             {/* Review 1 */}
-            <motion.div variants={fadeUp} className="bg-white p-8 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+            <motion.div
+              variants={fadeUp}
+              className="bg-white p-8 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow"
+            >
               <div className="flex text-yellow-400 mb-4">
                 <Star className="w-5 h-5 fill-current" />
                 <Star className="w-5 h-5 fill-current" />
@@ -584,12 +704,14 @@ export default function RoomPage({ params }) {
                 <Star className="w-5 h-5 fill-current" />
               </div>
               <p className="text-gray-600 mb-6 italic leading-relaxed">
-                &quot;An absolutely breathtaking experience. The room was pristine, the views were unmatched, and the service was impeccable from start to finish.&quot;
+                &quot;An absolutely breathtaking experience. The room was
+                pristine, the views were unmatched, and the service was
+                impeccable from start to finish.&quot;
               </p>
               <div className="flex items-center">
-                <Image 
-                  src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=faces" 
-                  alt="Sarah Jenkins" 
+                <Image
+                  src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=faces"
+                  alt="Sarah Jenkins"
                   width={48}
                   height={48}
                   className="rounded-full mr-4 object-cover"
@@ -602,7 +724,10 @@ export default function RoomPage({ params }) {
             </motion.div>
 
             {/* Review 2 */}
-            <motion.div variants={fadeUp} className="bg-white p-8 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+            <motion.div
+              variants={fadeUp}
+              className="bg-white p-8 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow"
+            >
               <div className="flex text-yellow-400 mb-4">
                 <Star className="w-5 h-5 fill-current" />
                 <Star className="w-5 h-5 fill-current" />
@@ -611,25 +736,32 @@ export default function RoomPage({ params }) {
                 <Star className="w-5 h-5 fill-current" />
               </div>
               <p className="text-gray-600 mb-6 italic leading-relaxed">
-                &quot;NextHaven exceeded all my expectations. The amenities were top-tier, and the staff went out of their way to ensure our anniversary was perfect.&quot;
+                &quot;NextHaven exceeded all my expectations. The amenities were
+                top-tier, and the staff went out of their way to ensure our
+                anniversary was perfect.&quot;
               </p>
               <div className="flex items-center">
-                <Image 
-                  src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=100&h=100&fit=crop&crop=faces" 
-                  alt="Michael Chen" 
+                <Image
+                  src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=100&h=100&fit=crop&crop=faces"
+                  alt="Michael Chen"
                   width={48}
                   height={48}
                   className="rounded-full mr-4 object-cover"
                 />
                 <div>
                   <h4 className="text-[#0f284f] font-bold">Michael Chen</h4>
-                  <span className="text-sm text-gray-500">Stayed in August</span>
+                  <span className="text-sm text-gray-500">
+                    Stayed in August
+                  </span>
                 </div>
               </div>
             </motion.div>
 
             {/* Review 3 */}
-            <motion.div variants={fadeUp} className="bg-white p-8 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow md:col-span-2 lg:col-span-1">
+            <motion.div
+              variants={fadeUp}
+              className="bg-white p-8 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow md:col-span-2 lg:col-span-1"
+            >
               <div className="flex text-yellow-400 mb-4">
                 <Star className="w-5 h-5 fill-current" />
                 <Star className="w-5 h-5 fill-current" />
@@ -638,19 +770,23 @@ export default function RoomPage({ params }) {
                 <Star className="w-5 h-5 fill-current" />
               </div>
               <p className="text-gray-600 mb-6 italic leading-relaxed">
-                &quot;The attention to detail in the room design is stunning. I felt completely relaxed. Highly recommend booking the suite with the ocean view!&quot;
+                &quot;The attention to detail in the room design is stunning. I
+                felt completely relaxed. Highly recommend booking the suite with
+                the ocean view!&quot;
               </p>
               <div className="flex items-center">
-                <Image 
-                  src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=faces" 
-                  alt="Emma Roberts" 
+                <Image
+                  src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=faces"
+                  alt="Emma Roberts"
                   width={48}
                   height={48}
                   className="rounded-full mr-4 object-cover"
                 />
                 <div>
                   <h4 className="text-[#0f284f] font-bold">Emma Roberts</h4>
-                  <span className="text-sm text-gray-500">Stayed in September</span>
+                  <span className="text-sm text-gray-500">
+                    Stayed in September
+                  </span>
                 </div>
               </div>
             </motion.div>

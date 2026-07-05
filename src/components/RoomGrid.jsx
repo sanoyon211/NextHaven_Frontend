@@ -7,7 +7,10 @@ export default function RoomGrid({ rooms, loading }) {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {[...Array(6)].map((_, i) => (
-          <div key={i} className="bg-white shadow-sm rounded-lg overflow-hidden border border-gray-100 animate-pulse">
+          <div
+            key={i}
+            className="bg-white shadow-sm rounded-lg overflow-hidden border border-gray-100 animate-pulse"
+          >
             <div className="h-48 md:h-60 bg-slate-200/60"></div>
             <div className="p-4 md:p-6 flex flex-col">
               <div className="h-6 bg-slate-200 rounded-md w-3/4 mb-2"></div>
@@ -31,8 +34,12 @@ export default function RoomGrid({ rooms, loading }) {
   if (rooms.length === 0) {
     return (
       <div className="text-center py-20 bg-white rounded-lg border border-gray-100">
-        <h3 className="text-xl font-bold text-[#0f284f] mb-2 uppercase">No Rooms Found</h3>
-        <p className="text-gray-500">Try adjusting your filters to find available rooms.</p>
+        <h3 className="text-xl font-bold text-[#0f284f] mb-2 uppercase">
+          No Rooms Found
+        </h3>
+        <p className="text-gray-500">
+          Try adjusting your filters to find available rooms.
+        </p>
       </div>
     );
   }
@@ -52,7 +59,11 @@ export default function RoomGrid({ rooms, loading }) {
           <Link href={`/rooms/${room._id || room.id}`}>
             <div className="h-48 md:h-60 overflow-hidden relative bg-gray-100">
               <Image
-                src={room.image || room.images?.[0] || "https://images.unsplash.com/photo-1590490359683-658d3d23f972?q=80&w=2000"}
+                src={
+                  room.image ||
+                  room.images?.[0] ||
+                  "https://images.unsplash.com/photo-1590490359683-658d3d23f972?q=80&w=2000"
+                }
                 alt={room.title || "Room"}
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -61,11 +72,15 @@ export default function RoomGrid({ rooms, loading }) {
             </div>
             <div className="p-4 md:p-6">
               <h3 className="text-[#0f284f] font-extrabold uppercase text-base md:text-lg mb-1 md:mb-2">
-                {room.roomNumber ? `Room ${room.roomNumber} - ${room.title}` : room.title}
+                {room.roomNumber
+                  ? `Room ${room.roomNumber} - ${room.title}`
+                  : room.title}
               </h3>
               <div className="flex justify-between items-end mt-4 md:mt-6">
                 <p className="text-gray-500 text-xs w-1/2 leading-relaxed font-medium">
-                  {room.description || room.details || `${room.capacity || 2} adults`}
+                  {room.description ||
+                    room.details ||
+                    `${room.capacity || 2} adults`}
                 </p>
                 <div className="text-right">
                   <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">

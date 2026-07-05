@@ -14,7 +14,8 @@ export default function CheckoutCancelPage() {
           Payment Cancelled
         </h1>
         <p className="text-gray-500 mb-8 leading-relaxed">
-          Your payment was cancelled. No charges were made. You can return to the checkout page when you are ready.
+          Your payment was cancelled. No charges were made. You can return to
+          the checkout page when you are ready.
         </p>
         <button
           onClick={() => router.push("/restaurant/checkout")}

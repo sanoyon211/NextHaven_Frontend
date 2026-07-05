@@ -8,7 +8,10 @@ import api from "@/lib/api";
 export default function AIChatbot() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { role: "bot", text: "Hello! I am your NextHaven Concierge. How can I help you today?" },
+    {
+      role: "bot",
+      text: "Hello! I am your NextHaven Concierge. How can I help you today?",
+    },
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -17,7 +20,8 @@ export default function AIChatbot() {
   const scrollToBottom = () => {
     setTimeout(() => {
       if (chatContainerRef.current) {
-        chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+        chatContainerRef.current.scrollTop =
+          chatContainerRef.current.scrollHeight;
       }
     }, 100);
   };
@@ -36,11 +40,17 @@ export default function AIChatbot() {
 
     try {
       const res = await api.post("/chat", { message: userMessage.text });
-      setMessages((prev) => [...prev, { role: "bot", text: res.data.response }]);
+      setMessages((prev) => [
+        ...prev,
+        { role: "bot", text: res.data.response },
+      ]);
     } catch (error) {
       setMessages((prev) => [
         ...prev,
-        { role: "bot", text: "I'm sorry, I encountered an error connecting to my servers. Please try again later." },
+        {
+          role: "bot",
+          text: "I'm sorry, I encountered an error connecting to my servers. Please try again later.",
+        },
       ]);
     } finally {
       setLoading(false);
@@ -69,16 +79,24 @@ export default function AIChatbot() {
             {/* Header */}
             <div className="bg-[#0f284f] text-white p-4 flex justify-between items-center">
               <div>
-                <h3 className="font-bold text-sm tracking-wide uppercase">NextHaven Concierge</h3>
+                <h3 className="font-bold text-sm tracking-wide uppercase">
+                  NextHaven Concierge
+                </h3>
                 <p className="text-xs text-gray-300">AI-Powered Assistant</p>
               </div>
-              <button onClick={() => setIsOpen(false)} className="text-gray-300 hover:text-white transition-colors">
+              <button
+                onClick={() => setIsOpen(false)}
+                className="text-gray-300 hover:text-white transition-colors"
+              >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {/* Chat History */}
-            <div ref={chatContainerRef} className="flex-1 p-4 min-h-0 overflow-y-auto bg-gray-50 flex flex-col space-y-4">
+            <div
+              ref={chatContainerRef}
+              className="flex-1 p-4 min-h-0 overflow-y-auto bg-gray-50 flex flex-col space-y-4"
+            >
               {messages.map((msg, idx) => (
                 <div
                   key={idx}
@@ -93,9 +111,18 @@ export default function AIChatbot() {
               ))}
               {loading && (
                 <div className="bg-white text-gray-500 self-start rounded-lg rounded-tl-none p-3 shadow-sm border border-gray-100 text-sm flex items-center space-x-2">
-                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                  <div
+                    className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                    style={{ animationDelay: "0ms" }}
+                  />
+                  <div
+                    className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                    style={{ animationDelay: "150ms" }}
+                  />
+                  <div
+                    className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                    style={{ animationDelay: "300ms" }}
+                  />
                 </div>
               )}
             </div>

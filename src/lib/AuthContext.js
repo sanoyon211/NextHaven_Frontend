@@ -13,7 +13,7 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await api.get('/auth/me');
+        const res = await api.get("/auth/me");
         setUser(res.data.user);
       } catch (error) {
         setUser(null);
@@ -21,16 +21,16 @@ export function AuthProvider({ children }) {
         setLoading(false);
       }
     };
-    
+
     checkAuth();
   }, []);
 
   const logout = async () => {
     try {
-      await api.post('/auth/logout');
+      await api.post("/auth/logout");
       toast.success("Logged out successfully");
     } catch (error) {
-      console.error('Logout failed:', error);
+      console.error("Logout failed:", error);
       toast.error("Logout failed");
     }
     setUser(null);

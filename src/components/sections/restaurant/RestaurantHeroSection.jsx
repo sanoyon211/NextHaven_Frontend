@@ -18,8 +18,8 @@ export default function RestaurantHeroSection({ setShowReservationDialog }) {
         className="object-cover"
       />
       <div className="absolute inset-0 bg-black/50" />
-      
-      <motion.div 
+
+      <motion.div
         initial="hidden"
         animate="visible"
         variants={fadeUp}
@@ -29,10 +29,10 @@ export default function RestaurantHeroSection({ setShowReservationDialog }) {
           Fine Dining At Its Best
         </h1>
         <p className="text-gray-200 text-lg max-w-2xl mx-auto mb-10 drop-shadow-md">
-          Experience culinary excellence curated by our Michelin-starred chefs, 
+          Experience culinary excellence curated by our Michelin-starred chefs,
           set in an atmosphere of unparalleled elegance and sophistication.
         </p>
-        <button 
+        <button
           onClick={() => setShowReservationDialog(true)}
           className="bg-white text-[#0f284f] font-extrabold uppercase tracking-widest px-10 py-4 rounded-sm hover:bg-gray-100 transition-colors"
         >

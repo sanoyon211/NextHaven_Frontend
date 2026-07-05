@@ -23,7 +23,7 @@ export default function ContactInfoFormSection() {
   const handleSubmit = (e) => {
     e.preventDefault();
     // In a real application, you would send the form data to the server here
-    toast.success('Your message has been sent successfully!');
+    toast.success("Your message has been sent successfully!");
     e.target.reset(); // Reset the form fields
   };
 
@@ -44,7 +44,9 @@ export default function ContactInfoFormSection() {
                 Contact Information
               </h2>
               <p className="text-gray-500 leading-relaxed mb-8">
-                We are here to help you plan your perfect stay. Reach out to our dedicated team for reservations, special requests, or general inquiries.
+                We are here to help you plan your perfect stay. Reach out to our
+                dedicated team for reservations, special requests, or general
+                inquiries.
               </p>
             </div>
 
@@ -52,11 +54,16 @@ export default function ContactInfoFormSection() {
               <div className="flex items-start">
                 <MapPin className="w-6 h-6 text-[#ffbca8] mt-1 mr-4 shrink-0" />
                 <div>
-                  <h3 className="text-[#0f284f] font-bold text-lg mb-1 uppercase tracking-wide">Address</h3>
+                  <h3 className="text-[#0f284f] font-bold text-lg mb-1 uppercase tracking-wide">
+                    Address
+                  </h3>
                   <address className="text-gray-500 not-italic leading-relaxed">
-                    The Hoteller,<br />
-                    456 Urban Avenue<br />
-                    Cityville, NY 10001<br />
+                    The Hoteller,
+                    <br />
+                    456 Urban Avenue
+                    <br />
+                    Cityville, NY 10001
+                    <br />
                     United States
                   </address>
                 </div>
@@ -65,9 +72,14 @@ export default function ContactInfoFormSection() {
               <div className="flex items-start">
                 <Phone className="w-6 h-6 text-[#ffbca8] mt-1 mr-4 shrink-0" />
                 <div>
-                  <h3 className="text-[#0f284f] font-bold text-lg mb-1 uppercase tracking-wide">Phone</h3>
+                  <h3 className="text-[#0f284f] font-bold text-lg mb-1 uppercase tracking-wide">
+                    Phone
+                  </h3>
                   <p className="text-gray-500">
-                    <a href="tel:+45356343444" className="hover:text-[#0f284f] transition-colors">
+                    <a
+                      href="tel:+45356343444"
+                      className="hover:text-[#0f284f] transition-colors"
+                    >
                       +45 35634 3444
                     </a>
                   </p>
@@ -77,9 +89,14 @@ export default function ContactInfoFormSection() {
               <div className="flex items-start">
                 <Mail className="w-6 h-6 text-[#ffbca8] mt-1 mr-4 shrink-0" />
                 <div>
-                  <h3 className="text-[#0f284f] font-bold text-lg mb-1 uppercase tracking-wide">Email</h3>
+                  <h3 className="text-[#0f284f] font-bold text-lg mb-1 uppercase tracking-wide">
+                    Email
+                  </h3>
                   <p className="text-gray-500">
-                    <a href="mailto:contact@thehotel.com" className="hover:text-[#0f284f] transition-colors">
+                    <a
+                      href="mailto:contact@thehotel.com"
+                      className="hover:text-[#0f284f] transition-colors"
+                    >
                       contact@thehotel.com
                     </a>
                   </p>
@@ -89,13 +106,19 @@ export default function ContactInfoFormSection() {
           </motion.div>
 
           {/* Right Column: Contact Form */}
-          <motion.div variants={fadeUp} className="bg-[#f8fafc] p-5 md:p-8 rounded-lg border border-gray-100">
+          <motion.div
+            variants={fadeUp}
+            className="bg-[#f8fafc] p-5 md:p-8 rounded-lg border border-gray-100"
+          >
             <h3 className="text-[#0f284f] text-xl md:text-2xl font-bold uppercase tracking-wider mb-4 md:mb-6">
               Send Us A Message
             </h3>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label htmlFor="name" className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
+                <label
+                  htmlFor="name"
+                  className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2"
+                >
                   Name
                 </label>
                 <input
@@ -108,7 +131,10 @@ export default function ContactInfoFormSection() {
               </div>
 
               <div>
-                <label htmlFor="email" className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
+                <label
+                  htmlFor="email"
+                  className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2"
+                >
                   Email
                 </label>
                 <input
@@ -121,7 +147,10 @@ export default function ContactInfoFormSection() {
               </div>
 
               <div>
-                <label htmlFor="subject" className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
+                <label
+                  htmlFor="subject"
+                  className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2"
+                >
                   Subject
                 </label>
                 <input
@@ -134,7 +163,10 @@ export default function ContactInfoFormSection() {
               </div>
 
               <div>
-                <label htmlFor="message" className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
+                <label
+                  htmlFor="message"
+                  className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2"
+                >
                   Message
                 </label>
                 <textarea

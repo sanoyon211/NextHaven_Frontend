@@ -10,7 +10,6 @@ export default function AboutIntroSection() {
   return (
     <section className="mx-auto max-w-7xl px-4 py-12 md:py-24 sm:px-6 lg:px-8">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-24 items-center">
-        
         {/* Left Column: Image Collage */}
         <motion.div
           initial="hidden"
@@ -28,7 +27,7 @@ export default function AboutIntroSection() {
             className="object-cover rounded-sm shadow-xl"
           />
           {/* Overlapping Smaller Image */}
-          <motion.div 
+          <motion.div
             animate={{ y: [0, -15, 0] }}
             transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
             className="absolute -bottom-10 -right-10 w-2/3 h-2/3 border-8 border-white rounded-sm shadow-xl overflow-hidden hidden md:block z-10"
@@ -55,13 +54,15 @@ export default function AboutIntroSection() {
             WHERE EVERY STAY IS A HUG OF HOSPITALITY
           </h1>
           <p className="text-gray-600 text-lg leading-relaxed mb-6">
-            At Hoteller, we pride ourselves on delivering an unforgettable experience. 
-            Our commitment to excellence ensures that every guest feels the warmth of 
-            our hospitality from the moment they step through our doors.
+            At Hoteller, we pride ourselves on delivering an unforgettable
+            experience. Our commitment to excellence ensures that every guest
+            feels the warmth of our hospitality from the moment they step
+            through our doors.
           </p>
           <p className="text-gray-600 text-lg leading-relaxed">
-            We combine modern luxury with timeless elegance, creating a sanctuary 
-            where you can escape the hustle of the city while remaining at its very heart.
+            We combine modern luxury with timeless elegance, creating a
+            sanctuary where you can escape the hustle of the city while
+            remaining at its very heart.
           </p>
         </motion.div>
       </div>

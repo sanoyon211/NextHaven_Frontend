@@ -7,7 +7,13 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { Eye, EyeOff } from "lucide-react";
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, sendPasswordResetEmail } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+  sendPasswordResetEmail,
+} from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import api from "@/lib/api";
 import { useAuth } from "@/lib/AuthContext";
@@ -28,7 +34,11 @@ export default function LoginPage() {
       const res = await api.post("/auth/sync", { firebaseToken: idToken });
       setUser(res.data.user || res.data); // Adjust based on your backend response structure
       toast.success("Successfully authenticated!");
-      router.push("/dashboard");
+
+      // Redirect back to the page the user came from, or dashboard by default
+      const searchParams = new URLSearchParams(window.location.search);
+      const redirectPath = searchParams.get("redirect") || "/dashboard";
+      router.push(redirectPath);
     } catch (error) {
       toast.error("Failed to sync with backend.");
     } finally {
@@ -40,7 +50,11 @@ export default function LoginPage() {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password,
+      );
       await handleAuthSync(userCredential.user);
     } catch (error) {
       setIsLoading(false);
@@ -90,7 +104,6 @@ export default function LoginPage() {
 
   return (
     <main className="min-h-screen w-full bg-white grid grid-cols-1 lg:grid-cols-2">
-      
       {/* Left Column: Image */}
       <div className="relative hidden lg:block w-full h-full min-h-screen">
         <Image
@@ -107,10 +120,9 @@ export default function LoginPage() {
 
       {/* Right Column: Auth Form */}
       <div className="flex flex-col justify-center items-center px-4 sm:px-6 lg:px-12 xl:px-24 min-h-screen relative">
-        
         {/* Absolute Link back to home (optional but good practice) */}
-        <Link 
-          href="/" 
+        <Link
+          href="/"
           className="absolute top-8 right-8 text-sm font-semibold text-gray-500 hover:text-[#0f284f] uppercase tracking-wider transition-colors"
         >
           Back to Home
@@ -164,15 +176,19 @@ export default function LoginPage() {
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
                 >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  {showPassword ? (
+                    <EyeOff className="w-5 h-5" />
+                  ) : (
+                    <Eye className="w-5 h-5" />
+                  )}
                 </button>
               </div>
             </div>
 
             <div className="flex justify-end">
-              <button 
-                type="button" 
-                onClick={handleForgotPassword} 
+              <button
+                type="button"
+                onClick={handleForgotPassword}
                 className="text-xs font-semibold text-[#0f284f] hover:underline"
               >
                 Forgot Password?
@@ -220,17 +236,29 @@ export default function LoginPage() {
                 fill="#EA4335"
               />
             </svg>
-            <span className="text-sm font-bold text-gray-600">Sign in with Google</span>
+            <span className="text-sm font-bold text-gray-600">
+              Sign in with Google
+            </span>
           </button>
 
           <div className="mt-8 text-center text-sm text-gray-500">
             Don&apos;t have an account?{" "}
-            <Link
-              href="/signup"
+            <button
+              onClick={() => {
+                const searchParams = new URLSearchParams(
+                  window.location.search,
+                );
+                const redirect = searchParams.get("redirect");
+                router.push(
+                  redirect
+                    ? `/signup?redirect=${encodeURIComponent(redirect)}`
+                    : "/signup",
+                );
+              }}
               className="font-bold text-[#0f284f] hover:underline transition-colors ml-1"
             >
               Sign up
-            </Link>
+            </button>
           </div>
         </motion.div>
       </div>

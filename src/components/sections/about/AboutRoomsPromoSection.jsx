@@ -12,7 +12,6 @@ export default function AboutRoomsPromoSection() {
     <section className="bg-[#f8fafc] w-full py-12 md:py-24 px-4 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-24 items-center">
-          
           {/* Left Column: Text */}
           <motion.div
             initial="hidden"
@@ -25,10 +24,11 @@ export default function AboutRoomsPromoSection() {
               CHECKOUT OUR ROOMS
             </h2>
             <p className="text-gray-600 text-lg leading-relaxed mb-10">
-              We proudly offer a diverse selection of exquisitely furnished rooms and suites, 
-              designed to cater to your every need. Whether you are traveling for business 
-              or leisure, our accommodations provide the perfect blend of comfort, style, 
-              and state-of-the-art amenities.
+              We proudly offer a diverse selection of exquisitely furnished
+              rooms and suites, designed to cater to your every need. Whether
+              you are traveling for business or leisure, our accommodations
+              provide the perfect blend of comfort, style, and state-of-the-art
+              amenities.
             </p>
             <div>
               <Link
@@ -57,9 +57,14 @@ export default function AboutRoomsPromoSection() {
               className="object-cover rounded-sm shadow-xl"
             />
             {/* Overlapping Smaller Image */}
-            <motion.div 
+            <motion.div
               animate={{ y: [0, -15, 0] }}
-              transition={{ repeat: Infinity, duration: 4, ease: "easeInOut", delay: 1 }}
+              transition={{
+                repeat: Infinity,
+                duration: 4,
+                ease: "easeInOut",
+                delay: 1,
+              }}
               className="absolute -bottom-10 -left-10 w-2/3 h-2/3 border-8 border-[#f8fafc] rounded-sm shadow-xl overflow-hidden hidden md:block z-10"
             >
               <Image

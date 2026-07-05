@@ -40,10 +40,17 @@ export default function RestaurantDiningExperienceSection() {
             A Symphony of Flavors
           </h2>
           <p className="text-gray-500 leading-relaxed text-lg">
-            Step into a realm of culinary artistry where every dish tells a story. Our Executive Chefs blend traditional techniques with modern innovation, creating a menu that is as visually stunning as it is delectable. 
+            Step into a realm of culinary artistry where every dish tells a
+            story. Our Executive Chefs blend traditional techniques with modern
+            innovation, creating a menu that is as visually stunning as it is
+            delectable.
           </p>
           <p className="text-gray-500 leading-relaxed text-lg">
-            Sourced from the finest local purveyors and international artisans, our ingredients are the stars of the show. Pair your meal with a selection from our award-winning wine cellar, curated by our head sommelier to perfectly complement the symphony of flavors on your plate.
+            Sourced from the finest local purveyors and international artisans,
+            our ingredients are the stars of the show. Pair your meal with a
+            selection from our award-winning wine cellar, curated by our head
+            sommelier to perfectly complement the symphony of flavors on your
+            plate.
           </p>
         </motion.div>
       </div>

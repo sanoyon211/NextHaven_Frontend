@@ -8,9 +8,9 @@ export default function RestaurantAmbianceSection() {
         {[
           "https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?q=80&w=1500",
           "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1500",
-          "https://images.unsplash.com/photo-1544148103-0773bf10d330?q=80&w=1500"
+          "https://images.unsplash.com/photo-1544148103-0773bf10d330?q=80&w=1500",
         ].map((src, index) => (
-          <motion.div 
+          <motion.div
             key={index}
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
