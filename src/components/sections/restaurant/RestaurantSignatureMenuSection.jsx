@@ -112,7 +112,7 @@ export default function RestaurantSignatureMenuSection({
                 </div>
               </DialogTrigger>
 
-              <DialogContent className="sm:max-w-[700px] p-0 overflow-hidden bg-white border-0">
+              <DialogContent className="sm:max-w-[700px] p-0 bg-white border-0">
                 <div className="flex flex-col md:flex-row h-full">
                   <div className="relative w-full md:w-1/2 h-64 md:h-auto">
                     <Image
