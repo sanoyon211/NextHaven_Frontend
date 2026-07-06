@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<div align="center">
+  <h1 align="center">Next Haven - Frontend</h1>
+  <p align="center">
+    A modern, premium, and dynamic user interface for the Next Haven hotel booking platform.
+  </p>
+</div>
 
-## Getting Started
+## 🌐 Links
+- **Frontend Live Demo:** [https://next-haven.vercel.app/](https://next-haven.vercel.app/)
+- **Frontend Repository:** [https://github.com/sanoyon211/NextHaven_Frontend](https://github.com/sanoyon211/NextHaven_Frontend)
+- **Backend API Live URL:** [https://next-haven-backend.vercel.app/](https://next-haven-backend.vercel.app/)
+- **Backend Repository:** [https://github.com/sanoyon211/NextHaven_Backend](https://github.com/sanoyon211/NextHaven_Backend)
 
-First, run the development server:
+## 🚀 Overview
+The Next Haven frontend is a state-of-the-art web application built to provide a seamless hotel and room booking experience. It focuses on a rich visual aesthetic, dynamic micro-animations, and a responsive layout that wows users at first glance.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## ✨ Features
+- **Modern Tech Stack:** Built with Next.js 16 and React 19.
+- **Premium Aesthetics:** Stunning UI with Tailwind CSS, Shadcn UI, and smooth animations powered by Framer Motion.
+- **Secure Payments:** Integrated with Stripe for seamless, secure transactions.
+- **Authentication & User Management:** User dashboard and profile management connected to Firebase.
+- **Responsive Design:** Completely responsive layout, perfectly adaptable to mobile, tablet, and desktop screens.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠️ Built With
+- **[Next.js](https://nextjs.org/)**
+- **[React](https://reactjs.org/)**
+- **[Tailwind CSS](https://tailwindcss.com/)**
+- **[Shadcn UI](https://ui.shadcn.com/)**
+- **[Framer Motion](https://www.framer.com/motion/)**
+- **[Stripe](https://stripe.com/)**
+- **[Firebase](https://firebase.google.com/)**
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## 💻 Getting Started
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Follow these steps to set up the project locally on your machine.
 
-## Learn More
+### Prerequisites
+Make sure you have Node.js and npm (or yarn/pnpm) installed.
 
-To learn more about Next.js, take a look at the following resources:
+### Installation
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. **Clone the repository** (if you haven't already):
+   ```bash
+   git clone https://github.com/sanoyon211/NextHaven_Frontend.git
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+2. **Navigate to the frontend directory:**
+   ```bash
+   cd next_haven/frontend
+   ```
 
-## Deploy on Vercel
+3. **Install dependencies:**
+   ```bash
+   npm install
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+4. **Set up Environment Variables:**
+   Create a `.env.local` file in the root of the `frontend` directory and add your required API keys (e.g., Stripe, Firebase). Refer to `.env.example` if available.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+5. **Run the development server:**
+   ```bash
+   npm run dev
+   ```
+
+6. **View the app:**
+   Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
