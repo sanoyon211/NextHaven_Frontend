@@ -8,7 +8,6 @@
 ## 🌐 Links
 - **Frontend Live Demo:** [https://next-haven.vercel.app/](https://next-haven.vercel.app/)
 - **Frontend Repository:** [https://github.com/sanoyon211/NextHaven_Frontend](https://github.com/sanoyon211/NextHaven_Frontend)
-- **Backend API Live URL:** [https://next-haven-backend.vercel.app/](https://next-haven-backend.vercel.app/)
 - **Backend Repository:** [https://github.com/sanoyon211/NextHaven_Backend](https://github.com/sanoyon211/NextHaven_Backend)
 
 ## 🚀 Overview
